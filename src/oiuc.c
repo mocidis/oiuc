@@ -21,8 +21,8 @@ static void on_call_media_state_impl(int call_id, int st_code);
 
 static void on_request(oiu_server_t *oserver, oiu_request_t *req) {
     switch(req->msg_id) {
-        case REG_STATE_RESP:
-            printf("REG_STATE_RESP(%d): %d(%s) \n", req->msg_id, req->reg_state_resp.code, req->reg_state_resp.msg);
+        case OIUC_GB:
+            printf("OIUC_GB(%d):\n  Node id: %s - Alive: %d\n", req->msg_id, req->oiuc_gb.id, req->oiuc_gb.is_alive);
             break;
         default:
             fprintf(stderr, "Unknown message type. Protocol failure\n");
@@ -35,7 +35,8 @@ int arbiter_send(arbiter_client_t *uclient, arbiter_request_t *req) {
 	return arbiter_client_send(uclient, req);
 }
 
-static void on_init_done(oiu_server_t *oserver) {
+static void on_open_socket(oiu_server_t *oserver) {
+    oiu_server_join(&app_data.oserver, "239.0.0.1");
 }
 
 static void usage(char *app) {
@@ -76,7 +77,8 @@ int main(int argc, char *argv[]) {
 	//Arbiter path
     // LISTEN
     app_data.oserver.on_request_f = &on_request;
-    app_data.oserver.on_init_done_f = &on_init_done;
+    app_data.oserver.on_open_socket_f = &on_open_socket;
+
     oiu_server_init(&app_data.oserver, argv[2]);
     oiu_server_start(&app_data.oserver);
 
@@ -221,14 +223,14 @@ static void on_reg_state_impl(int account_id, char* is_registration, int code, c
 	printf("Status: %d(%s)\n", code, reason);
     
     arbiter_request_t req;
-    req.msg_id = REG_STATE_MSG;
-    strncpy(req.reg_state_msg.username, data->acfg.cred_info[0].username.ptr, sizeof(req.reg_state_msg.username));
-    strncpy(req.reg_state_msg.type, "OIU", sizeof(req.reg_state_msg.type));
+    req.msg_id = ABT_UP;
+    strncpy(req.abt_up.username, data->acfg.cred_info[0].username.ptr, sizeof(req.abt_up.username));
+    strncpy(req.abt_up.type, "OIU", sizeof(req.abt_up.type));
    
 	if( strcmp(is_registration, "No") == 0 )
-        req.reg_state_msg.code = 0;
+        req.abt_up.code = 0;
 	else
-        req.reg_state_msg.code = 1;
+        req.abt_up.code = 1;
 
     arbiter_send(&app_data.aclient, &req);
 }

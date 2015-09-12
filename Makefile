@@ -4,6 +4,7 @@ APP:=oiuc
 TESTS:=oiuc.c
 
 DIR:=.
+PROTOCOLS_DIR:=../protocols
 
 ICS_DIR:=../ics
 ICS_SRCS:=ics.c ics-event.c ics-command.c
@@ -39,13 +40,13 @@ O_PROTOCOL:=oiu_proto.u
 
 all: gen-a gen-o $(APP)
 
-gen-a: $(ARBITER_DIR)/protocol/$(A_PROTOCOL)
+gen-a: $(PROTOCOLS_DIR)/$(A_PROTOCOL)
 	mkdir -p gen
-	awk -f $(USERVER_DIR)/gen-tools/gen.awk $(ARBITER_DIR)/protocol/arbiter_proto.u
+	awk -f $(USERVER_DIR)/gen-tools/gen.awk $(PROTOCOLS_DIR)/arbiter_proto.u
 
-gen-o: $(ARBITER_DIR)/protocol/$(O_PROTOCOL)
+gen-o: $(PROTOCOLS_DIR)/$(O_PROTOCOL)
 	mkdir -p gen
-	awk -f $(USERVER_DIR)/gen-tools/gen.awk $(ARBITER_DIR)/protocol/oiu_proto.u
+	awk -f $(USERVER_DIR)/gen-tools/gen.awk $(PROTOCOLS_DIR)/oiu_proto.u
 
 doc: html latex
 	doxygen
