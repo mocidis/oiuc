@@ -31,7 +31,7 @@ CFLAGS+=-I$(C_DIR)/include -I$(USERVER_DIR)/include
 CFLAGS+= -I../json-c/output/include/json-c
 CFLAGS+= -I../arbiter/include
 CFLAGS+= -D_GNU_SOURCE
-CFLAGS += -I$(GEN_DIR)
+CFLAGS+= -I$(GEN_DIR) 
 
 LIBS:=$(shell pkg-config --libs libpjproject) ../json-c/output/lib/libjson-c.a -lpthread
 
@@ -78,6 +78,7 @@ $(C_SRCS:.c=.o): %.o: $(C_DIR)/src/%.c
 	gcc -c -o $@ $< $(CFLAGS)
 $(USERVER_C_SRCS:.c=.o): %.o: $(USERVER_DIR)/src/%.c
 	gcc -o $@ -c $< $(CFLAGS)
+
 
 clean:
 	rm -fr *.o $(APP) $(LOG) html latex gen

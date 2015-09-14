@@ -24,7 +24,7 @@ static void on_call_media_state_impl(int call_id, int st_code);
 //Callback function for Arbiter
 static void on_request(oiu_server_t *oserver, oiu_request_t *req);
 
-int arbiter_send(arbiter_client_t *uclient, arbiter_request_t *req) {
+int send_to_arbiter(arbiter_client_t *uclient, arbiter_request_t *req) {
 	return arbiter_client_send(uclient, req);
 }
 
@@ -226,7 +226,7 @@ static void on_reg_state_impl(int account_id, char* is_registration, int code, c
 	else
         req.abt_up.code = 1;
 
-    arbiter_send(&app_data.aclient, &req);
+    send_to_arbiter(&app_data.aclient, &req);
 }
 
 static void on_incoming_call_impl(int account_id, int call_id, char *remote_contact, char *local_contact) {
