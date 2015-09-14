@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
 	arbiter_client_open(&app_data.aclient, argv[1]);
 
 	ics_start(&app_data.ics_data);
-	ics_connect(&app_data.ics_data, 1111);
+	ics_connect(&app_data.ics_data, 1112);
 
 	//Arbiter path
     // LISTEN
@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
 
     //End Arbiter path
 
-	ics_add_account(&app_data.ics_data, "192.168.2.50", "quy", "1234");
+	ics_add_account(&app_data.ics_data, "192.168.2.30", "111", "1234");
 
 	is_running = 1;
 	while(is_running) {

@@ -1,0 +1,28 @@
+.PHONY:gen-a gen-o run-qmake build clean distclean
+
+all: gen-a gen-o run-qmake build
+
+USERVER_DIR:=../userver
+PROTOCOLS_DIR:=../protocols
+
+gen-a: $(PROTOCOLS_DIR)/$(A_PROTOCOL)
+	mkdir -p gen
+	awk -f $(USERVER_DIR)/gen-tools/gen.awk $(PROTOCOLS_DIR)/arbiter_proto.u
+
+gen-o: $(PROTOCOLS_DIR)/$(O_PROTOCOL)
+	mkdir -p gen
+	awk -f $(USERVER_DIR)/gen-tools/gen.awk $(PROTOCOLS_DIR)/oiu_proto.u
+
+run-qmake:
+	qmake -makefile oiuc.pro
+
+build: 
+	make
+
+clean:
+	make clean
+
+distclean:
+	rm -rf gen
+	make distclean
+	rmdir temp
