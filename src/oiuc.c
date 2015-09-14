@@ -12,24 +12,17 @@ struct {
 
 static void print_menu();
 
+//Callback function for Asterisk
 static void on_reg_start_impl(int account_id);
 static void on_reg_state_impl(int account_id, char* is_registration, int code, char *reason);
 static void on_incoming_call_impl(int account_id, int call_id, char *remote_contact, char *local_contact);
 static void on_call_state_impl(int call_id, char *st_text);
 static void on_call_transfer_impl(int call_id, int st_code, char *st_text);
 static void on_call_media_state_impl(int call_id, int st_code);
+//End
 
-static void on_request(oiu_server_t *oserver, oiu_request_t *req) {
-    switch(req->msg_id) {
-        case OIUC_GB:
-            printf("OIUC_GB(%d):\n  Node id: %s - Alive: %d\n", req->msg_id, req->oiuc_gb.id, req->oiuc_gb.is_alive);
-            break;
-        default:
-            fprintf(stderr, "Unknown message type. Protocol failure\n");
-            exit(-1);
-    }
-
-}
+//Callback function for Arbiter
+static void on_request(oiu_server_t *oserver, oiu_request_t *req);
 
 int arbiter_send(arbiter_client_t *uclient, arbiter_request_t *req) {
 	return arbiter_client_send(uclient, req);
@@ -38,6 +31,7 @@ int arbiter_send(arbiter_client_t *uclient, arbiter_request_t *req) {
 static void on_open_socket(oiu_server_t *oserver) {
     oiu_server_join(&app_data.oserver, "239.0.0.1");
 }
+//End
 
 static void usage(char *app) {
 	printf("usage: %s <request connect string> <listen connection string>\n", app);
@@ -256,4 +250,30 @@ static void on_call_media_state_impl(int call_id, int st_code) {
 	printf("Status: %d\n", st_code);
 }
 
+static void on_request(oiu_server_t *oserver, oiu_request_t *req) {
+    struct tm tm;
+    time_t timer, timestamp;
+    double downtime;
+
+    switch(req->msg_id) {
+        case OIUC_GB:
+
+            printf("OIUC_GB(%d):\n  Node id: %s - Alive: %d ", req->msg_id, req->oiuc_gb.id, req->oiuc_gb.is_online);
+
+            if (req->oiuc_gb.is_online == 1)
+                printf("- Online\n");
+            else {
+                time(&timer);
+                tm = *localtime(&timer);
+                strptime(req->oiuc_gb.timestamp, "%H:%M:%S", &tm);
+                timestamp = mktime(&tm);
+                downtime = difftime(timer, timestamp);
+                printf("- Downtime: %.f second%s\n", downtime, (downtime > 1 ? "s":""));
+            }
+            break;
+        default:
+            fprintf(stderr, "Unknown message type. Protocol failure\n");
+            exit(-1);
+    }
+}
 
