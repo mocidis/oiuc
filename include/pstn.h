@@ -21,6 +21,7 @@ public:
 	void debug();
 	static PSTN* getPSTN();
 	void runCallingState(QString msg);
+	app_data_t getAppData();
 	Q_INVOKABLE void pstnCall (QString number);
 	Q_INVOKABLE void pstnHangupCall (QString number);
 	Q_INVOKABLE void pstnHangupAllCall (QString number);
@@ -41,7 +42,7 @@ public slots:
 private:
 	PSTN();
 	static PSTN *singleton;
-	ics_t app_data; 
+	app_data_t app_data; 
 	QString current_dial_number;
 	QString last_dial_number;
 };

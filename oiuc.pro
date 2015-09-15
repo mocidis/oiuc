@@ -10,6 +10,7 @@ MOC_DIR = temp
 DEPENDPATH += . \
               include \
               src \
+              gen \
               ../concurrent_queue/include \
               ../concurrent_queue/src \
               ../concurrent_queue/test \
@@ -22,6 +23,7 @@ DEPENDPATH += . \
               ../common/src
 INCLUDEPATH += . \
                include \
+               gen \
                ../ics/include \
                ../concurrent_queue/include \
                ../object-pool/include \
@@ -29,8 +31,8 @@ INCLUDEPATH += . \
 
 # Input
 QT += declarative sql
-QMAKE_CFLAGS += $(shell pkg-config --cflags /usr/local/lib/pkgconfig/libpjproject.pc)
-QMAKE_LIBS += $(shell pkg-config --libs /usr/local/lib/pkgconfig/libpjproject.pc)
+QMAKE_CFLAGS += $(shell pkg-config --cflags /usr/local/lib/pkgconfig/libpjproject.pc) -I../json-c/output/include/json-c
+QMAKE_LIBS += $(shell pkg-config --libs /usr/local/lib/pkgconfig/libpjproject.pc) ../json-c/output/lib/libjson-c.a
 
 HEADERS += include/ctocpp.h \
            include/pstn.h \
@@ -38,6 +40,11 @@ HEADERS += include/ctocpp.h \
 		   include/group.h \
 		   include/backend.h \
 		   include/group_manager.h \
+		   gen/arbiter-client.h \
+		   gen/arbiter.h \
+		   gen/arbiter-server.h \
+		   gen/oiu-client.h \
+		   gen/oiu-server.h \
            ../concurrent_queue/include/queue.h \
            ../ics/include/db-utils.h \
            ../ics/include/ics-command.h \
@@ -53,6 +60,10 @@ SOURCES += src/ctocpp.cpp \
 		   src/group.cpp \
 		   src/backend.cpp \
 		   src/group_manager.cpp \
+		   gen/arbiter-client.c \
+		   gen/arbiter-server.c \
+		   gen/oiu-client.c \
+		   gen/oiu-server.c \
            ../concurrent_queue/src/queue.c \
            ../ics/src/ics-command.c \
            ../ics/src/ics.c \
