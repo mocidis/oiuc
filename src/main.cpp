@@ -8,12 +8,16 @@
 #include "radio.h"
 #include "group.h"
 #include "backend.h"
+#include "ptt.h"
 #include "group_manager.h"
+#include "oiuc_manager.h"
 int main (int argc, char* argv[]) {
 	QApplication app(argc, argv);
 	QDeclarativeView view;
 	PSTN *pstn = PSTN::getPSTN();
+	PTT *ptt = PTT::getPTT();
 	view.rootContext()->setContextProperty("pstn", pstn);// setup connection between qml and cpp
+	view.rootContext()->setContextProperty("ptt", ptt);// setup connection between qml and cpp
 
 	QList<Radio*> radio_list = getBackendRadioList("databases/radio.db"); //get list of radio
 
@@ -28,15 +32,18 @@ int main (int argc, char* argv[]) {
 	}
 	determineRadioListForGroup(group_list,radio_list);
 	GroupManager *grp_manager = new GroupManager(group_list,radio_list);	
-	view.rootContext()->setContextProperty("grpManager", grp_manager);// setup connection between qml and cpp
+	OIUCManager *oiuc_manager = OIUCManager::getOIUCManager ();
 
+
+	view.rootContext()->setContextProperty("grpManager", grp_manager);// setup connection between qml and cpp
 	view.rootContext()->setContextProperty("modelRadio", QVariant::fromValue(radio_list_obj));
-	view.rootContext()->setContextProperty("modelGroup",QVariant::fromValue(group_list_obj));
+	view.rootContext()->setContextProperty("modelGroup", QVariant::fromValue(group_list_obj));
+	view.rootContext()->setContextProperty("modelOIUC", QVariant::fromValue(oiuc_manager->getModelOIUC()));
 	view.setSource(QUrl::fromLocalFile("qml/main.qml"));
+
 	grp_manager->setView(&view);
+	oiuc_manager->setView(&view);
+
 	view.show();
-	//Radio *r = new Radio();
-	//radio_list_obj.append(r);
-	//view.rootContext()->setContextProperty("modelRadio", QVariant::fromValue(radio_list_obj));
 	return app.exec();
 }

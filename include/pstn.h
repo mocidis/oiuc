@@ -21,7 +21,7 @@ public:
 	void debug();
 	static PSTN* getPSTN();
 	void runCallingState(QString msg);
-	app_data_t getAppData();
+	app_data_t *getAppData();
 	Q_INVOKABLE void pstnCall (QString number);
 	Q_INVOKABLE void pstnHangupCall (QString number);
 	Q_INVOKABLE void pstnHangupAllCall (QString number);

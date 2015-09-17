@@ -1,5 +1,5 @@
 #include "pstn.h"
-PSTN* PSTN::singleton=0;
+PSTN* PSTN::singleton = 0;
 PSTN* PSTN:: getPSTN() {
 	if (!singleton) {
 		singleton = new PSTN();
@@ -9,7 +9,7 @@ PSTN* PSTN:: getPSTN() {
 	}	
 }
 PSTN::PSTN() {
-	current_dial_number="0000000"; //default 7 zero number
+	current_dial_number="000"; 
 	last_dial_number=current_dial_number;
 	ics_init(&app_data.ics_data);
 
@@ -21,9 +21,9 @@ PSTN::PSTN() {
 	ics_set_call_media_state_callback(&on_call_media_state_impl); //cc
 
 	//SEND
-	char send_to[] = "udp:239.0.0.1:1234";
-	char listen_on[] = "udp:0.0.0.0:4321";
-	arbiter_client_open(&app_data.aclient, send_to);
+	char send_to[] = "udp:239.0.0.1:6789";
+	char listen_on[] = "udp:0.0.0.0:9876";
+	arbiter_client_open(&app_data.aclient, strdup(send_to));
 
 	ics_start(&app_data.ics_data);
 	ics_connect(&app_data.ics_data, 1111);
@@ -32,7 +32,8 @@ PSTN::PSTN() {
     // LISTEN
     app_data.oserver.on_request_f = &on_request;
     app_data.oserver.on_open_socket_f = &on_open_socket;
-    oiu_server_init(&app_data.oserver, listen_on);
+
+    oiu_server_init(&app_data.oserver, strdup(listen_on));
     oiu_server_start(&app_data.oserver);
 
     //End Arbiter path
@@ -71,6 +72,6 @@ void PSTN::pstnTransferCall (QString number) {
 void PSTN::runCallingState(QString msg) {
 	emit callingState(msg);
 }
-app_data_t PSTN::getAppData() {
-	return app_data;
+app_data_t *PSTN::getAppData() {
+	return &app_data;
 }

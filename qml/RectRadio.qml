@@ -9,6 +9,7 @@ RectTriState {
 	height: width
 	onSLongClicked: {
 		console.log("RectRadio Long clicked " + iIndex  + _iState);
+
 	}
 	onSClicked: {
 		console.log("RectRadio Single clicked " + iIndex + _iState);

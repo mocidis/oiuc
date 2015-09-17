@@ -2,18 +2,19 @@ import QtQuick 1.1
 
 Rectangle {
 	property alias model: repeater.model
-    property int itemWidth: 50
+	property int itemWidth: 50
+	property int itemHeight: itemWidth
     property alias spacing: grid.spacing
     property alias columns: grid.columns
 	property alias innerAnchors: grid.anchors
 	property alias rows: grid.rows
     id: root
 
-	signal doThing(variant item)
 	signal childClicked()
+	signal doThing(variant item)
     function getHeight() {
         var rows = Math.ceil(repeater.count / grid.columns);
-        return rows * itemWidth + (rows + 1) * spacing;
+        return rows * itemHeight + (rows + 1) * spacing;
 	}
 
 	function getInternalRepeater() {
@@ -28,8 +29,8 @@ Rectangle {
 		var j;
 		var lRepeater = repeater;
 		if( aRepeater != null && aRepeater != undefined ) lRepeater = aRepeater;
-        for( j = 0; j < aRepeater.count; j++ ) {
-			doThing( aRepeater.itemAt(j) );
+        for( j = 0; j < lRepeater.count; j++ ) {
+			doThing( lRepeater.itemAt(j) );
             //doThing( aRepeater );
         }
     }

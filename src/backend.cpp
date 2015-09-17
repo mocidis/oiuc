@@ -1,53 +1,62 @@
 #include "backend.h"
 
 QList<Radio*> getBackendRadioList (QString backend_location) {
-	QSqlDatabase db;
-
-	db = QSqlDatabase::addDatabase("QSQLITE");
-	db.setDatabaseName(backend_location);
-
-	db.open();
-	if (db.isOpen()) {
-		qDebug() << "database is opened";
-	} else {
-		qDebug() << "database is not opened";
-	}
-
 	QList<Radio*> list;
-	QSqlQuery query = db.exec("select * from radio;");
-	while (query.next()) {
-		QString name = query.value(0).toString();
-		QString status = query.value(1).toString();
-		double frequency = query.value(2).toDouble(); 
-		QString localtion = query.value(3).toString();
-		Radio *radio = new Radio(name,status,frequency,localtion);
-		list.append(radio);
+	{	
+		QSqlDatabase db;
+		if (QSqlDatabase::contains("ics-database")) { //check duplicate sql connections.
+			db = QSqlDatabase::database("ics-database");
+		} else {
+			db = QSqlDatabase::addDatabase("QSQLITE", "ics-database");
+			db.setDatabaseName(backend_location);
+			db.open();
+		}
+		if (db.isOpen()) {
+			qDebug() << "database is opened";
+		} else {
+			qDebug() << "database is not opened";
+		}
+
+		QSqlQuery query = db.exec("select * from radio;");
+		while (query.next()) {
+			QString name = query.value(0).toString();
+			QString status = query.value(1).toString();
+			double frequency = query.value(2).toDouble(); 
+			QString localtion = query.value(3).toString();
+			Radio *radio = new Radio(name,status,frequency,localtion);
+			list.append(radio);
+		}
 	}
-	db.close();
+	QSqlDatabase::removeDatabase(backend_location);
 	return list;
 }
 QList<Group*> getBackendGroupList (QString backend_location) {
-	QSqlDatabase db;
-	db = QSqlDatabase::addDatabase("QSQLITE");
-	db.setDatabaseName(backend_location);
-
-	db.open();
-	if (db.isOpen()) {
-		qDebug() << "database is opened";
-	} else {
-		qDebug() << "database is not opened";
-	}
-
 	QList<Group*> list;
-	QSqlQuery query = db.exec("select * from ics_group;");
-	while (query.next()) {
-		QString name = query.value(0).toString(); 
-		QString radio_list = query.value(1).toString();
-		QString status = query.value(2).toString();
-		Group *group = new Group(name, radio_list, status);
-		list.append(group);
+	{
+		QSqlDatabase db;
+		if (QSqlDatabase::contains("ics-database")) {
+			db = QSqlDatabase::database("ics-database");
+		} else {
+			db = QSqlDatabase::addDatabase("QSQLITE", "ics-database");
+			db.setDatabaseName(backend_location);
+			db.open();
+		}
+		if (db.isOpen()) {
+			qDebug() << "database is opened";
+		} else {
+			qDebug() << "database is not opened";
+		}
+
+		QSqlQuery query = db.exec("select * from ics_group;");
+		while (query.next()) {
+			QString name = query.value(0).toString(); 
+			QString radio_list = query.value(1).toString();
+			QString status = query.value(2).toString();
+			Group *group = new Group(name, radio_list, status);
+			list.append(group);
+		}
 	}
-	db.close();
+	QSqlDatabase::removeDatabase(backend_location);
 	return list;
 }
 
@@ -84,37 +93,47 @@ QList<QObject*> determineRadioListLastGroup (QList<Group*> group, QList<Radio*> 
 }
 void appendToDatabase (QList<Group*> group, QString backend_location) {
 	//qDebug() << "+++++++++++++++++++" << group.last()->getName();
-	QSqlDatabase db;
-	db = QSqlDatabase::addDatabase("QSQLITE");
-	db.setDatabaseName(backend_location);
-
-	db.open();
-	if (db.isOpen()) {
-		qDebug() << "database is opened";
-	} else {
-		qDebug() << "database is not opened";
+	{
+		QSqlDatabase db;
+		if (QSqlDatabase::contains("ics-database")) {
+			db = QSqlDatabase::database("ics-database");
+		} else {
+			db = QSqlDatabase::addDatabase("QSQLITE", "ics-database");
+			db.setDatabaseName(backend_location);
+			db.open();
+		}
+		if (db.isOpen()) {
+			qDebug() << "database is opened";
+		} else {
+			qDebug() << "database is not opened";
+		}
+		QString name = group.last()->getName();
+		QString radio_list = group.last()->getRadioListStr();
+		QString status = group.last()->getGroupStatus();
+		QString command = "insert into ics_group values('" + name + "\',\'" + radio_list + "\',\'" + status + "\')";
+		qDebug() << "----------" << command;
+		QSqlQuery query = db.exec("insert into ics_group values('" + name + "\',\'" + radio_list + "\',\'" + status + "\')");
 	}
-	QString name = group.last()->getName();
-	QString radio_list = group.last()->getRadioListStr();
-	QString status = group.last()->getGroupStatus();
-	QString command = "insert into ics_group values('" + name + "\',\'" + radio_list + "\',\'" + status + "\')";
-	qDebug() << "----------" << command;
-	QSqlQuery query = db.exec("insert into ics_group values('" + name + "\',\'" + radio_list + "\',\'" + status + "\')");
-	db.close();
+	QSqlDatabase::removeDatabase(backend_location);
 }
 void deleteFromDatabase (QString grp_name, QString backend_location) {
-	QSqlDatabase db;
-	db = QSqlDatabase::addDatabase("QSQLITE");
-	db.setDatabaseName(backend_location);
-
-	db.open();
-	if (db.isOpen()) {
-		qDebug() << "database is opened";
-	} else {
-		qDebug() << "database is not opened";
+	{
+		QSqlDatabase db;
+		if (QSqlDatabase::contains("ics-database")) {
+			db = QSqlDatabase::database("ics-database");
+		} else {
+			db = QSqlDatabase::addDatabase("QSQLITE", "ics-database");
+			db.setDatabaseName(backend_location);
+			db.open();
+		}
+		if (db.isOpen()) {
+			qDebug() << "database is opened";
+		} else {
+			qDebug() << "database is not opened";
+		}
+		QString command = "delete from ics_group where name=\'" + grp_name + "\'";
+		qDebug() << "----------" << command;
+		QSqlQuery query = db.exec(command);
 	}
-	QString command = "delete from ics_group where name=\'" + grp_name + "\'";
-	qDebug() << "----------" << command;
-	QSqlQuery query = db.exec(command);
-	db.close();
+	QSqlDatabase::removeDatabase(backend_location);
 }

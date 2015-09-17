@@ -222,9 +222,9 @@ static void on_reg_state_impl(int account_id, char* is_registration, int code, c
     strncpy(req.abt_up.type, "OIU", sizeof(req.abt_up.type));
    
 	if( strcmp(is_registration, "No") == 0 )
-        req.abt_up.code = 0;
+        req.abt_up.is_online = 0;
 	else
-        req.abt_up.code = 1;
+        req.abt_up.is_online = 1;
 
     send_to_arbiter(&app_data.aclient, &req);
 }

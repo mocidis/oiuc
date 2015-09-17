@@ -40,6 +40,9 @@ HEADERS += include/ctocpp.h \
 		   include/group.h \
 		   include/backend.h \
 		   include/group_manager.h \
+		   include/oiuc.h \
+		   include/oiuc_manager.h \
+		   include/ptt.h \
 		   gen/arbiter-client.h \
 		   gen/arbiter.h \
 		   gen/arbiter-server.h \
@@ -59,7 +62,10 @@ SOURCES += src/ctocpp.cpp \
 		   src/radio.cpp \
 		   src/group.cpp \
 		   src/backend.cpp \
+		   src/oiuc.cpp \
 		   src/group_manager.cpp \
+		   src/oiuc_manager.cpp \
+		   src/ptt.cpp \
 		   gen/arbiter-client.c \
 		   gen/arbiter-server.c \
 		   gen/oiu-client.c \

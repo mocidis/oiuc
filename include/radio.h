@@ -17,7 +17,7 @@ private:
 	//QStringList radio_list;
 	QString _name;
 	QString _status; //(online, offline)
-	//time_t double downtime; /
+	//QString downtime;
 	double _frequency;
 	QString _location;
 };

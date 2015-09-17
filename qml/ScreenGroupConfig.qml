@@ -81,6 +81,8 @@ Rectangle {
 		anchors.topMargin: 30
 		description: "Create"	
 		textSize: 14
+		border.width: 1
+		color: "red"
 		textAnchors {
 			centerIn: configGroupButton
 		}

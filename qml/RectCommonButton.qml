@@ -42,7 +42,7 @@ Rectangle {
             when: root.pressed == false
             PropertyChanges {
                 target:root
-                color: "yellow"
+                color: "transparent"
             }
         },
         State {
