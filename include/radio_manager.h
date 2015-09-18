@@ -16,8 +16,9 @@ public:
 	void addRadio (Radio *radio);
 	void deleteRadio (Radio *radio);
 	void setView (QDeclarativeView *view);
-	/*****************Get functions******************/
+	/*****************Get functions**************************/
 	QList<QObject*> getModelRadio(); //return radio_list in QList<QObject*>
+	QList<Radio*> getRadioList();
 
 private:
 	/*****************Constructor*******************/

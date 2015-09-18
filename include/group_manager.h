@@ -3,6 +3,8 @@
 
 #include "radio.h"
 #include "group.h"
+#include "radio_manager.h"
+#include "oiuc_manager.h"
 #include <QtCore>
 #include <QDeclarativeItem>
 #include <QDeclarativeView>
@@ -13,9 +15,7 @@ class GroupManager;
 class GroupManager : public QObject {
 	Q_OBJECT
 public:	
-	/*****************Constructor******************/
-	GroupManager(QList<Group*> group_list, QList<Radio*> radio_list);
-
+	static GroupManager* getGroupManager(RadioManager *radio_manager);
 	/*****************Add and Set functions******************/
 	void addGroup(Group *grp);
 	Q_INVOKABLE void addGroup (QString radio, QString grp_name);
@@ -23,9 +23,15 @@ public:
 	void addRadio(Radio *radio);
 	void setView (QDeclarativeView *view);
 	/*****************Get functions******************/
+	QList<QObject*>getGroupModel();
 private:
+	/*****************Constructor******************/
+	GroupManager(RadioManager *radio_manager);
+	static GroupManager* _grp_manager;
+
+	/****************Property**********************/
 	QList<Group*> _group_list;
-	QList<Radio*> _radio_list;
+	RadioManager *_radio_manager; //manage list of radio currently displayed in GUI
 	QDeclarativeView *_view;
 };
 

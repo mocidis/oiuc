@@ -37,6 +37,4 @@ private:
 	int _avaiable;
 	int _iState; // qml used
 };
-
-
 #endif

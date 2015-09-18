@@ -54,12 +54,17 @@ Item {
 						height: width
 						text: modelData.getName();
 						iIndex: index
+						iState: modelData.getIState()
 						//eContainer: endpointPanel
 						eContainer: radioButton
 						eTabs: slidingWindow
 						onSClicked: {
 							if( _iState == 2 ) {
 								//eContainer.iterate(buttonRadio);
+								var var_count;
+								for (var_count = 0; var_count < buttonRadio.count; var_count++) {
+									modelRadio[var_count].setIState(modelRadio[var_count].getIState());
+								}
 								endpointPanel.iterate(buttonGroup);
 								endpointPanel.iterate(buttonRadio);
 								endpointPanel.iterate(buttonOIUC);
@@ -102,7 +107,7 @@ Item {
 							//eContainer.iterate(buttonRadio);
 							var var_count;
 							for (var_count = 0; var_count < buttonOIUC.count; var_count++) {
-								modelOIUC[var_count].setIState(1);
+								modelOIUC[var_count].setIState(modelOIUC[var_count].getIState());
 							}
 							endpointPanel.iterate(buttonRadio);
 							endpointPanel.iterate(buttonOIUC);
@@ -137,11 +142,16 @@ Item {
 				height: width
 				text: modelData.getName();
 				iIndex: index
+				iState: modelData.getIState()
 				eContainer: groupButton
 				eTabs: slidingWindow
 				onSClicked: {
 					if( _iState == 2 ) {
 						//eContainer.iterate(buttonGroup);
+						var var_count;
+						for (var_count = 0; var_count < buttonGroup.count; var_count++) {
+							modelGroup[var_count].setIState(modelGroup[var_count].getIState());
+						}
 						endpointPanel.iterate(buttonGroup);
 						endpointPanel.iterate(buttonRadio);
 						endpointPanel.iterate(buttonOIUC);

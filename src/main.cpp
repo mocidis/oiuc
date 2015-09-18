@@ -20,21 +20,22 @@ int main (int argc, char* argv[]) {
 	view.rootContext()->setContextProperty("pstn", pstn);// setup connection between qml and cpp
 	view.rootContext()->setContextProperty("ptt", ptt);// setup connection between qml and cpp
 
-	QList<Radio*> radio_list = getBackendRadioList("databases/radio.db"); //get list of radio
+	//QList<Radio*> radio_list = getBackendRadioList("databases/radio.db"); //get list of radio
 
-	QList<QObject*> radio_list_obj;
-	for (int i=0; i<radio_list.count(); i++) {
-		radio_list_obj.append(radio_list[i]);
-	}
-	QList<Group*> group_list = getBackendGroupList("databases/radio.db");	 //get group list
-	QList<QObject*> group_list_obj;
-	for (int i=0; i<group_list.count(); i++) {
-		group_list_obj.append(group_list[i]);
-	}
-	determineRadioListForGroup(group_list,radio_list);
-	GroupManager *grp_manager = new GroupManager(group_list,radio_list);	
+	//QList<QObject*> radio_list_obj;
+	//for (int i=0; i<radio_list.count(); i++) {
+		//radio_list_obj.append(radio_list[i]);
+	//}
+	//QList<Group*> group_list = getBackendGroupList("databases/radio.db");	 //get group list
 	OIUCManager *oiuc_manager = OIUCManager::getOIUCManager ();
 	RadioManager *radio_manager = RadioManager::getRadioManager();
+	GroupManager *grp_manager = GroupManager::getGroupManager(radio_manager);
+
+	QList<QObject*> group_list_obj = grp_manager->getGroupModel();
+	QList<QObject*> radio_list_obj = radio_manager->getModelRadio();
+
+	//determineRadioListForGroup(group_list,radio_list);
+
 
 	view.rootContext()->setContextProperty("grpManager", grp_manager);// setup connection between qml and cpp
 	view.rootContext()->setContextProperty("modelRadio", QVariant::fromValue(radio_list_obj));

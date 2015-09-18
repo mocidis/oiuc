@@ -18,8 +18,18 @@ void Group::setRadioList(QList<Radio*> radio_list) {
 		_radio_list.append(radio_list[i]);
 	}
 }
+void Group::setStatus(QString status) {
+	_status = status;
+}
+void Group::setIState(int iState) {
+	_iState = iState;
+	//qDebug() << "++++++++++" << iState;
+}
+void Group::setAvaiable(int avaiable) {
+	_avaiable = avaiable;
+}
 
-/*Get functions*/
+/*******************Get functions********************/
 QList<QObject*> Group::getRadioList() {
 	return _radio_list;
 }
@@ -34,4 +44,10 @@ QString Group::getRadioListStr() {
 }
 QString Group::getGroupStatus() {
 	return _status;
+}
+QString Group::getStatus() {
+	return _status;
+}
+int Group::getIState() {
+	return _iState;
 }

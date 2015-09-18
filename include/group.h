@@ -16,6 +16,9 @@ public:
 	/*****************Add and Set functions******************/
 	void setRadioList(QList<Radio*> radio_list);
 	void addRadio(Radio *radio);
+	void setStatus(QString status);
+	Q_INVOKABLE void setIState(int iState);
+	void setAvaiable(int avaiable);
 
 	/*****************Get functions******************/
 	QString getRadioListStr();
@@ -25,11 +28,16 @@ public:
 	Q_INVOKABLE QList<QObject*> getRadioList();
 	Q_INVOKABLE QString getName ();
 	Q_INVOKABLE int getRadioListSize();
+	QString getStatus();
+	Q_INVOKABLE int getIState();
+	int getAvaiable();
 private:
 	QString _name;
 	QString _status;
 	QString _radio_list_str;
 	QList<QObject*> _radio_list;
+	int _avaiable;
+	int _iState; // qml used
 };
 
 #endif

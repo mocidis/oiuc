@@ -85,6 +85,7 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 					strptime(req->oiuc_gb.timestamp, "%H:%M:%S", &tm);
 					timestamp = mktime(&tm);
 					downtime = difftime(timer, timestamp); //type of double
+					//need emit signal if downtime detected
 				}
 				oiuc = new OIUC(msg_id, type , name , status);
 				oiuc_manager->addOIUC(oiuc);
@@ -104,6 +105,7 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 							strptime(req->oiuc_gb.timestamp, "%H:%M:%S", &tm);
 							timestamp = mktime(&tm);
 							downtime = difftime(timer, timestamp); //type of double
+							//need emit signal if downtime detected
 						}
 						double freq = req->oiuc_gb.frequence;
 						QString loc = QString::fromLatin1(req->oiuc_gb.location);
@@ -112,11 +114,8 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 						if (temp[2] == "1") {
 							avaiable = 1;	
 						}
-						qDebug() << "+++++++++" << name << status << freq << loc << port_mip << avaiable;
 						Radio *radio = new Radio(name, status, freq, loc, port_mip, avaiable);
 						radio_manager->addRadio(radio);
-						//Radio(QString name, QString status, double frequency, QString location, QString port_mip, int avaiable);
-						//Radio *radio = new Radio(name, 
 					}
 					name = "";
 				}

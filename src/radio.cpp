@@ -14,6 +14,7 @@ Radio::Radio(QString name, QString status, double frequency, QString location, Q
 	_location = location;
 	_port_mip = port_mip;
 	_avaiable = avaiable;
+	_iState = 0;
 }
 
 /*Add and set function*/
@@ -27,7 +28,7 @@ void Radio::setStatus(QString status) {
 }
 void Radio::setIState(int iState) {
 	_iState = iState;
-	//qDebug() << "++++++++++" << iState;
+	//qDebug() << "KKKKKKKKKK++++++++++" << iState;
 }
 void Radio::setAvaiable(int avaiable) {
 	_avaiable = avaiable;

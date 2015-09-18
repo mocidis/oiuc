@@ -32,7 +32,7 @@ void RadioManager::addRadio(Radio *radio) {
 			_radio_list.append(radio);
 		}
 		QList<QObject*> radio_list_obj;
-		for (int i=0;i<_radio_list.count();i++) {
+		for (int i=0; i < _radio_list.count();i++) {
 			radio_list_obj.append(_radio_list[i]);
 		}
 		_view->rootContext()->setContextProperty("modelRadio", QVariant::fromValue(radio_list_obj)); //update endpoint panel button
@@ -60,4 +60,7 @@ QList<QObject*> RadioManager::getModelRadio() { //return radio_list in QList<QOb
 		radio_list_obj.append(_radio_list[i]);
 	}
 	return radio_list_obj;
+}
+QList<Radio*> RadioManager::getRadioList() {
+	return _radio_list;
 }
