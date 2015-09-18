@@ -16,10 +16,12 @@ void PTT::setPTT (QObject *obj, int type, int is_pressed) { //1-Radio, 2-OIUC, 3
 		_radio = qobject_cast<Radio *>(obj);
 		_oiuc = NULL;
 		_grp = NULL;
+		qDebug() << _radio->getRadioInfo();
 	} else if (type == 1) {
 		_oiuc = qobject_cast<OIUC *>(obj);
 		_radio = NULL;	
 		_grp = NULL;
+		qDebug() << _oiuc->getOIUCInfo();
 	} else if (type == 2) {
 		_grp = qobject_cast<Group *>(obj);
 		_radio = NULL;	
@@ -28,8 +30,8 @@ void PTT::setPTT (QObject *obj, int type, int is_pressed) { //1-Radio, 2-OIUC, 3
 		_radio = NULL;	
 		_oiuc = NULL;
 		_grp = NULL;
+		qDebug() << "Unknown type";
 	}
-	qDebug() << _oiuc->getOIUCInfo();
 	_type = type;
 	_is_pressed = is_pressed;
 }

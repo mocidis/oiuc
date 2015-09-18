@@ -4,6 +4,7 @@ Item {
 	property int itemWidth : 150
 	property int logWidth: 150
 	property variant pttCurrent //current object that in controlled mode
+	property int typeOfCurrentPTT
 	Connections {
 		target: ptt
 	}
@@ -63,8 +64,14 @@ Item {
 								endpointPanel.iterate(buttonRadio);
 								endpointPanel.iterate(buttonOIUC);
 								onControlled(true);
+								modelData.setIState(2);
+								pttCurrent = modelData;
+								typeOfCurrentPTT = 0;
 								eTabs.showTab(iIndex);
 							}
+						}
+						onSLongClicked: {
+							modelData.setIState(iState);
 						}
 					}
 				}
@@ -103,6 +110,7 @@ Item {
 							onControlled(true);
 							modelData.setIState(2);
 							pttCurrent = modelData;
+							typeOfCurrentPTT = 1;
 							eTabs.showTab(iIndex + buttonRadio.count);
 						}
 					}
@@ -138,8 +146,14 @@ Item {
 						endpointPanel.iterate(buttonRadio);
 						endpointPanel.iterate(buttonOIUC);
 						onControlled(true);
+						modelData.setIState(2);
+						pttCurrent = modelData;
+						typeOfCurrentPTT = 2;
 						eTabs.showTab(iIndex + buttonRadio.count + buttonOIUC.count);
 					}
+				}
+				onSLongClicked: {
+					modelData.setIState(iState);
 				}
 			}
 		}
@@ -336,7 +350,9 @@ TabController {
 				}
 				onEntered: {
 					pttButton.pressed = true;
-					ptt.setPTT(pttCurrent, 1, 1);
+					if (pttCurrent != null) {
+						ptt.setPTT(pttCurrent, typeOfCurrentPTT, 1);
+					}
 				}
 				onExited: {
 					ptt.setIsPressedPTT(0);

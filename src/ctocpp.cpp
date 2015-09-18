@@ -1,6 +1,8 @@
 #include "ctocpp.h"
 #include "pstn.h"
 #include "oiuc.h"
+#include "radio.h"
+#include "radio_manager.h"
 #include "oiuc_manager.h"
 #include <QtCore>
 #include <QString>
@@ -64,8 +66,11 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 	QString type = "unknown"; //default initial
 	QString name = "unknown";
 	QString status="Offline";
+	QString ports_status = "";
+	QStringList list_radio_str;
 	OIUC *oiuc;
 	OIUCManager *oiuc_manager = OIUCManager::getOIUCManager();
+	RadioManager *radio_manager = RadioManager::getRadioManager();
     switch(req->msg_id) {
         case OIUC_GB:
 			msg_id = req->msg_id;
@@ -84,15 +89,37 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 				oiuc = new OIUC(msg_id, type , name , status);
 				oiuc_manager->addOIUC(oiuc);
 			} else if (type == "RIUC" ) {
-				//PARAM type char [5]
-				//PARAM id char [50]
-				//PARAM is_online int
-				//PARAM timestamp char [20]
-				//PARAM ip char [50]
-				//PARAM frequence double
-				//PARAM location char [50]
-				//PARAM ports_status char [50]
-
+				ports_status = QString::fromLatin1(req->oiuc_gb.ports_status);
+				list_radio_str = ports_status.split(", ");
+				for (int i=0; i<list_radio_str.count(); i++) {
+					QStringList temp = list_radio_str[i].split("-");
+					if (temp[1] == "1") {
+						name = QString::fromLatin1(req->oiuc_gb.id);
+						name = name + "_" + QString::number(i+1);
+						if (req->oiuc_gb.is_online == 1)
+							status = "Online";
+						else {
+							time(&timer);
+							tm = *localtime(&timer);
+							strptime(req->oiuc_gb.timestamp, "%H:%M:%S", &tm);
+							timestamp = mktime(&tm);
+							downtime = difftime(timer, timestamp); //type of double
+						}
+						double freq = req->oiuc_gb.frequence;
+						QString loc = QString::fromLatin1(req->oiuc_gb.location);
+						QString port_mip = QString::fromLatin1(req->oiuc_gb.ip); // need to change port_mip 
+						int avaiable=0;
+						if (temp[2] == "1") {
+							avaiable = 1;	
+						}
+						qDebug() << "+++++++++" << name << status << freq << loc << port_mip << avaiable;
+						Radio *radio = new Radio(name, status, freq, loc, port_mip, avaiable);
+						radio_manager->addRadio(radio);
+						//Radio(QString name, QString status, double frequency, QString location, QString port_mip, int avaiable);
+						//Radio *radio = new Radio(name, 
+					}
+					name = "";
+				}
 			}
             break;
         default:

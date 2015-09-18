@@ -11,6 +11,7 @@
 #include "ptt.h"
 #include "group_manager.h"
 #include "oiuc_manager.h"
+#include "radio_manager.h"
 int main (int argc, char* argv[]) {
 	QApplication app(argc, argv);
 	QDeclarativeView view;
@@ -33,7 +34,7 @@ int main (int argc, char* argv[]) {
 	determineRadioListForGroup(group_list,radio_list);
 	GroupManager *grp_manager = new GroupManager(group_list,radio_list);	
 	OIUCManager *oiuc_manager = OIUCManager::getOIUCManager ();
-
+	RadioManager *radio_manager = RadioManager::getRadioManager();
 
 	view.rootContext()->setContextProperty("grpManager", grp_manager);// setup connection between qml and cpp
 	view.rootContext()->setContextProperty("modelRadio", QVariant::fromValue(radio_list_obj));
@@ -43,6 +44,7 @@ int main (int argc, char* argv[]) {
 
 	grp_manager->setView(&view);
 	oiuc_manager->setView(&view);
+	radio_manager->setView(&view);
 
 	view.show();
 	return app.exec();

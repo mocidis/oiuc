@@ -27,6 +27,7 @@ void GroupManager::addGroup (QString radio, QString grp_name) {
 	for (int i=0;i<_group_list.count();i++) {
 		group_list_obj.append(_group_list[i]);
 	}
+	qDebug() << "$$$$$$$$$$$$$$$$$$$$$$$$";
 	_view->rootContext()->setContextProperty("modelGroup", QVariant::fromValue(group_list_obj)); //update endpoint panel button
 }
 void GroupManager::setView(QDeclarativeView *view) {
