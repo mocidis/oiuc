@@ -63,7 +63,9 @@ Item {
 								//eContainer.iterate(buttonRadio);
 								var var_count;
 								for (var_count = 0; var_count < buttonRadio.count; var_count++) {
-									modelRadio[var_count].setIState(modelRadio[var_count].getIState());
+									if (modelRadio[var_count].getIState() == 2) {
+										modelRadio[var_count].setIState(modelRadio[var_count].getIState()-1);
+									}
 								}
 								endpointPanel.iterate(buttonGroup);
 								endpointPanel.iterate(buttonRadio);
@@ -107,7 +109,9 @@ Item {
 							//eContainer.iterate(buttonRadio);
 							var var_count;
 							for (var_count = 0; var_count < buttonOIUC.count; var_count++) {
-								modelOIUC[var_count].setIState(modelOIUC[var_count].getIState());
+								if (modelOIUC[var_count].getIState() == 2) {
+									modelOIUC[var_count].setIState(modelOIUC[var_count].getIState()-1);
+								}
 							}
 							endpointPanel.iterate(buttonRadio);
 							endpointPanel.iterate(buttonOIUC);
@@ -150,7 +154,9 @@ Item {
 						//eContainer.iterate(buttonGroup);
 						var var_count;
 						for (var_count = 0; var_count < buttonGroup.count; var_count++) {
-							modelGroup[var_count].setIState(modelGroup[var_count].getIState());
+							if (modelGroup[var_count].getIState() == 2) {
+								modelGroup[var_count].setIState(modelGroup[var_count].getIState()-1);
+							}
 						}
 						endpointPanel.iterate(buttonGroup);
 						endpointPanel.iterate(buttonRadio);

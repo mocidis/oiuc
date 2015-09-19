@@ -8,6 +8,7 @@ Group::Group(QString name, QString radio_list_str, QString status) {
 	_name = name;
 	_radio_list_str = radio_list_str;
 	_status = status;
+	_iState = 0;
 }
 /* Add and Set functions*/
 void Group::addRadio(Radio *radio) {
