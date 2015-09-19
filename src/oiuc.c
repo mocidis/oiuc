@@ -9,7 +9,6 @@ struct {
     ics_t ics_data;
     arbiter_client_t aclient;
     oiu_server_t oserver;
-    riu_client_t rclient;
 } app_data;
 
 static void print_menu();
@@ -34,12 +33,6 @@ static void on_open_socket(oiu_server_t *oserver) {
     oiu_server_join(&app_data.oserver, "239.0.0.1");
 }
 //End
-
-//Callback func for RIUC
-static int send_to_riuc(riu_client_t *rclient, riu_request_t *req) {
-    return riu_client_send(rclient, req);
-}
-
 
 static void usage(char *app) {
 	printf("usage: %s <request connect string> <listen connection string> <command connection string>\n", app);
@@ -92,13 +85,10 @@ int main(int argc, char *argv[]) {
 
 #if 1
     char send_a[] = "udp:127.0.0.1:4321";
-    char send_r[] = "udp:239.0.0.1:12345";
     char recv[] = "udp:0.0.0.0:1234";
 	//SEND
 	arbiter_client_open(&app_data.aclient, send_a);
     
-    riu_client_open(&app_data.rclient, send_r);
-
 	ics_start(&app_data.ics_data);
 	ics_connect(&app_data.ics_data, 1111);
 
@@ -114,9 +104,9 @@ int main(int argc, char *argv[]) {
 #endif
 
     //For test make cmd to RIUC only
-    riu_request_t req;
-    req.msg_id = RIUC_PTT;
-
+    arbiter_request_t req;
+    req.msg_id = ABT_PTT;
+    strncpy(req.abt_ptt.list, "RIUC1RIUC3", sizeof(req.abt_ptt.list));
 	ics_add_account(&app_data.ics_data, "192.168.2.30", "111", "1234");
 
 	is_running = 1;
@@ -129,8 +119,8 @@ int main(int argc, char *argv[]) {
             case '2':
             case '3':
             case '4':
-                strncpy(req.riuc_ptt.msg, option, sizeof(req.riuc_ptt.msg));
-                send_to_riuc(&app_data.rclient, &req);
+                strncpy(req.abt_ptt.cmd, option, sizeof(req.abt_ptt.cmd));
+                send_to_arbiter(&app_data.aclient, &req);
                 break;
             case 'j':
                 oiu_server_join(&app_data.oserver, "239.0.0.1");
