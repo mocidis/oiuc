@@ -91,9 +91,9 @@ int main(int argc, char *argv[]) {
 #endif
 
 #if 1
-    char send_a[] = "udp:239.0.0.1:6789";
-    char send_r[] = "udp:127.0.0.1:12345";
-    char recv[] = "udp:0.0.0.0:9876";
+    char send_a[] = "udp:127.0.0.1:4321";
+    char send_r[] = "udp:239.0.0.1:12345";
+    char recv[] = "udp:0.0.0.0:1234";
 	//SEND
 	arbiter_client_open(&app_data.aclient, send_a);
     
@@ -116,7 +116,6 @@ int main(int argc, char *argv[]) {
     //For test make cmd to RIUC only
     riu_request_t req;
     req.msg_id = RIUC_PTT;
-    req.riuc_ptt.code = 100;
 
 	ics_add_account(&app_data.ics_data, "192.168.2.30", "111", "1234");
 
@@ -308,7 +307,7 @@ static void on_request(oiu_server_t *oserver, oiu_request_t *req) {
             printf("OIUC_GB(%d):  Node id: %s(%s) - Alive: %d ", req->msg_id, req->oiuc_gb.id, req->oiuc_gb.type, req->oiuc_gb.is_online);
             
             if (0 == strcmp(req->oiuc_gb.type, "RIUC")) {
-                printf("- Ports: %d - Frequence: %.f - Location: %s ", req->oiuc_gb.n_ports, req->oiuc_gb.frequence, req->oiuc_gb.location);
+                printf("- Frequence: %.f - Location: %s - Port status: %s", req->oiuc_gb.frequence, req->oiuc_gb.location, req->oiuc_gb.ports_status);
             }
     
             if (req->oiuc_gb.is_online == 1)
