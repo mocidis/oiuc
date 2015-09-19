@@ -31,5 +31,8 @@
 # Debug files
 *.dSYM/
 
+<<<<<<< HEAD
 #swap files
+=======
+>>>>>>> 80e20c89c3010ed99e8fa73812b3cff894862d1d
 *.swp

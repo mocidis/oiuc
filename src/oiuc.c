@@ -3,11 +3,13 @@
 #include "ics.h"
 #include "arbiter-client.h"
 #include "oiu-server.h"
+#include "riu-client.h"
 
 struct {
     ics_t ics_data;
     arbiter_client_t aclient;
     oiu_server_t oserver;
+    riu_client_t rclient;
 } app_data;
 
 static void print_menu();
@@ -24,7 +26,7 @@ static void on_call_media_state_impl(int call_id, int st_code);
 //Callback function for Arbiter
 static void on_request(oiu_server_t *oserver, oiu_request_t *req);
 
-int send_to_arbiter(arbiter_client_t *uclient, arbiter_request_t *req) {
+static int send_to_arbiter(arbiter_client_t *uclient, arbiter_request_t *req) {
 	return arbiter_client_send(uclient, req);
 }
 
@@ -33,17 +35,23 @@ static void on_open_socket(oiu_server_t *oserver) {
 }
 //End
 
+//Callback func for RIUC
+static int send_to_riuc(riu_client_t *rclient, riu_request_t *req) {
+    return riu_client_send(rclient, req);
+}
+
+
 static void usage(char *app) {
-	printf("usage: %s <request connect string> <listen connection string>\n", app);
+	printf("usage: %s <request connect string> <listen connection string> <command connection string>\n", app);
 	exit(-1);
 }
 
 int main(int argc, char *argv[]) {
-
+/*
 	if( argc < 3 ) {
 		usage(argv[0]);
 	}
-
+*/
 	//For test only
 	char option[10];
 	int is_running;
@@ -62,8 +70,11 @@ int main(int argc, char *argv[]) {
 	ics_set_call_transfer_callback(&on_call_transfer_impl);
 	ics_set_call_media_state_callback(&on_call_media_state_impl);
 
+#if 0
 	//SEND
 	arbiter_client_open(&app_data.aclient, argv[1]);
+    
+    riu_client_open(&app_data.rclient, )
 
 	ics_start(&app_data.ics_data);
 	ics_connect(&app_data.ics_data, 1112);
@@ -77,6 +88,34 @@ int main(int argc, char *argv[]) {
     oiu_server_start(&app_data.oserver);
 
     //End Arbiter path
+#endif
+
+#if 1
+    char send_a[] = "udp:127.0.0.1:4321";
+    char send_r[] = "udp:239.0.0.1:12345";
+    char recv[] = "udp:0.0.0.0:1234";
+	//SEND
+	arbiter_client_open(&app_data.aclient, send_a);
+    
+    riu_client_open(&app_data.rclient, send_r);
+
+	ics_start(&app_data.ics_data);
+	ics_connect(&app_data.ics_data, 1111);
+
+	//Arbiter path
+    // LISTEN
+    app_data.oserver.on_request_f = &on_request;
+    app_data.oserver.on_open_socket_f = &on_open_socket;
+
+    oiu_server_init(&app_data.oserver, recv);
+    oiu_server_start(&app_data.oserver);
+
+    //End Arbiter path
+#endif
+
+    //For test make cmd to RIUC only
+    riu_request_t req;
+    req.msg_id = RIUC_PTT;
 
 	ics_add_account(&app_data.ics_data, "192.168.2.30", "111", "1234");
 
@@ -86,6 +125,13 @@ int main(int argc, char *argv[]) {
 			puts("NULL command\n");
 		}
 		switch(option[0]) {
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+                strncpy(req.riuc_ptt.msg, option, sizeof(req.riuc_ptt.msg));
+                send_to_riuc(&app_data.rclient, &req);
+                break;
             case 'j':
                 oiu_server_join(&app_data.oserver, "239.0.0.1");
                 break;
@@ -255,11 +301,15 @@ static void on_request(oiu_server_t *oserver, oiu_request_t *req) {
     time_t timer, timestamp;
     double downtime;
 
-    switch(req->msg_id) {
+   switch(req->msg_id) {
         case OIUC_GB:
-
-            printf("OIUC_GB(%d):\n  Node id: %s - Alive: %d ", req->msg_id, req->oiuc_gb.id, req->oiuc_gb.is_online);
-
+    
+            printf("OIUC_GB(%d):  Node id: %s(%s) - Alive: %d ", req->msg_id, req->oiuc_gb.id, req->oiuc_gb.type, req->oiuc_gb.is_online);
+            
+            if (0 == strcmp(req->oiuc_gb.type, "RIUC")) {
+                printf("- Frequence: %.f - Location: %s - Port status: %s", req->oiuc_gb.frequence, req->oiuc_gb.location, req->oiuc_gb.ports_status);
+            }
+    
             if (req->oiuc_gb.is_online == 1)
                 printf("- Online\n");
             else {
@@ -270,6 +320,9 @@ static void on_request(oiu_server_t *oserver, oiu_request_t *req) {
                 downtime = difftime(timer, timestamp);
                 printf("- Downtime: %.f second%s\n", downtime, (downtime > 1 ? "s":""));
             }
+            break;
+        case OIUC_SQ:
+            printf("OIUC_SQ(%d):  Riuc-id: %s - Port:%d - Multicast Addr: %s \n", req->msg_id, req->oiuc_sq._id, req->oiuc_sq.port, req->oiuc_sq.multicast_addr);
             break;
         default:
             fprintf(stderr, "Unknown message type. Protocol failure\n");
