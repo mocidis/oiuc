@@ -107,6 +107,7 @@ int main(int argc, char *argv[]) {
     arbiter_request_t req;
     req.msg_id = ABT_PTT;
     strncpy(req.abt_ptt.list, "RIUC1RIUC3", sizeof(req.abt_ptt.list));
+
 	ics_add_account(&app_data.ics_data, "192.168.2.30", "111", "1234");
 
 	is_running = 1;
