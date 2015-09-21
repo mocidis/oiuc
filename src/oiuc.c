@@ -63,14 +63,11 @@ int main(int argc, char *argv[]) {
 	ics_set_call_transfer_callback(&on_call_transfer_impl);
 	ics_set_call_media_state_callback(&on_call_media_state_impl);
 
-#if 0
 	//SEND
 	arbiter_client_open(&app_data.aclient, argv[1]);
     
-    riu_client_open(&app_data.rclient, )
-
 	ics_start(&app_data.ics_data);
-	ics_connect(&app_data.ics_data, 1112);
+	ics_connect(&app_data.ics_data, 1111);
 
 	//Arbiter path
     // LISTEN
@@ -81,27 +78,6 @@ int main(int argc, char *argv[]) {
     oiu_server_start(&app_data.oserver);
 
     //End Arbiter path
-#endif
-
-#if 1
-    char send_a[] = "udp:127.0.0.1:4321";
-    char recv[] = "udp:0.0.0.0:1234";
-	//SEND
-	arbiter_client_open(&app_data.aclient, send_a);
-    
-	ics_start(&app_data.ics_data);
-	ics_connect(&app_data.ics_data, 1111);
-
-	//Arbiter path
-    // LISTEN
-    app_data.oserver.on_request_f = &on_request;
-    app_data.oserver.on_open_socket_f = &on_open_socket;
-
-    oiu_server_init(&app_data.oserver, recv);
-    oiu_server_start(&app_data.oserver);
-
-    //End Arbiter path
-#endif
 
     //For test make cmd to RIUC only
     arbiter_request_t req;
