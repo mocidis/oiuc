@@ -2,21 +2,28 @@ import QtQuick 1.1
 
 Rectangle {
 	property alias text: call_number.text
-	property int my_width: 250
-	property int my_height: 40
-	property int font_size: 22
-	width: my_width; height: my_height
+	property int lcdWidth: 250
+	property int lcdHeight: 40
+	property int fontSize: 22
+	width: lcdWidth; height: lcdHeight
 	border.width: 2
+	FontLoader {id: lcdFont; source: "../static/fonts/digital-7.ttf"}
 	TextInput {
 		id: call_number
-		width: my_width; height: my_height
+		width: lcdWidth; height: lcdHeight
 		text: "enter number"
 		readOnly: true
-		font.family: "ubuntu"
-		font.pixelSize: font_size
-		font.letterSpacing: 1.2
-		anchors.margins: 20
-		anchors.verticalCenter: parent.verticalCenter
+		font.family: lcdFont.name
+		font.pixelSize: fontSize
+		font.letterSpacing: 3
+		//anchors.margins: 20
+		//anchors.verticalCenter: parent.verticalCenter
+		anchors {
+			top: parent.top
+			left: parent.left
+		}
+		anchors.topMargin: 5
+		anchors.leftMargin: 5
 	}
 	function changeText (value) {
 		value = String(value);

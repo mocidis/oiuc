@@ -23,7 +23,6 @@ void GroupManager::addGroup (QString radio, QString grp_name) {
 	Group *grp = new Group(grp_name, radio, "online");
 	_group_list.append(grp);
 	QList<Radio*> radio_list = _radio_manager->getRadioList();
-	qDebug() << "_____________" << radio_list.count();
 
 	determineRadioListLastGroup(_group_list, radio_list);
 	//appendToDatabase(_group_list, "databases/radio.db");

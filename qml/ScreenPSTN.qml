@@ -9,8 +9,9 @@ Rectangle {
 	width: 100; height: 100
 	NumberLCD {
 		id: numberLCD
-		my_width: numPad.width
-		my_height: 50
+		lcdWidth: numPad.width
+		lcdHeight: 50
+		fontSize: 30
 		anchors {
 			top: parent.top
 			horizontalCenter: parent.horizontalCenter
@@ -31,7 +32,7 @@ Rectangle {
 		rows: 4
 		onClicked: {
 			numberLCD.changeText(label);
-			numberLCD.font_size = 22;
+			numberLCD.fontSize = numberLCD.fontSize;
 		}
 	}
 	FunctionPad {

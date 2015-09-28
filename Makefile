@@ -10,7 +10,8 @@ CPP_SRC:= ./src/ctocpp.cpp \
 		  ./src/group_manager.cpp \
 		  ./src/oiuc_manager.cpp \
 		  ./src/ptt.cpp \
-		  ./src/radio_manager.cpp
+		  ./src/radio_manager.cpp \
+		  ./src/log.cpp
 
 GEN_SRC:= gen/arbiter-client.c \
 		  gen/arbiter-server.c \
@@ -82,11 +83,11 @@ Makefile.qt.mk: oiuc.pro
 	qmake -makefile $< -o $@
 
 build: Makefile.qt.mk
-	make -f Makefile.qt.mk
+	make -f Makefile.qt.mk 
 
 clean:
 	make clean -f Makefile.qt.mk
-	rm -fr temp oiuc.pro Makefile.qt.mk gen $(APP) gen-a gen-o
+	rm -fr temp oiuc.pro Makefile.qt.mk gen $(APP) gen-a gen-o /tmp/oiuc.log
 
 test:
 	make -f Makefile.quy
