@@ -29,11 +29,9 @@ Rectangle {
 				height: itemWidth; width: itemWidth
 				onSLongClicked: {
 					isSelected = isSelected ? false : true;
-					console.log("----" + name + "----" + isSelected);
 				}
 				onSClicked: {
 					isSelected = isSelected ? false : true;
-					console.log("----" + name + "----" + isSelected);
 					if (_iState == 0) {
 						iState = 1;
 					} else if (_iState == 1) {
@@ -97,7 +95,6 @@ Rectangle {
 						group += radioList.itemAt(i).name + ", " ; //create new group with numbers of radio name
 					}
 				}
-				console.log("*****" + group + "*****");
 				grpManager.addGroup(group, textbox.text);
 			}
 		}

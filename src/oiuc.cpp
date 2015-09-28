@@ -24,7 +24,6 @@ void OIUC::setStatus(QString status) {
 }
 void OIUC::setIState(int iState) {
 	_iState = iState;
-	qDebug() << "_______________" << "" << iState;
 }
 
 
