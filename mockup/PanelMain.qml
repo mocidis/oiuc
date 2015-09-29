@@ -17,9 +17,7 @@ PanelCommon {
                 delegate: ScreenRadio {
                     width: root.width
                     height: root.height
-                    //tName: name
-                    //tDesc: description
-                    //port: port
+                    oModelItem: root.parent.radios.get(index)
                 }
             }
         }

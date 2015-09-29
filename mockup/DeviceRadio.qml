@@ -1,6 +1,20 @@
 import QtQuick 2.0
 
 Flow {
+    property alias oModelItem: indicator.oModelItem
+    function getName() {
+        if (oModelItem == null) return "NaN";
+        return oModelItem.name;
+    }
+    function getDesc() {
+        if (oModelItem == null) return "NaN";
+        return oModelItem.description;
+    }
+    function getPort() {
+        if (oModelItem == null) return -1;
+        return oModelItem.port;
+    }
+
     flow: Flow.TopToBottom
     anchors {
         fill: parent
@@ -14,26 +28,101 @@ Flow {
             color: "black"
         }
         Rectangle {
+            height: parent.height * 0.45
             anchors {
                 top: parent.top
                 left: parent.left
-                bottom: parent.bottom
                 right: parent.right
                 topMargin: 10
-                rightMargin: 70
-                leftMargin: 70
-                bottomMargin: 70
+                leftMargin: 20
+                rightMargin: 20
             }
-            radius: 3
-            border {
-                width: 1
-                color: "black"
+            TriLEDFull {
+                id: indicator
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    bottom: parent.bottom
+                }
+                width: parent.width / 5
+            }
+            Rectangle {
+                width: parent.width/2
+                anchors {
+                    top: parent.top
+                    bottom: parent.bottom
+                    horizontalCenter: parent.horizontalCenter
+                }
+                radius: 3
+                border {
+                    width: 1
+                    color: "black"
+                }
+                Flow {
+                    flow: Flow.TopToBottom
+                    spacing: 5
+                    anchors {
+                        fill: parent
+                        topMargin: 10
+                        leftMargin: 15
+                        rightMargin: 15
+                    }
+                    Item {
+                        width: parent.width
+                        height: nametext.height
+                        Text {
+                            id: nametext
+                            anchors {
+                                top: parent.top
+                                left: parent.left
+                            }
+                            text: getName()
+                        }
+                        Text {
+                            text: "CH " + getPort()
+                            anchors {
+                                top: parent.top
+                                right: parent.right
+                            }
+                        }
+                    }
+                    Text {
+                        id: desctext
+                        text: getDesc()
+                        font {
+                            pointSize: 10
+                            italic: true
+                        }
+                    }
+                }
+            }
+            PushButton {
+                id:ptt
+                width: parent.width / 5
+                anchors {
+                    top: parent.top
+                    bottom: parent.bottom
+                    right: parent.right
+                }
+                radius: 10
+                color: "#BB0000"
+                Text {
+                    anchors {
+                        centerIn:parent
+                    }
+                    text: "PTT"
+                    font {
+                        pointSize: 18
+                        bold: true;
+                    }
+                    color: "white"
+                }
             }
         }
         Rectangle {
-            width: 50
             height: 50
-            radius: 25
+            width: 200
+            radius: 8
             border {
                 width: 1
                 color: "black"
@@ -41,36 +130,21 @@ Flow {
             anchors {
                 left: parent.left
                 bottom: parent.bottom
-                margins: 10
-            }
-        }
-        Rectangle {
-            id:ptt
-            width: parent.width / 2
-            height: 50
-            radius: 10
-            color: "#FF4444"
-            anchors {
-                bottom: parent.bottom
-                horizontalCenter: parent.horizontalCenter
+                leftMargin: 20
                 bottomMargin: 10
             }
-            Text {
-                anchors {
-                    centerIn:parent
-                }
-                text: "Push-to-talk"
-                font {
-                    pointSize: 18
-                    bold: true;
-                }
-                color: "white"
+            Spinner {
+                height: 40
+                width: 190
+                anchors.centerIn: parent
+                normalSource: "../static/Speaker-fill-black-small.svg"
+                muteSource: "../static/Speaker-mute-fill-black-small.svg"
             }
         }
         Rectangle {
-            width: 50
             height: 50
-            radius: 25
+            width: 200
+            radius: 8
             border {
                 width: 1
                 color: "black"
@@ -78,14 +152,21 @@ Flow {
             anchors {
                 right: parent.right
                 bottom: parent.bottom
-                margins: 10
+                rightMargin: 20
+                bottomMargin: 10
+            }
+            Spinner {
+                height: 40
+                width: 190
+                anchors.centerIn: parent
+                normalSource: "../static/Mic-fill-black-small.svg"
+                muteSource: "../static/Mic-mute-fill-black-small.svg"
             }
         }
     }
-/*
     Rectangle {
         width: parent.width
-        height: 20
+        height: 5
         color: "transparent"
         Rectangle {
             width: 40
@@ -108,5 +189,4 @@ Flow {
             color: "grey"
         }
     }
-*/
 }

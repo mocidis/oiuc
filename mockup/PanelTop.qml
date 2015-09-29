@@ -1,7 +1,8 @@
 import QtQuick 2.0
 
 PanelCommon {
-    height: menu.height + 30
+    id: root
+    height: 45
     color: "#F0F0F0"
     Flow {
         id: menu
@@ -9,20 +10,44 @@ PanelCommon {
             left: parent.left
             top: parent.top
             right: parent.right
-            margins: 15
+            //margins: 15
         }
         spacing: 30
-        Text {
-            text: "About"
+        PushButton {
+            color: "transparent"
+            width: 90
+            height: root.height
+            Text {
+                anchors.centerIn: parent
+                text: "About"
+            }
         }
-        Text {
-            text: "Settings"
+        PushButton {
+            color: "transparent"
+            width: 90
+            height: root.height
+            Text {
+                anchors.centerIn: parent
+                text: "Settings"
+            }
         }
-        Text {
-            text: "PSTN"
+        PushButton {
+            color: "transparent"
+            width: 90
+            height: root.height
+            Text {
+                anchors.centerIn: parent
+                text: "PSTN"
+            }
         }
-        Text {
-            text: "Group Config"
+        PushButton {
+            color: "transparent"
+            width: 90
+            height: root.height
+            Text {
+                anchors.centerIn: parent
+                text: "Group Config"
+            }
         }
     }
     Text {

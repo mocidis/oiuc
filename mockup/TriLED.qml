@@ -1,54 +1,26 @@
 import QtQuick 2.0
-Flow {
+TriLEDCommon {
     property int itemWidth: 6
-    property bool isRed: false
-    property bool isGreen: false
-    property bool isYellow: false
-    property color dimColor: "gray"
     spacing: 2
+    red: redRect
+    green: greenRect
+    yellow: yellowRect
     Rectangle {
-        id: red
+        id: redRect
         width: itemWidth
         height: width
         color: dimColor
     }
     Rectangle {
-        id: yellow
+        id: yellowRect
         width: itemWidth
         height: width
         color: dimColor
     }
     Rectangle {
-        id: green
+        id: greenRect
         width: itemWidth
         height: width
         color: dimColor
-    }
-    StateGroup {
-        states: [
-            State {
-                name: "RED"
-                when: isRed
-                PropertyChanges {target: red; color:"red"}
-            }
-        ]
-    }
-    StateGroup {
-        states: [
-            State {
-                name: "GREEN"
-                when: isGreen
-                PropertyChanges {target: green; color:"lime"}
-            }
-        ]
-    }
-    StateGroup {
-        states: [
-            State {
-                name: "YELLOW"
-                when: isYellow
-                PropertyChanges {target: yellow; color: "yellow"}
-            }
-        ]
     }
 }

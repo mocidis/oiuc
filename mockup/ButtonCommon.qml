@@ -6,6 +6,7 @@ Rectangle {
     property PanelMain panel: null
     property int tabIndex: -1
     property int modelIndex: -1
+    property alias oModelItem: indicator.oModelItem
     
     signal clicked(int modelIndex, int tabIndex, int iState)
 
@@ -16,7 +17,7 @@ Rectangle {
     radius: 10
 
     function toggleActive() {
-        if(iState < 2) iState = ( iState + 1 ) %2;
+        if(iState < 2) iState = ( iState + 1 ) % 2;
         else return;
     }
     function toggleControlled() {
@@ -55,7 +56,7 @@ Rectangle {
             }
         }
         TriLED {
-            id: indicators
+            id: indicator
             anchors {
                 horizontalCenter:parent.horizontalCenter
                 bottom: parent.bottom
@@ -87,7 +88,7 @@ Rectangle {
 				PropertyChanges {target: root; color: "gray"}
                 PropertyChanges {target: inner; color: "black" }
                 PropertyChanges {target: intext; color: "white" }
-                PropertyChanges {target: indicators; dimColor: "lightgray"}
+                PropertyChanges {target: indicator; dimColor: "lightgray"}
 			}
 		]
 
@@ -121,13 +122,13 @@ Rectangle {
             v1 = Math.random();
             bv = (v1 > 0.5);
             if( v < 0.33) {
-                indicators.isRed = bv;
+                indicator.setRed(bv);
             }
             else if (v < 0.67) {
-                indicators.isYellow = bv;
+                indicator.setYellow(bv);
             }
             else {
-                indicators.isGreen = bv;
+                indicator.setGreen(bv);
             }
         }
     }

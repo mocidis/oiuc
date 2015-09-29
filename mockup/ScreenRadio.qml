@@ -1,9 +1,8 @@
 import QtQuick 2.0
 ScreenCommon {
-//    property alias tName: nametext.text
-//    property alias tDesc: desctext.text
-//    property int port: -1
+    property alias oModelItem: radio.oModelItem
     DeviceRadio {
+        id: radio
         height: parent.width/2
         anchors {
             top: parent.top

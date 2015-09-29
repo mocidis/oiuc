@@ -20,10 +20,11 @@ PanelCommon {
                 id: radioRepeater
                 model: root.parent.radios
                 delegate: ButtonRadio { 
-                    text: name + "." + port; 
-                    panel: root.panel; 
-                    modelIndex: 0; 
-                    tabIndex: index 
+                    text: name + "." + port
+                    panel: root.panel
+                    modelIndex: 0 
+                    tabIndex: index
+                    oModelItem: radioRepeater.model.get(index)
                     onClicked: {
                         if( iState == 1 ) {
                             current = null;
