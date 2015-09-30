@@ -18,7 +18,7 @@ PanelCommon {
             spacing: 20
             Repeater {
                 id: radioRepeater
-                model: root.parent.radios
+                model: _ROOT.models[0]
                 delegate: ButtonRadio { 
                     text: name + "." + port
                     panel: root.panel
@@ -46,7 +46,7 @@ PanelCommon {
             spacing: 20
             Repeater {
                 id: oiuRepeater
-                model: root.parent.oius
+                model: _ROOT.models[1]
                 delegate: ButtonOIU { 
                     text: name; 
                     panel:root.panel; 
@@ -74,7 +74,7 @@ PanelCommon {
 
             Repeater {
                 id: groupRepeater
-                model: root.parent.groups
+                model: _ROOT.models[2]
                 delegate: ButtonGroup { 
                     text: name;
                     panel: root.panel;

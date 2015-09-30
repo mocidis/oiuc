@@ -38,13 +38,14 @@ Flow {
         Text {
             anchors.centerIn: parent
             text: "-"
-            color: "black"
+            color: "white"
             font {
                 pointSize: 24
             }
         }
         onClicked: {
-            if( iValue > 0 ) iValue--;
+            if( iValue > 0 ) iValue -= 10;
+            else iValue = 0
         }
     }
     Rectangle {
@@ -60,13 +61,14 @@ Flow {
         Text {
             anchors.centerIn: parent
             text: "+"
-            color: "black"
+            color: "white"
             font {
                 pointSize: 24
             }
         }
         onClicked: {
-            if( iValue < 100 ) iValue++;
+            if( iValue < 100 ) iValue += 10;
+            else iValue = 100
         }
     }
     Rectangle {
@@ -77,8 +79,10 @@ Flow {
     Rectangle {
         width: parent.height
         height: parent.height
+        color: "transparent"
         Text {
             anchors.centerIn: parent
+            color: "white"
             text: "" + iValue
         }
     }

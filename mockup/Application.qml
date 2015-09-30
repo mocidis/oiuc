@@ -1,11 +1,16 @@
 import QtQuick 2.0
 Rectangle {
+    id: _ROOT
 	width: 1366 
     height: 680
     color: "black"
-    property ModelRadios radios : ModelRadios { }
-    property ModelOIUs oius: ModelOIUs { }
-    property ModelGroups groups: ModelGroups { }
+    property list<ListModel> models: [ ModelRadios { }, ModelOIUs{ }, ModelGroups { } ]
+    property alias main: panelMain
+    property alias leftPanel: panelLeft
+    property alias rightPanel: panelRight
+    //property ModelRadios radios : ModelRadios { }
+    //property ModelOIUs oius: ModelOIUs { }
+    //property ModelGroups groups: ModelGroups { }
     PanelTop {
         id: panelTop
         anchors {

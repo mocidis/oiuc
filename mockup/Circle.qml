@@ -4,7 +4,7 @@ Rectangle {
     height: width
     radius: width/2
     border {
-        width: 1
+        width: 0
         color: "black"
     }
 }

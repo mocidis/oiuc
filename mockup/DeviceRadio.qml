@@ -22,13 +22,15 @@ Flow {
     Rectangle {
         width: parent.width
         height: parent.width/3
+        color: "gray"
         radius: 10
         border {
-            width: 2
+            width: 0
             color: "black"
         }
         Rectangle {
             height: parent.height * 0.45
+            color: "transparent"
             anchors {
                 top: parent.top
                 left: parent.left
@@ -39,6 +41,7 @@ Flow {
             }
             TriLEDFull {
                 id: indicator
+                dimColor: "lightgray"
                 anchors {
                     top: parent.top
                     left: parent.left
@@ -105,7 +108,7 @@ Flow {
                     right: parent.right
                 }
                 radius: 10
-                color: "#BB0000"
+                color: "#662222"
                 Text {
                     anchors {
                         centerIn:parent
@@ -123,8 +126,9 @@ Flow {
             height: 50
             width: 200
             radius: 8
+            color: "darkgray"
             border {
-                width: 1
+                width: 0
                 color: "black"
             }
             anchors {
@@ -137,16 +141,17 @@ Flow {
                 height: 40
                 width: 190
                 anchors.centerIn: parent
-                normalSource: "../static/Speaker-fill-black-small.svg"
-                muteSource: "../static/Speaker-mute-fill-black-small.svg"
+                normalSource: "../static/Speaker-fill-white-small.svg"
+                muteSource: "../static/Speaker-mute-fill-white-small.svg"
             }
         }
         Rectangle {
             height: 50
             width: 200
             radius: 8
+            color: "darkgray"
             border {
-                width: 1
+                width: 0
                 color: "black"
             }
             anchors {
@@ -159,8 +164,8 @@ Flow {
                 height: 40
                 width: 190
                 anchors.centerIn: parent
-                normalSource: "../static/Mic-fill-black-small.svg"
-                muteSource: "../static/Mic-mute-fill-black-small.svg"
+                normalSource: "../static/Mic-fill-white-small.svg"
+                muteSource: "../static/Mic-mute-fill-white-small.svg"
             }
         }
     }

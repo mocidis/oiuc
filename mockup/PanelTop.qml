@@ -1,6 +1,7 @@
 import QtQuick 2.0
 
 PanelCommon {
+    property int itemWidth: 120
     id: root
     height: 45
     color: "#F0F0F0"
@@ -12,42 +13,50 @@ PanelCommon {
             right: parent.right
             //margins: 15
         }
-        spacing: 30
+        spacing: 5
         PushButton {
             color: "transparent"
-            width: 90
+            width: home.width + 60
             height: root.height
             Text {
+                id: home
                 anchors.centerIn: parent
-                text: "About"
+                text: "Home"
             }
+            onClicked: _ROOT.main.hShow(-1, 0)
         }
         PushButton {
             color: "transparent"
-            width: 90
+            width: audio.width + 60
             height: root.height
             Text {
+                id: audio
                 anchors.centerIn: parent
-                text: "Settings"
+                text: "Audio"
             }
+            onClicked: _ROOT.main.hShow(-1, 1)
         }
         PushButton {
             color: "transparent"
-            width: 90
+            width: pstn.width + 60
             height: root.height
             Text {
+                id: pstn
                 anchors.centerIn: parent
-                text: "PSTN"
+                text: "Telephone"
             }
+            onClicked: _ROOT.main.hShow(-1, 2)
         }
         PushButton {
             color: "transparent"
-            width: 90
+            width: manageGroups.width + 60
             height: root.height
             Text {
+                id: manageGroups
                 anchors.centerIn: parent
-                text: "Group Config"
+                text: "Manage groups"
             }
+            onClicked: _ROOT.main.hShow(-1, 3)
         }
     }
     Text {
