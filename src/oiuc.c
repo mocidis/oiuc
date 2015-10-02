@@ -233,6 +233,7 @@ static void on_reg_state_impl(int account_id, char* is_registration, int code, c
     req.msg_id = ABT_UP;
     strncpy(req.abt_up.username, data->acfg.cred_info[0].username.ptr, sizeof(req.abt_up.username));
     strncpy(req.abt_up.type, "OIU", sizeof(req.abt_up.type));
+    strncpy(req.abt_up.des, "AK-47", sizeof(req.abt_up.des));
    
 	if( strcmp(is_registration, "No") == 0 )
         req.abt_up.is_online = 0;

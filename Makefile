@@ -71,8 +71,8 @@ oiuc.pro:
 	echo "               ../common/include" >> oiuc.pro
 	echo "" >> oiuc.pro
 	echo "QT += declarative sql" >> oiuc.pro
-	echo "QMAKE_CFLAGS += $(shell pkg-config --cflags /usr/local/lib/pkgconfig/libpjproject.pc) -I../json-c/output/include/json-c" >> oiuc.pro
-	echo "QMAKE_LIBS += $(shell pkg-config --libs /usr/local/lib/pkgconfig/libpjproject.pc) ../json-c/output/lib/libjson-c.a" >> oiuc.pro
+	echo "QMAKE_CFLAGS += $(shell pkg-config --cflags /opt/lib/pkgconfig/libpjproject.pc) -I../json-c/output/include/json-c" >> oiuc.pro
+	echo "QMAKE_LIBS += $(shell pkg-config --libs /opt/lib/pkgconfig/libpjproject.pc) ../json-c/output/lib/libjson-c.a" >> oiuc.pro
 	echo "" >> oiuc.pro
 	echo "HEADERS += $(subst /src/,/include/,$(CPP_SRC:.cpp=.h)) $(GEN_SRC:.c=.h) $(subst /src/,/include/,$(CORE_SRC:.c=.h))" >> oiuc.pro
 	echo "" >> oiuc.pro
