@@ -4,7 +4,7 @@ Item {
 	property int itemWidth : 150
 	property int logWidth: 150
 	property variant pttCurrent //current object that in controlled mode
-	property int typeOfCurrentPTT
+	property int typeOfCurrentPTT //0-radio, 1-oiuc, 2-group
 	Connections {
 		target: ptt
 	}
@@ -14,7 +14,7 @@ Item {
 		id: endpointPanel
 		columns: 1
 		itemWidth: parent.itemWidth  * 0.5
-		width: parent.itemWidth + 20
+		width: parent.itemWidth * 2 + 30
 		height: parent.height - parent.itemHeight - 1
 		spacing: 8
 		onDoThing: {
@@ -40,7 +40,7 @@ Item {
 			id: allButton
 			TabController {
 				id: radioButton
-				columns: 2
+				columns: 4
 				spacing: 5
 				model: radioPanel
 				width: endpointPanel.width - 10; height: Math.ceil(buttonRadio.count/2) * endpointPanel.itemHeight + radioButton.spacing*Math.ceil(buttonRadio.count/2);
@@ -86,7 +86,7 @@ Item {
 		}
 		TabController {
 			id: oiucButton
-			columns: 2
+			columns: 4
 			spacing: 5
 			model: oiucPanel
 			width: endpointPanel.width - 10; height: Math.ceil(buttonOIUC.count/2) * endpointPanel.itemHeight + oiucButton.spacing*Math.ceil(buttonOIUC.count/2);
@@ -132,7 +132,7 @@ Item {
 	}
 	TabController {
 		id: groupButton
-		columns: 2
+		columns: 4
 		spacing: 5
 		model: groupPanel
 		width: endpointPanel.width - 10; height: Math.ceil(buttonGroup.count/2) * endpointPanel.itemHeight + groupButton.spacing*Math.ceil(buttonGroup.count/2);
@@ -254,16 +254,10 @@ TabArray {
 			text: "time settings"
 			color: "white"
 		}
-		ScreenCommon {
+		ScreenSystemConfig {
 			width: slidingWindow.width
 			height: slidingWindow.height
-			text: "speaker settings"
-			color: "white"
-		}
-		ScreenCommon {
-			width: slidingWindow.width
-			height: slidingWindow.height
-			text: "Microphone configs"
+			text: "System Config"
 			color: "white"
 		}
 		ScreenPSTN {
@@ -273,6 +267,7 @@ TabArray {
 		ScreenGroupConfig {
 			width: slidingWindow.width
 			height: slidingWindow.height
+			columns: 4
 			//itemWidth: endpointPanel.itemWidth
 			itemWidth: 100
 			sWindow: slidingWindow
@@ -297,7 +292,7 @@ TabController {
 	//columns: 1 // 0= vertical ; 1 = horizontal
 	spacing: 5
 	rows: 1
-	columns: 7
+	columns: 6
 	border {
 		width:1
 		color:"black"
@@ -324,30 +319,23 @@ TabController {
 
 		}
 		RectCommonButton {
-			source: "../static/Speaker-fill-black-small.svg"
-			description: "Speaker"	
+			source: "../static/settings-fill-black.svg"
+			description: "Settings"
 			iIndex: 2
-			eContainer: endpointPanel
-			eTabs: slidingWindow
-		}
-		RectCommonButton {
-			source: "../static/Mic-fill-black-small.svg"
-			description: "Microphone"
-			iIndex: 3
 			eContainer: endpointPanel
 			eTabs: slidingWindow
 		}
 		RectCommonButton {
 			source: "../static/pstn-fill-black.svg"
 			description: "PSTN"
-			iIndex: 4
+			iIndex: 3
 			eContainer: endpointPanel
 			eTabs: slidingWindow
 		}
 		RectCommonButton {
 			source: "../static/group-fill-black.svg"
 			description: "Group Config"
-			iIndex: 5
+			iIndex: 4
 			eContainer: endpointPanel
 			eTabs: slidingWindow
 		}
@@ -355,7 +343,7 @@ TabController {
 			id: pttButton
 			source: "../static/ptt-fill-black.svg"
 			description: "PTT"
-			iIndex: 6
+			iIndex: 5
 			eContainer: endpointPanel
 			eTabs: slidingWindow
 			MouseArea {
@@ -382,7 +370,7 @@ TabController {
 }
 PanelLog {
 	id: logPanel
-	width: parent.logWidth
+	width: parent.logWidth * 2
 	height: parent.height - statusPanel.height
 	anchors {
 		top: parent.top
