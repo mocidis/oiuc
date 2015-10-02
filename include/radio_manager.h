@@ -7,6 +7,7 @@
 #include <QDeclarativeContext>
 #include <QtSql>
 #include "radio.h"
+#include "log.h"
 class RadioManager;
 class RadioManager : public QObject {
 	Q_OBJECT
@@ -15,11 +16,12 @@ public:
 	/*****************Add and Set functions******************/
 	void addRadio (Radio *radio);
 	void deleteRadio (Radio *radio);
-	void setView (QDeclarativeView *view);
 	/*****************Get functions**************************/
 	QList<QObject*> getModelRadio(); //return radio_list in QList<QObject*>
 	QList<Radio*> getRadioList();
-
+	void updateRadioManagerSignal(Radio* radio);
+signals: 
+	void updateRadioManager(QString name, QString status, double frequency, QString location, QString port_mip, QString downtime, int avaiable, int port);
 private:
 	/*****************Constructor*******************/
 	RadioManager (QList<Radio*> radio_list);
@@ -27,7 +29,6 @@ private:
 
 	/*****************Attribute********************/
 	QList<Radio*> _radio_list;
-	QDeclarativeView *_view;
 	static RadioManager* _radio_manager;
 };
 

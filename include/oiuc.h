@@ -16,12 +16,11 @@ public:
 	//add and set functions
 	void setDowntime(QString downtime);
 	void setStatus (QString status);
-	Q_INVOKABLE void setIState (int iState);
 	//get functions
-	Q_INVOKABLE QString getName();
-	Q_INVOKABLE QString getOIUCInfo();
-	Q_INVOKABLE QString getStatus();
-	Q_INVOKABLE int getIState();
+	QString getName();
+	QString getStatus();
+	QString getType();
+	QString getDowntime();
 
 
 private:
@@ -30,7 +29,6 @@ private:
 	QString _name; //name of oiu
 	QString _status;  //1=online or 0=offline
 	QString _downtime;
-	int _iState;
 };
 
 

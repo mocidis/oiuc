@@ -1,58 +1,34 @@
-import QtQuick 2.0
+import QtQuick 1.1
 
 Rectangle {
-    id: root
+	id: root
+	color: "white"
     width: 800
-    height: 600
-    Rectangle {
-        id: inputContainer
-        width: 200
-        height: 30
-        border {
-            width: 1
-            color: "lightgray"
-        }
-        anchors {
-            bottom: parent.bottom
-            horizontalCenter: parent.horizontalCenter
-        }
-        TextInput {
-            id: input
-            anchors {
-                fill: parent
-            }
-            text: "7653834"
-            MouseArea {
-                anchors {
-                    fill: parent
-                }
-                onClicked: {
-                    _KEYBOARD.textInput = input
-                    input.cursorVisible = true
-                }
-            }
-        }
-    }
-
-    VirtualKeyboard {
-        id: _KEYBOARD
-        anchors {
-            bottom: parent.bottom
-            horizontalCenter: parent.horizontalCenter
-        }
-    }
-    StateGroup {
-        states: [
-            State {
-                name: "keyboardShown"
-                when: _KEYBOARD.visible == true
-                PropertyChanges { target: inputContainer.anchors; bottom: _KEYBOARD.top }
-            },
-            State {
-                name: "keyboardHiden"
-                when: _KEYBOARD.visible == false
-                PropertyChanges { target: inputContainer.anchors; bottom: root.bottom }
-            }
-        ]
-    }
+	height: 600
+	Flickable {
+		id: aflickable
+		contentHeight: 4000
+		anchors {
+			fill: parent
+			margins: 50
+		}
+		Rectangle {
+			anchors {
+				top: parent.top
+				left: parent.left
+			}
+			width: parent.width
+			height: 400
+			color: "yellow"
+		}
+	}
+	ScrollBar {
+		width: 8
+		anchors {
+			top: parent.top
+			bottom: parent.bottom
+			right: parent.right
+		}
+		scrollArea: aflickable
+	}
 }

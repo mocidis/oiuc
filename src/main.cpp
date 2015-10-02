@@ -27,19 +27,13 @@ int main (int argc, char* argv[]) {
 	RadioManager *radio_manager = RadioManager::getRadioManager();
 	GroupManager *grp_manager = GroupManager::getGroupManager(radio_manager);
 
-	QList<QObject*> group_list_obj = grp_manager->getGroupModel();
-	QList<QObject*> radio_list_obj = radio_manager->getModelRadio();
-
-	view.rootContext()->setContextProperty("grpManager", grp_manager);// setup connection between qml and cpp
-	view.rootContext()->setContextProperty("modelRadio", QVariant::fromValue(radio_list_obj));
-	view.rootContext()->setContextProperty("modelGroup", QVariant::fromValue(group_list_obj));
-	view.rootContext()->setContextProperty("modelOIUC", QVariant::fromValue(oiuc_manager->getModelOIUC()));
+	//view.rootContext()->setContextProperty("grpManager", grp_manager);// setup connection between qml and cpp
+	//view.rootContext()->setContextProperty("modelOIUC", QVariant::fromValue(oiuc_manager->getModelOIUC()));
 	view.rootContext()->setContextProperty("logObj", log);
-	view.setSource(QUrl::fromLocalFile("qml/main.qml"));
-	grp_manager->setView(&view);
-	oiuc_manager->setView(&view);
-	radio_manager->setView(&view);
-
+	view.rootContext()->setContextProperty("radioObj", radio_manager);
+	view.rootContext()->setContextProperty("oiucObj", oiuc_manager);
+	view.rootContext()->setContextProperty("groupObj", grp_manager);// setup connection between qml and cpp
+	view.setSource(QUrl::fromLocalFile("mockup3/Application.qml"));
 	view.show();
 	writeLog("Start OIUC");
 	return app.exec();

@@ -7,14 +7,14 @@ Radio::Radio() {
 Radio::Radio(QString name) {
 	_name = name;	
 }
-Radio::Radio(QString name, QString status, double frequency, QString location, QString port_mip, int avaiable) {
+Radio::Radio(QString name, QString status, double frequency, QString location, QString port_mip, int avaiable, int port) {
 	_name = name;
 	_status = status;
 	_frequency = frequency;
 	_location = location;
 	_port_mip = port_mip;
 	_avaiable = avaiable;
-	_iState = 0;
+	_port = port;
 }
 
 /*Add and set function*/
@@ -26,10 +26,6 @@ void Radio::setDowntime(QString downtime) {
 void Radio::setStatus(QString status) {
 	_status = status;
 }
-void Radio::setIState(int iState) {
-	_iState = iState;
-	//qDebug() << "KKKKKKKKKK++++++++++" << iState;
-}
 void Radio::setAvaiable(int avaiable) {
 	_avaiable = avaiable;
 }
@@ -40,18 +36,25 @@ QString Radio::getName() {
 	return _name;
 }
 
-QString Radio::getRadioInfo() {
-	QString info;
-	info = _name + "\n" + _status + "\n" + QString::number(_frequency) + "\n" + _location; 
-	return info;
-}
-
 QString Radio::getStatus() {
 	return _status;
 }
-int Radio::getIState() {
-	return _iState;
-}
+
 int Radio::getAvaiable() {
 	return _avaiable;
+}
+double Radio::getFrequency() {
+	return _frequency;
+}
+QString Radio::getLocation() {
+	return _location;
+}
+QString Radio::getPortMIP() {
+	return _port_mip;
+}
+QString Radio::getDowntime() {
+	return _downtime;
+}
+int Radio::getPort() {
+	return _port;
 }

@@ -25,15 +25,8 @@ void GroupManager::addGroup (QString radio, QString grp_name) {
 	QList<Radio*> radio_list = _radio_manager->getRadioList();
 
 	determineRadioListLastGroup(_group_list, radio_list);
+	updateGroupManagerSignal(grp);
 	//appendToDatabase(_group_list, "databases/radio.db");
-	QList<QObject*> group_list_obj;
-	for (int i=0;i<_group_list.count();i++) {
-		group_list_obj.append(_group_list[i]);
-	}
-	_view->rootContext()->setContextProperty("modelGroup", QVariant::fromValue(group_list_obj)); //update endpoint panel button
-}
-void GroupManager::setView(QDeclarativeView *view) {
-	_view = view;
 }
 void GroupManager::deleteGroup(QString grp_name) {
 	for (int i=0;i<_group_list.count();i++) {
@@ -42,11 +35,6 @@ void GroupManager::deleteGroup(QString grp_name) {
 		}
 	}
 	//deleteFromDatabase(grp_name, "databases/radio.db");
-	QList<QObject*> group_list_obj;
-	for (int i=0;i<_group_list.count();i++) {
-		group_list_obj.append(_group_list[i]);
-	}
-	_view->rootContext()->setContextProperty("modelGroup", QVariant::fromValue(group_list_obj)); //update endpoint panel button
 }
 /*****************Get functions******************/
 QList<QObject*> GroupManager::getGroupModel() {
@@ -55,4 +43,8 @@ QList<QObject*> GroupManager::getGroupModel() {
 		group_list_obj.append(_group_list[i]);
 	}
 	return group_list_obj;
+}
+void GroupManager::updateGroupManagerSignal(Group* group) {
+	QString name = group->getName();
+	emit updateGroupManager(name);
 }

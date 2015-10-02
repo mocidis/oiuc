@@ -30,16 +30,9 @@ void OIUCManager::addOIUC(OIUC *oiuc) {
 	if (flags == 0 || flags == 2) {
 		if (flags == 0) {
 			_oiuc_list.append(oiuc);
+			updateOIUCManagerSignal(oiuc);
 		}
-		QList<QObject*> oiuc_list_obj;
-		for (int i=0;i<_oiuc_list.count();i++) {
-			oiuc_list_obj.append(_oiuc_list[i]);
-		}
-		_view->rootContext()->setContextProperty("modelOIUC", QVariant::fromValue(oiuc_list_obj)); //update endpoint panel button
 	}
-}
-void OIUCManager::setView(QDeclarativeView *view) {
-	_view = view;
 }
 void OIUCManager::deleteOIUC(OIUC *oiuc) {
 	for (int i=0;i<_oiuc_list.count();i++) {
@@ -47,11 +40,6 @@ void OIUCManager::deleteOIUC(OIUC *oiuc) {
 			_oiuc_list.removeAt(i);
 		}
 	}
-	QList<QObject*> oiuc_list_obj;
-	for (int i=0; i < _oiuc_list.count(); i++) {
-		oiuc_list_obj.append(_oiuc_list[i]);
-	}
-	_view->rootContext()->setContextProperty("modelOIUC", QVariant::fromValue(oiuc_list_obj)); //update endpoint panel button
 }
 /*****************Get functions******************/
 QList<QObject*> OIUCManager::getModelOIUC() { //return oiuc_list in QList<QObject*>
@@ -60,4 +48,11 @@ QList<QObject*> OIUCManager::getModelOIUC() { //return oiuc_list in QList<QObjec
 		oiuc_list_obj.append(_oiuc_list[i]);
 	}
 	return oiuc_list_obj;
+}
+void OIUCManager::updateOIUCManagerSignal (OIUC *oiuc) {
+	QString type = oiuc->getType();
+	QString name = oiuc->getName();
+	QString status = oiuc->getStatus();
+	QString downtime = oiuc->getDowntime();
+	emit updateOIUCManager (type, name, status, downtime);
 }

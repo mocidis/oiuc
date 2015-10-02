@@ -1,13 +1,14 @@
 #ifndef OIUC_MANAGER_H
 #define OIUC_MANAGER_H
 
-#include "oiuc.h"
 #include <QtCore>
 #include <QDeclarativeItem>
 #include <QDeclarativeView>
 #include <QDeclarativeContext>
 #include <QtSql>
 
+#include "oiuc.h"
+#include "log.h"
 class OIUCManager;
 class OIUCManager : public QObject {
 	Q_OBJECT
@@ -16,10 +17,11 @@ public:
 	/*****************Add and Set functions******************/
 	void addOIUC (OIUC *oiuc);
 	void deleteOIUC (OIUC *oiuc);
-	void setView (QDeclarativeView *view);
 	/*****************Get functions******************/
 	QList<QObject*> getModelOIUC(); //return oiuc_list in QList<QObject*>
-
+	void updateOIUCManagerSignal (OIUC *oiuc);
+signals: 
+	void updateOIUCManager (QString type, QString name, QString status, QString downtime);
 private:
 	/*****************Constructor*******************/
 	OIUCManager (QList<OIUC*> oiuc_list);
@@ -27,7 +29,6 @@ private:
 
 	/*****************Attribute********************/
 	QList<OIUC*> _oiuc_list;
-	QDeclarativeView *_view;
 	static OIUCManager* _oiuc_manager;
 };
 

@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 1.1
 
 ListModel {
     ListElement {
@@ -23,7 +23,6 @@ ListModel {
             }
         ]
     }
-/*
     ListElement {
         name: "TopUsed"
         description: "K20 BCA"
@@ -38,5 +37,4 @@ ListModel {
             }
         ]
     }
-*/
 }

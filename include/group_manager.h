@@ -21,9 +21,11 @@ public:
 	Q_INVOKABLE void addGroup (QString radio, QString grp_name);
 	Q_INVOKABLE void deleteGroup(QString grp_name);
 	void addRadio(Radio *radio);
-	void setView (QDeclarativeView *view);
 	/*****************Get functions******************/
 	QList<QObject*>getGroupModel();
+	void updateGroupManagerSignal(Group* group);
+signals: 
+	void updateGroupManager(QString name);
 private:
 	/*****************Constructor******************/
 	GroupManager(RadioManager *radio_manager);
@@ -32,7 +34,6 @@ private:
 	/****************Property**********************/
 	QList<Group*> _group_list;
 	RadioManager *_radio_manager; //manage list of radio currently displayed in GUI
-	QDeclarativeView *_view;
 };
 
 #endif

@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 1.1
 Rectangle {
     id: _ROOT
 	width: 1366 

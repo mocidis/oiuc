@@ -30,16 +30,10 @@ void RadioManager::addRadio(Radio *radio) {
 	if (flags == 0 || flags == 2) {
 		if (flags == 0) {
 			_radio_list.append(radio);
+			updateRadioManagerSignal(radio);
+			writeLog("new radio" + radio->getName() + "detected");
 		}
-		QList<QObject*> radio_list_obj;
-		for (int i=0; i < _radio_list.count();i++) {
-			radio_list_obj.append(_radio_list[i]);
-		}
-		_view->rootContext()->setContextProperty("modelRadio", QVariant::fromValue(radio_list_obj)); //update endpoint panel button
 	}
-}
-void RadioManager::setView(QDeclarativeView *view) {
-	_view = view;
 }
 void RadioManager::deleteRadio(Radio *radio) {
 	for (int i=0;i<_radio_list.count();i++) {
@@ -47,11 +41,6 @@ void RadioManager::deleteRadio(Radio *radio) {
 			_radio_list.removeAt(i);
 		}
 	}
-	QList<QObject*> radio_list_obj;
-	for (int i=0; i < _radio_list.count(); i++) {
-		radio_list_obj.append(_radio_list[i]);
-	}
-	_view->rootContext()->setContextProperty("modelRadio", QVariant::fromValue(radio_list_obj)); //update endpoint panel button
 }
 /*****************Get functions******************/
 QList<QObject*> RadioManager::getModelRadio() { //return radio_list in QList<QObject*>
@@ -63,4 +52,15 @@ QList<QObject*> RadioManager::getModelRadio() { //return radio_list in QList<QOb
 }
 QList<Radio*> RadioManager::getRadioList() {
 	return _radio_list;
+}
+void RadioManager::updateRadioManagerSignal(Radio* radio) {
+	QString name = radio->getName();
+	QString status = radio->getStatus();
+	double frequency = radio->getFrequency();
+	QString location = radio->getLocation();
+	QString port_mip = radio->getPortMIP();
+	QString downtime = radio->getDowntime();
+	int avaiable = radio->getAvaiable();
+	int port = radio->getPort();
+	emit updateRadioManager(name, status, frequency, location, port_mip, downtime, avaiable, port);
 }

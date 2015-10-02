@@ -11,7 +11,6 @@ OIUC::OIUC(int msg_id, QString type, QString name, QString  status) {
 	_type = type;
 	_name = name;
 	_status = status;
-	_iState = 0;
 }
 
 /*Add and set function*/
@@ -22,9 +21,6 @@ void OIUC::setDowntime(QString downtime) {
 void OIUC::setStatus(QString status) {
 	_status = status;
 }
-void OIUC::setIState(int iState) {
-	_iState = iState;
-}
 
 
 /*Get function*/
@@ -32,15 +28,12 @@ QString OIUC::getName() {
 	return _name;
 }
 
-QString OIUC::getOIUCInfo() {
-	QString info;
-	info = _name + "\n" + _status;
-	return info;
-}
-
 QString OIUC::getStatus() {
 	return _status;
 }
-int OIUC::getIState() {
-	return _iState;
+QString OIUC::getType() {
+	return _type;
+}
+QString OIUC::getDowntime() {
+	return _downtime;
 }

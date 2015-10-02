@@ -1,8 +1,8 @@
-import QtQuick 2.0
+import QtQuick 1.1
 
 PanelCommon {
     property PanelMain panel: null
-    property ButtonCommon current: null
+    property variant current: null
     id: root
     color: "#F0F0F0"
     Flow {

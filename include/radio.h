@@ -11,30 +11,30 @@ public:
 	/****************Constructor*******************/
 	Radio();
 	Radio(QString name);
-	Radio(QString name, QString status, double frequency, QString location, QString port_mip, int avaiable);
+	Radio(QString name, QString status, double frequency, QString location, QString port_mip, int avaiable, int port);
 	/*************Add and Set functions************/
 	void setStatus(QString status);
-	Q_INVOKABLE void setIState(int iState);
 	void setDowntime(QString downtime);
 	void setAvaiable(int avaiable);
 
 	/************Get functions********************/
-	Q_INVOKABLE QString getName();
-	Q_INVOKABLE QString getRadioInfo();
+	QString getName();
 	QString getStatus();
-	Q_INVOKABLE int getIState();
+	double getFrequency();
+	QString getLocation();
+	QString getPortMIP();
+	QString getDowntime();
+	int getPort();
 	int getAvaiable();
 
 private:
-	//QStringList radio_list;
 	QString _name;
 	QString _status; //(online, offline)
-	//QString downtime;
 	double _frequency;
 	QString _location;
 	QString _port_mip;
 	QString _downtime;
+	int _port;
 	int _avaiable;
-	int _iState; // qml used
 };
 #endif

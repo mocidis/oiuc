@@ -1,9 +1,9 @@
-import QtQuick 2.0
+import QtQuick 1.1
 
 Rectangle {
     property int iState: 0;
     property alias text: intext.text
-    property PanelMain panel: null
+    property variant panel: null
     property int tabIndex: -1
     property int modelIndex: -1
     property alias oModelItem: indicator.oModelItem

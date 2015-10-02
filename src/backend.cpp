@@ -25,7 +25,8 @@ QList<Radio*> getBackendRadioList (QString backend_location) {
 			QString localtion = query.value(3).toString();
 			QString port_mip = query.value(4).toString();
 			int avaiable = query.value(5).toInt();	
-			Radio *radio = new Radio(name,status,frequency,localtion,port_mip,avaiable);
+			int port = query.value(6).toInt();
+			Radio *radio = new Radio(name,status,frequency,localtion,port_mip,avaiable,port);
 			list.append(radio);
 		}
 	}

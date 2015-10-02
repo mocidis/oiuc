@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 1.1
 ScreenCommon {
     property alias oModelItem: radio.oModelItem
     DeviceRadio {

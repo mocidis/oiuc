@@ -68,6 +68,7 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 	QString status="Offline";
 	QString ports_status = "";
 	QStringList list_radio_str;
+	int port=0;
 	OIUC *oiuc;
 	OIUCManager *oiuc_manager = OIUCManager::getOIUCManager();
 	RadioManager *radio_manager = RadioManager::getRadioManager();
@@ -97,6 +98,7 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 					if (temp[1] == "1") {
 						name = QString::fromLatin1(req->oiuc_gb.id);
 						name = name + "_" + QString::number(i+1);
+						port = i+1;
 						if (req->oiuc_gb.is_online == 1)
 							status = "Online";
 						else {
@@ -114,7 +116,7 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 						if (temp[2] == "1") {
 							avaiable = 1;	
 						}
-						Radio *radio = new Radio(name, status, freq, loc, port_mip, avaiable);
+						Radio *radio = new Radio(name, status, freq, loc, port_mip, avaiable, port);
 						radio_manager->addRadio(radio);
 					}
 					name = "";
