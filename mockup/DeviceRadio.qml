@@ -1,6 +1,7 @@
 import QtQuick 2.0
 
-Flow {
+//Flow {
+Item {
     property alias oModelItem: indicator.oModelItem
     function getName() {
         if (oModelItem == null) return "NaN";
@@ -15,19 +16,15 @@ Flow {
         return oModelItem.port;
     }
 
-    flow: Flow.TopToBottom
+    //flow: Flow.TopToBottom
     anchors {
         fill: parent
     }
     Rectangle {
         width: parent.width
-        height: parent.width/3
+        height: 150
         color: "gray"
-        radius: 10
-        border {
-            width: 0
-            color: "black"
-        }
+        //radius: 10
         Rectangle {
             height: parent.height * 0.45
             color: "transparent"
@@ -51,6 +48,7 @@ Flow {
             }
             Rectangle {
                 width: parent.width/2
+                color: "#F0F0F0"
                 anchors {
                     top: parent.top
                     bottom: parent.bottom
@@ -127,10 +125,6 @@ Flow {
             width: 200
             radius: 8
             color: "darkgray"
-            border {
-                width: 0
-                color: "black"
-            }
             anchors {
                 left: parent.left
                 bottom: parent.bottom
@@ -150,10 +144,6 @@ Flow {
             width: 200
             radius: 8
             color: "darkgray"
-            border {
-                width: 0
-                color: "black"
-            }
             anchors {
                 right: parent.right
                 bottom: parent.bottom
@@ -169,10 +159,10 @@ Flow {
             }
         }
     }
-    Rectangle {
+/*
+    Item {
         width: parent.width
         height: 5
-        color: "transparent"
         Rectangle {
             width: 40
             anchors {
@@ -194,4 +184,5 @@ Flow {
             color: "grey"
         }
     }
+*/
 }

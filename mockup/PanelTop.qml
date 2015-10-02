@@ -23,9 +23,15 @@ PanelCommon {
                 anchors.centerIn: parent
                 text: "Home"
             }
-            onClicked: _ROOT.main.hShow(-1, 0)
+            onClicked: { 
+                _ROOT.main.hShow(-1, 0);
+                if (_ROOT.leftPanel.current != null) {
+                    _ROOT.leftPanel.current.iState = 1;
+                    _ROOT.leftPanel.current = null;
+                }
+            }
         }
-        PushButton {
+/*        PushButton {
             color: "transparent"
             width: audio.width + 60
             height: root.height
@@ -34,8 +40,15 @@ PanelCommon {
                 anchors.centerIn: parent
                 text: "Audio"
             }
-            onClicked: _ROOT.main.hShow(-1, 1)
+            onClicked: {
+                _ROOT.main.hShow(-1, 1);
+                if (_ROOT.leftPanel.current != null) {
+                    _ROOT.leftPanel.current.iState = 1;
+                    _ROOT.leftPanel.current = null;
+                }
+            }
         }
+*/
         PushButton {
             color: "transparent"
             width: pstn.width + 60
@@ -45,7 +58,13 @@ PanelCommon {
                 anchors.centerIn: parent
                 text: "Telephone"
             }
-            onClicked: _ROOT.main.hShow(-1, 2)
+            onClicked:{
+                _ROOT.main.hShow(-1, 1);
+                if (_ROOT.leftPanel.current != null) {
+                    _ROOT.leftPanel.current.iState = 1;
+                    _ROOT.leftPanel.current = null;
+                }
+            }
         }
         PushButton {
             color: "transparent"
@@ -56,7 +75,13 @@ PanelCommon {
                 anchors.centerIn: parent
                 text: "Manage groups"
             }
-            onClicked: _ROOT.main.hShow(-1, 3)
+            onClicked: {
+                _ROOT.main.hShow(-1, 2);
+                if (_ROOT.leftPanel.current != null) {
+                    _ROOT.leftPanel.current.iState = 1;
+                    _ROOT.leftPanel.current = null;
+                }
+            }
         }
     }
     Text {
@@ -81,5 +106,19 @@ PanelCommon {
             right: parent.right
             bottom: parent.bottom
         }
+    }
+    StateGroup {
+        states: [
+            State {
+                name: "logout"
+                when: !_ROOT.appState.login
+                PropertyChanges { target: menu; enabled: false }
+            },
+            State {
+                name: "login"
+                when: _ROOT.appState.login
+                PropertyChanges { target: menu; enabled: true }
+            }
+        ]
     }
 }

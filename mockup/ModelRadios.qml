@@ -33,7 +33,6 @@ ListModel {
         isGreen: false
         isYellow: false
     }
-/*
     ListElement {
         name: "Motor"
         description: "K20 BCA"
@@ -50,5 +49,4 @@ ListModel {
         isGreen: false
         isYellow: false
     }
-*/
 }

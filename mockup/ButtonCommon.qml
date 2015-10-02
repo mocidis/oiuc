@@ -106,7 +106,11 @@ Rectangle {
             parent.toggleControlled();
             parent.clicked(modelIndex, tabIndex, iState);
             if (panel != null) {
-                panel.hShow(modelIndex, tabIndex);
+                if (iState > 1)
+                    panel.hShow(modelIndex, tabIndex);
+                else {
+                    panel.hShow(-1, 0);
+                }
             }
             else {
                 console.log("Please bind panel and tabIndex properties to correct values");

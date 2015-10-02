@@ -4,7 +4,7 @@ PanelCommon {
     id: root
     clip: true
     function hShow(rIdx, cIdx) {
-        console.log("Show " + rIdx + ":" + cIdx);
+//        console.log("Show " + rIdx + ":" + cIdx);
         hStrip.y = 0 - root.height * (rIdx + 1)
         hStrip.x = 0 - root.width * cIdx;
     }
@@ -17,10 +17,10 @@ PanelCommon {
                 width: root.width
                 height: root.height
             }
-            ScreenAudio {
+            /*ScreenAudio {
                 width: root.width
                 height: root.height
-            }
+            }*/
             ScreenTelephone {
                 width: root.width
                 height: root.height
