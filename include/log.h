@@ -5,7 +5,7 @@
 #include <QtSql>
 #include <QDateTime>
 class Log;
-class Log : public QObject {
+class Log : public QThread {
 	Q_OBJECT
 public:
 	void logs(QString msg);
@@ -17,6 +17,7 @@ signals:
 	void writeLog(QString msg);
 private:
 	Log();
+	void run();
 	static Log* log;
 	QString filename;
 };

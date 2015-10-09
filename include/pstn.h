@@ -28,11 +28,11 @@ public:
 	Q_INVOKABLE void pstnConferenceCall (QString number);
 	Q_INVOKABLE void pstnAnswerCall ();
 	Q_INVOKABLE void pstnTransferCall (QString number);
-	int pstnPrepare();
-	Q_INVOKABLE int pstnStart(QString username, QString password);
-	Q_INVOKABLE int pstnStop();
-	int pstnStartAServer();
-	int pstnStartOServer();
+	void pstnPrepare();
+	Q_INVOKABLE void pstnStart(QString username, QString password);
+	Q_INVOKABLE void pstnStop();
+	void pstnStartAServer();
+	void pstnStartOServer();
 	void setLoggedIn(int flag);
 	Q_INVOKABLE bool isLoggedIn();
 signals:

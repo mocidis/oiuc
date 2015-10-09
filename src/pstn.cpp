@@ -17,7 +17,7 @@ PSTN::PSTN() {
 	strcpy(send_to, "udp:239.0.0.1:6789");
 	strcpy(listen_on, "udp:0.0.0.0:9876");
 }
-int PSTN::pstnStart(QString username, QString password) {
+void PSTN::pstnStart(QString username, QString password) {
 	char user[20], passwd[20];
 	this->username = username;
 	this->password = password;
@@ -25,7 +25,7 @@ int PSTN::pstnStart(QString username, QString password) {
 	strncpy(passwd, password.toLocal8Bit().constData(), 20);
 	ics_add_account(&app_data.ics_data, "192.168.2.30", user, passwd);
 }
-int PSTN::pstnPrepare() {
+void PSTN::pstnPrepare() {
 	ics_init(&app_data.ics_data);
 
 	ics_set_reg_start_callback(&on_reg_start_impl); //cc
@@ -38,11 +38,11 @@ int PSTN::pstnPrepare() {
 	ics_start(&app_data.ics_data);
 	ics_connect(&app_data.ics_data, 1111);
 }
-int PSTN::pstnStartAServer() {
+void PSTN::pstnStartAServer() {
 	//SEND
 	arbiter_client_open(&app_data.aclient, send_to);
 }
-int PSTN::pstnStartOServer() {
+void PSTN::pstnStartOServer() {
     // LISTEN
     app_data.oserver.on_request_f = &on_request;
     app_data.oserver.on_open_socket_f = &on_open_socket;
@@ -96,7 +96,7 @@ void PSTN::setLoggedIn(int flag) {
 bool PSTN::isLoggedIn() {
 	return logged_in;
 }
-int PSTN::pstnStop() {
+void PSTN::pstnStop() {
 	setLoggedIn(0);
 	//destroy PSTN here
 	//
