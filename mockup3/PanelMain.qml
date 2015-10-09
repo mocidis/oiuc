@@ -21,14 +21,14 @@ PanelCommon {
                 //width: root.width
                 //height: root.height
             //}
-            ScreenTelephone {
-                width: root.width
-                height: root.height
-            }
-            ScreenManageGroups {
-                width: root.width
-                height: root.height
-            }
+            //ScreenTelephone {
+            //    width: root.width
+            //    height: root.height
+            //}
+            //ScreenManageGroups {
+            //    width: root.width
+            //    height: root.height
+            //}
         }
         Flow {
             Repeater {
@@ -83,6 +83,7 @@ PanelCommon {
 				}
 			}
         }
+/*
         Behavior on x {
             NumberAnimation {
                 duration: 100
@@ -93,5 +94,6 @@ PanelCommon {
                 duration: 100
             }
         }
+*/
     }
 }

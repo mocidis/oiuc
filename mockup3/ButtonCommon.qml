@@ -92,12 +92,12 @@ Rectangle {
 			}
 		]
 
-		transitions: [
+		/*transitions: [
 			Transition {
 				from: "*"; to: "*"
 				ColorAnimation {targets: [root, inner, inner.border, intext]; properties: "color"; duration: 100}
 			}
-		]
+		]*/
 	}
     MouseArea {
         anchors.fill: parent
@@ -106,13 +106,31 @@ Rectangle {
             parent.toggleControlled();
             parent.clicked(modelIndex, tabIndex, iState);
             if (panel != null) {
-                panel.hShow(modelIndex, tabIndex);
+                if (iState > 1)
+                    panel.hShow(modelIndex, tabIndex);
+                else {
+                    panel.hShow(-1, 0);
+                }
             }
             else {
                 console.log("Please bind panel and tabIndex properties to correct values");
             }
         }
-        onPressAndHold: parent.toggleActive();
+        onPressAndHold: iState = (iState < 2)?( iState + 1 ) % 2 : iState //parent.toggleActive();
+    }
+    StateGroup {
+        states: [
+            State {
+                name: "enable"
+                when: !_TELKB.visible && !_GMDIALOG.visible
+                PropertyChanges { target: root; enabled: true }
+            },
+            State {
+                name: "disable"
+                when: _TELKB.visible || _GMDIALOG.visible
+                PropertyChanges { target: root; enabled: false }
+            }
+        ]
     }
     Timer {
         interval: 1000; running: true; repeat: true

@@ -2,30 +2,46 @@ import QtQuick 1.1
 
 Rectangle {
 	property alias text: call_number.text
-	property int lcdWidth: 250
-	property int lcdHeight: 40
-	property int fontSize: 22
-	width: lcdWidth; height: lcdHeight
-	FontLoader {id: lcdFont; source: "../static/fonts/digital-7.ttf"}
-	Image {
-		source: "../static/LCD-Box-black.svg"
-		TextInput {
-			id: call_number
-			width: lcdWidth; height: lcdHeight
-			text: "enter number"
-			readOnly: true
-			font.family: lcdFont.name
-			font.pixelSize: fontSize
-			font.letterSpacing: 3
-			anchors {
-				fill: parent
-				top: parent.top
-				left: parent.left
-				right: parent.right
-				topMargin: 10
-				leftMargin: 10
-				rightMargin: 5
-			}
+    property alias textInput: call_number
+	property int fontSize: 32
+	//FontLoader {id: lcdFont; source: "../static/fonts/digital-7 (mono).ttf"}
+    //color: "darkgray"
+    color: "#A0B46A"
+    border { width: 1; color: "black" }
+	TextInput {
+		width: parent.width
+		text: "88888888888888888"
+        color: "#9DA267"
+		readOnly: true
+		font {
+            family: lcdFont.name
+		    //pixelSize: fontSize
+		    pointSize: fontSize
+		    letterSpacing: 3
+        }
+		anchors {
+            left: parent.left
+            verticalCenter: parent.verticalCenter
+            margins: 10
+		}
+	}
+	TextInput {
+		id: call_number
+		width: parent.width
+        maximumLength: 17
+		text: ""
+        color: "black"
+		readOnly: true
+		font {
+            family: lcdFont.name
+		    //pixelSize: fontSize
+		    pointSize: fontSize
+		    letterSpacing: 3
+        }
+		anchors {
+            left: parent.left
+            verticalCenter: parent.verticalCenter
+            margins: 10
 		}
 	}
 	function changeText (value) {

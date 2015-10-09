@@ -1,7 +1,8 @@
 import QtQuick 1.1
 ScreenCommon {
     property variant oModelItem: null
-    Flow {
+	Flow {
+		id: flow1
         width: parent.width
         height: parent.height
         flow: Flow.TopToBottom
@@ -35,7 +36,7 @@ ScreenCommon {
             id: groupRepeater
             model: oModelItem.nodes
             DeviceRadioReduced {
-                width: parent.width
+                width: flow1.width
                 height: 90
                 color: ( (index % 2) == 0 ) ? "#585858" : "#858585"
                 oModelItem: _ROOT.models[modelIdx].get(itemIdx)

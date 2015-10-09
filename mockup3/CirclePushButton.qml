@@ -96,9 +96,11 @@ Rectangle {
             }
         }
     ]
+/*
     transitions: Transition {
         from: "PRESSED"
         to: "NORMAL"
         ColorAnimation { duration: 200 }
     }
+*/
 }

@@ -48,7 +48,8 @@ Item {
             }
             Rectangle {
                 width: parent.width/2
-                color: "#F0F0F0"
+                //color: "#F0F0F0"
+                color: "#A0B46A"
                 anchors {
                     top: parent.top
                     bottom: parent.bottom

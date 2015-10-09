@@ -4,13 +4,8 @@ Rectangle {
     signal clicked()
     signal longClicked()
     
-    Rectangle {
-        id: inner
-        width: parent.width
-        height: parent.height
-        radius: parent.radius
-        color: parent.color
-    }
+    id: root
+
     MouseArea {
         id: mouseArea
         width: parent.width
@@ -32,15 +27,15 @@ Rectangle {
         State {
             name: "PRESSED"
             when: mouseArea.pressed == true
-            PropertyChanges {target: inner; color: "lightgray"}
+            PropertyChanges {target: root; color: "lightgray"}
         }
     ]
 
-    transitions: [
+/*    transitions: [
         Transition {
             from: "PRESSED"
             to: "NORMAL"
             ColorAnimation {duration: 200}
         }
-    ]
+    ] */
 }

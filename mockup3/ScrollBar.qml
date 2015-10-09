@@ -73,8 +73,8 @@ Item {
         PropertyChanges { target: container; opacity: 1.0 }
     }
 
-    transitions: Transition {
+/*    transitions: Transition {
         from: "visible"; to: ""
         NumberAnimation { properties: "opacity"; duration: 600 }
-    }
+    }*/
 }

@@ -1,7 +1,8 @@
 import QtQuick 1.1
 
 ListModel {
-/*    ListElement {
+	/*
+    ListElement {
         name: "Group 1"
         description: "K20 BCA"
         nodes: [
@@ -15,8 +16,6 @@ ListModel {
             }
         ]
 	}
-	*/
-	/*
     ListElement {
         name: "Group 2"
         description: "K20 BCA"
@@ -30,8 +29,7 @@ ListModel {
                 itemIdx: 3
             }
         ]
-	}*/
-/*
+	}
     ListElement {
         name: "TopUsed"
         description: "K20 BCA"
@@ -45,6 +43,6 @@ ListModel {
                 itemIdx: 1
             }
         ]
-    }
-*/
+	}
+	*/
 }

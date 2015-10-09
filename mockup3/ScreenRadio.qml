@@ -8,7 +8,7 @@ ScreenCommon {
             top: parent.top
             left: parent.left
             right: parent.right
-            margins: 20
+            //margins: 20
         }
     }
 }

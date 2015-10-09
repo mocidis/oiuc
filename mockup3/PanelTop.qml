@@ -23,19 +23,14 @@ PanelCommon {
                 anchors.centerIn: parent
                 text: "Home"
             }
-            onClicked: _ROOT.main.hShow(-1, 0)
+            onClicked: {
+                _ROOT.main.hShow(-1, 0);
+                if (_ROOT.leftPanel.current != null) {
+                    _ROOT.leftPanel.current.iState = 1;
+                    _ROOT.leftPanel.current = null;
+                }
+            }
         }
-        //PushButton {
-            //color: "transparent"
-            //width: audio.width + 60
-            //height: root.height
-            //Text {
-                //id: audio
-                //anchors.centerIn: parent
-                //text: "Audio"
-            //}
-            //onClicked: _ROOT.main.hShow(-1, 1)
-        //}
         PushButton {
             color: "transparent"
             width: pstn.width + 60
@@ -45,7 +40,14 @@ PanelCommon {
                 anchors.centerIn: parent
                 text: "Telephone"
             }
-            onClicked: _ROOT.main.hShow(-1, 1)
+            onClicked: { 
+                _ROOT.main.hShow(-1, 0);
+                if (_ROOT.leftPanel.current != null) {
+                    _ROOT.leftPanel.current.iState = 1;
+                    _ROOT.leftPanel.current = null;
+                }
+                _TELKB.visible = !_TELKB.visible;
+            }
         }
         PushButton {
             color: "transparent"
@@ -54,12 +56,18 @@ PanelCommon {
             Text {
                 id: manageGroups
                 anchors.centerIn: parent
-                text: "Manage groups"
+                text: "Create groups"
             }
-            onClicked: _ROOT.main.hShow(-1, 2)
+            onClicked: {
+                //_ROOT.main.hShow(-1, 1);
+                _GMDIALOG.visible = true;
+                if (_ROOT.leftPanel.current != null) {
+                    _ROOT.leftPanel.current.iState = 1;
+                    _ROOT.leftPanel.current = null;
+                }
+            }
         }
     }
-	FontLoader {id: lcdFont; source: "../static/fonts/digital-7.ttf"}
     Text {
         id: time
         anchors {
@@ -69,9 +77,11 @@ PanelCommon {
             margins: 15
         }
         text: "--/--/--"
-		font.family: lcdFont.name
-		font.pixelSize: 16 
-		font.letterSpacing: 3
+		font {
+            family: lcdFont.name
+		    pixelSize: 16 
+		    letterSpacing: 3
+        }
         Timer {
             interval: 500; running: true; repeat: true
             onTriggered: parent.text = Qt.formatDateTime(new Date(), "hh:mm:ss -- dd/MM/yyyy")
@@ -85,5 +95,19 @@ PanelCommon {
             right: parent.right
             bottom: parent.bottom
         }
+    }
+    StateGroup {
+        states: [
+            State {
+                name: "logout"
+                when: !_ROOT.appState.login || _TELKB.visible || _GMDIALOG.visible
+                PropertyChanges { target: menu; enabled: false }
+            },
+            State {
+                name: "login"
+                when: _ROOT.appState.login && !_TELKB.visible && !_GMDIALOG.visible
+                PropertyChanges { target: menu; enabled: true }
+            }
+        ]
     }
 }

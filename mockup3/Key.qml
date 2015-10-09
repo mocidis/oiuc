@@ -2,7 +2,7 @@ import QtQuick 1.1
 PushButton {
     property alias text: label.text
     property alias textColor: label.color
-    property string value: null
+    property string value: ""
     property alias textSize: label.font.pointSize
     property bool isCap: false
     height: width
@@ -16,7 +16,7 @@ PushButton {
         }
     }
     border {
-        width: 1
+        width: 2
         color: "lightgray"
     }
     StateGroup {

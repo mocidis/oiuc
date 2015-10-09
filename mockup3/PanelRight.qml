@@ -4,29 +4,28 @@ PanelCommon {
 	Connections {
 		target: logObj
 		onWriteLog: {
-			log(msg);
-		}
-	}
-	function log(line) {
-		line = Qt.formatDateTime(new Date(), "  [hh:mm] ") + line
-		logModel.insert(0, {"log": line}); 
-		if (logModel.count > 300) {
-			logModel.clear();
+		    logModel.insert(
+                0, 
+                {
+                    "log": Qt.formatDateTime(new Date(), "[hh:mm] ") + msg
+                }
+            ); 
 		}
 	}
 	ListModel {
 		id: logModel
-	}
-	Component {
-		id: logComponent
-		Column {
-			spacing: 2
-			Text {
-				width: root.width
-				text: log
-				elide: Text.ElideRight
-			}
-		}
+        ListElement {
+            log: "test messages"
+            count: 0
+        }
+        ListElement {
+            log: "Test messages Test messages Test messages Test messages Test messages Test messages "
+            count: 1
+        }
+        ListElement {
+            log: "TEst messages"
+            count: 2
+        }
 	}
 	ListView {
 		id: listview
@@ -37,7 +36,21 @@ PanelCommon {
 			bottom: parent.bottom
 		}
 		model: logModel
-		delegate: logComponent
+		delegate: Rectangle {
+            width: parent.width
+            height: 30
+            color: (index % 2 == 0) ? "white":"#F0F0F0"
+			Text {
+                anchors {
+                    left: parent.left
+                    leftMargin: 5
+                    verticalCenter: parent.verticalCenter
+                }
+				width: root.width
+				text: log
+				elide: Text.ElideRight
+			}
+		}
 		clip: true
 	}
 	ScrollBar {

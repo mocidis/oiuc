@@ -1,7 +1,7 @@
 import QtQuick 1.1
 Rectangle {
     id: _ROOT
-	width: 1360
+	width: 1280
     height: 680
     color: "black"
     property list<ListModel> models: [ ModelRadios{}, ModelOIUs{}, ModelGroups{} ]
@@ -52,6 +52,26 @@ Rectangle {
 			}
 		}
 	}
+	Connections {
+		target: pstn
+		onCallingState: {
+            _CALLDIALOG.visible = true;
+            _CALLDIALOG.text = msg;
+            if ( msg == "CONFIRMED" ) {
+                _CALLDIALOG.dialogState = 3
+            }
+            else if ( msg == "DISCONNCTD" ) {
+                _CALLDIALOG.dialogState = 0;
+            }
+            else if ( msg == "EARLY" ) {
+                _CALLDIALOG.dialogState = 1;
+            } 
+            else {
+                _CALLDIALOG.dialogState = 2;
+            }
+        }
+	}
+	FontLoader {id: lcdFont; source: "../static/fonts/digital-7 (mono).ttf"}
     PanelTop {
         id: panelTop
         anchors {
@@ -114,6 +134,34 @@ Rectangle {
             leftMargin: 1
         }
     }
+    TelephoneKeyboard {
+        id: _TELKB
+        anchors {
+            verticalCenter: parent.verticalCenter
+            horizontalCenter: panelMain.horizontalCenter
+        }
+        visible: false
+    }
+    CallDialog {
+        id:_CALLDIALOG
+        width: 450
+        height: 180
+        anchors {
+            horizontalCenter: panelMain.horizontalCenter
+            verticalCenter: parent.verticalCenter
+        }
+        visible: true
+    }
+    GroupManDialog {
+        id:_GMDIALOG
+        width: 300
+        height: 500
+        anchors {
+            horizontalCenter: panelMain.horizontalCenter
+            verticalCenter: parent.verticalCenter
+        }
+        visible: false
+    }
     VirtualKeyboard {
         id: _KEYBOARD
         anchors {
@@ -121,6 +169,7 @@ Rectangle {
             horizontalCenter: panelMain.horizontalCenter
             bottomMargin: 20
         }
+        visible: false
     }
     StateGroup {
         states: [
@@ -140,4 +189,26 @@ Rectangle {
             }
         ]
     }
+/*
+    StateGroup {
+        states: [
+            State {
+                name: "telkbVisible"
+                when: _TELKB.visible
+                PropertyChanges { target: panelLeft; enabled: false}
+                PropertyChanges { target: panelRight; enabled: false}
+                PropertyChanges { target: panelMain; enabled: false}
+                PropertyChanges { target: panelTop; enabled: false}
+            },
+            State {
+                name: "telkbInvisible"
+                when: !_TELKB.visible
+                PropertyChanges { target: panelLeft; enabled: true}
+                PropertyChanges { target: panelRight; enabled: true}
+                PropertyChanges { target: panelMain; enabled: true}
+                PropertyChanges { target: panelTop; enabled: true}
+            }
+        ]
+    }
+*/
 }

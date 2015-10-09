@@ -7,59 +7,47 @@ ScreenCommon {
 			numberLCD.text = msg
 		}
 	}
-	width: 100; height: 100
 	NumberLCD {
 		id: numberLCD
-		lcdWidth: 300
-		lcdHeight: 60
+		height: 60
 		fontSize: 36
 		anchors {
 			top: parent.top
 			left: parent.left
+            right: parent.right
 			leftMargin: 10
+            rightMargin: 10
 			topMargin: 30
 		}
 	}
-	GridKeyBoard {
+    Rectangle {
 		anchors {
-			//horizontalCenter:parent.horizontalCenter
 			top: numberLCD.bottom
 			left: parent.left
+            right: parent.right
+            bottom: parent.bottom
 			leftMargin: 10
 			topMargin: 30
+            rightMargin: 10
 		}
+        border { width: 1; color: "red" }
+	GridKeyBoard {
 		id: numPad
 		backgroundColor: "#003000"
-		itemSize: 80
+		itemSize: 60
 		spacing: 20
 		columns: 3
 		rows: 4
 		onClicked: {
 			numberLCD.changeText(label);
-			numberLCD.fontSize = numberLCD.fontSize;
 		}
 	}
-    //BorderImage {
-		//anchors {
-			//top: numPad.top
-			//left: numberLCD.right
-			//leftMargin: 20
-			//topMargin: 50
-		//}
-        //source: "../static/seperator-black.svg"
-        ////border { left: 1; right: 1; top: 1; bottom: 1 }
-		//height: 200
-		//width: 2
-		//clip: true
-	//}
+    }
 	FunctionPad {
 		id: funcPad
 		anchors {
-			//top: numPad.top
-			//left: numPad.right
 			top: numPad.top
-			left: numberLCD.right
-			leftMargin: 40
+			right: parent.right
 		}
 		onClicked: {
 			detectPSTNButton(value)

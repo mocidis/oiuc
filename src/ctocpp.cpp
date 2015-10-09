@@ -37,7 +37,7 @@ void on_reg_state_impl(int account_id, char* is_registration, int code, char *re
 
 void on_incoming_call_impl(int account_id, int call_id, char *remote_contact, char *local_contact) {
 	QString msg = QString::fromUtf8(remote_contact);
-	msg = "incoming call from: " + msg;	
+	//msg = "incoming call from: " + msg;
 	PSTN *dial = PSTN::getPSTN();
 	dial->runCallingState(msg);
 }

@@ -63,16 +63,16 @@ void PSTN::pstnCall (QString number) {
 	char *c_uri = number.toLatin1().data();
 	ics_make_call(&app_data.ics_data, c_uri);
 }
-void PSTN::pstnHangupCall (QString number) {
+void PSTN::pstnHangupCall () {
 	ics_hangup_call(&app_data.ics_data, 1);
 }
-void PSTN::pstnHangupAllCall (QString number) {
+void PSTN::pstnHangupAllCall () {
 	ics_hangup_call(&app_data.ics_data, 1);
 }
 void PSTN::pstnConferenceCall (QString number) {
-
+    // TODO
 }
-void PSTN::pstnAnswerCall (QString number) { 
+void PSTN::pstnAnswerCall () { 
 	ics_answer_call(&app_data.ics_data);
 }
 void PSTN::pstnTransferCall (QString number) {

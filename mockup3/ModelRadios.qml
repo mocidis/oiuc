@@ -1,7 +1,8 @@
 import QtQuick 1.1
 
 ListModel {
-/*    ListElement {
+	/*
+    ListElement {
         name: "Barrt"
         description: "Barrett radio - K20 BCA"
         port: 1
@@ -50,5 +51,5 @@ ListModel {
         isGreen: false
         isYellow: false
     }
-*/
+	*/
 }

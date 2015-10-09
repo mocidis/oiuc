@@ -46,14 +46,14 @@ Rectangle {
                 delegate: Key {
                     width: keySize
                     value: modelData
-                    onClicked: doClick(text);
+                    onClicked: textInput.text += text;
                 }
             }
             Key {
                 width: keySize
                 value: "DEL"
                 isCap: true
-                onClicked: doClick(text);
+                onClicked: textInput.text = textInput.text.substring(0, textInput.text.length - 1);
             }
 
         }
@@ -76,7 +76,7 @@ Rectangle {
                     width: keySize
                     value: modelData
                     isCap: shiftKey.value
-                    onClicked: doClick(text);
+                    onClicked: textInput.text += text
                 }
             }
             Rectangle {
@@ -107,7 +107,7 @@ Rectangle {
                     width: keySize
                     value: modelData
                     isCap: shiftKey.value
-                    onClicked: doClick(text);
+                    onClicked: textInput.text += text;
                 }
             }
         }
@@ -128,7 +128,8 @@ Rectangle {
                     width: keySize
                     value: modelData
                     isCap: shiftKey.value
-                    onClicked: doClick(text);
+                    onClicked: textInput.text += text;
+
                 }
             }
             Key {
@@ -153,7 +154,7 @@ Rectangle {
                 delegate: Key {
                     width: keySize
                     value: modelData
-                    onClicked: doClick(text);
+                    onClicked: textInput.text += text;
                 }
             }
             Key {
@@ -161,14 +162,14 @@ Rectangle {
                 height: keySize
                 isCap: true
                 value: "SPACE"
-                onClicked: doClick(text);
+                onClicked: textInput.text += " ";
             }
             Repeater {
                 model: ["*", "?"]
                 delegate: Key {
                     width: keySize
                     value: modelData
-                    onClicked: doClick(text);
+                    onClicked: textInput.text += text;
                 }
             }
         }
