@@ -6,11 +6,15 @@ Rectangle {
     color: "black"
     property list<ListModel> models: [ ModelRadios{}, ModelOIUs{}, ModelGroups{} ]
     property variant appState: QtObject {
-        //property bool login: false
         property bool login: true
-        property string username: "user"
-        property string password: "1234"
+        //property bool login: pstn.isLoggedIn()
     }
+	//Connections {
+		//target: pstn
+		//onLoggedInChange: {
+			//appState.login = pstn.isLoggedIn();
+		//}
+	//}
     property alias main: panelMain
     property alias leftPanel: panelLeft
     property alias rightPanel: panelRight
@@ -20,13 +24,13 @@ Rectangle {
 	Connections {
 		target: radioObj 
 		onUpdateRadioManager: {
-			radios.append({"name": name, "status": status, "frequency":frequency, "location": location, "port_mip":port_mip, "downtime":downtime,"avaiable":avaiable,"port":port});
+			radios.append({"name": name, "status": status, "frequency":frequency, "location": location, "port_mip":port_mip, "downtime":downtime,"avaiable":avaiable,"port":port, "description":desc});
 		}
 	}
 	Connections {
 		target: oiucObj
 		onUpdateOIUCManager: {
-			oius.append({"type": type, "name": name, "status":status, "downtime":downtime});
+			oius.append({"type": type, "name": name, "status":status, "downtime":downtime, "description":desc});
 		}
 	}
 	Connections {
@@ -34,14 +38,18 @@ Rectangle {
 		onUpdateGroupManager: {
 			groups.append({
 				"name": name, 
-				"description": "ABC DEF",
+				"description": desc,
 				"nodes": [
 					{
 						"modelIdx": 0,
-						"itemIdx": 0
-					}
+						"itemIdx": 0,
+					}, 
 				]
 			});
+			groups.get(currentIdx).nodes.set(0,{"modelIdx": 0, "itemIdx": itemIdx[0]});
+			for (var i=1;i<itemIdx.length;i++) {
+				groups.get(currentIdx).nodes.append({"modelIdx": 0, "itemIdx": itemIdx[i]});
+			}
 		}
 	}
     PanelTop {

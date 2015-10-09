@@ -19,13 +19,16 @@ public:
 	/*****************Add and Set functions******************/
 	void addGroup(Group *grp);
 	Q_INVOKABLE void addGroup (QString radio, QString grp_name);
+	Q_INVOKABLE void addGroup (QString radio, QString grp_name, QString desc);
 	Q_INVOKABLE void deleteGroup(QString grp_name);
 	void addRadio(Radio *radio);
+	void loadGrpFromDatabase();
+
 	/*****************Get functions******************/
 	QList<QObject*>getGroupModel();
 	void updateGroupManagerSignal(Group* group);
 signals: 
-	void updateGroupManager(QString name);
+	void updateGroupManager(int currentIdx, QString name, QString desc, QList<int> itemIdx);
 private:
 	/*****************Constructor******************/
 	GroupManager(RadioManager *radio_manager);

@@ -10,7 +10,6 @@ GroupManager* GroupManager::getGroupManager(RadioManager *radio_manager) {
 }
 GroupManager::GroupManager(RadioManager *radio_manager) {
 	_radio_manager = radio_manager;
-	_grp_manager = NULL;
 }
 
 /*****************Add and Set functions******************/
@@ -25,8 +24,18 @@ void GroupManager::addGroup (QString radio, QString grp_name) {
 	QList<Radio*> radio_list = _radio_manager->getRadioList();
 
 	determineRadioListLastGroup(_group_list, radio_list);
+	appendToDatabase(_group_list.last(), "databases/radio.db");
 	updateGroupManagerSignal(grp);
-	//appendToDatabase(_group_list, "databases/radio.db");
+}
+void GroupManager::addGroup (QString radio, QString grp_name, QString desc) {
+	QStringList list = radio.split(", ");
+	Group *grp = new Group(grp_name, radio, "online", desc);
+	_group_list.append(grp);
+	QList<Radio*> radio_list = _radio_manager->getRadioList();
+
+	determineRadioListLastGroup(_group_list, radio_list);
+	appendToDatabase(_group_list.last(), "databases/radio.db");
+	updateGroupManagerSignal(grp);
 }
 void GroupManager::deleteGroup(QString grp_name) {
 	for (int i=0;i<_group_list.count();i++) {
@@ -34,7 +43,14 @@ void GroupManager::deleteGroup(QString grp_name) {
 			_group_list.removeAt(i);
 		}
 	}
-	//deleteFromDatabase(grp_name, "databases/radio.db");
+	deleteFromDatabase(grp_name, "databases/radio.db");
+}
+void GroupManager::loadGrpFromDatabase() {
+	_group_list = getBackendGroupList("databases/radio.db");	
+	determineRadioListForGroup(_group_list, _radio_manager->getRadioList());
+	for (int i=0; i<_group_list.count();i++) {
+		updateGroupManagerSignal(_group_list[i]);
+	}
 }
 /*****************Get functions******************/
 QList<QObject*> GroupManager::getGroupModel() {
@@ -46,5 +62,21 @@ QList<QObject*> GroupManager::getGroupModel() {
 }
 void GroupManager::updateGroupManagerSignal(Group* group) {
 	QString name = group->getName();
-	emit updateGroupManager(name);
+	QString desc = group->getDesc();
+	int n = group->getRadioList().count();
+	int m = _radio_manager->getRadioList().count();
+	QList<Radio*> N = group->getRadioList();
+	QList<Radio*> M = _radio_manager->getRadioList();
+	QList<int> itemIdx;
+	for (int i=0; i<n; i++) {
+		for (int j=0; j<m; j++) {
+			if (N[i]->getName() == M[j]->getName()) {
+				itemIdx.append(j);
+				writeLog("new group append");
+				break;
+			}
+		}
+	}
+	int currentIdx = _group_list.indexOf(group);
+	emit updateGroupManager(currentIdx, name, desc, itemIdx);
 }

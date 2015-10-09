@@ -11,6 +11,21 @@ PSTN* PSTN:: getPSTN() {
 PSTN::PSTN() {
 	current_dial_number="000"; 
 	last_dial_number=current_dial_number;
+	username = "ntt";
+	password = "1234";
+	logged_in = false;
+	strcpy(send_to, "udp:239.0.0.1:6789");
+	strcpy(listen_on, "udp:0.0.0.0:9876");
+}
+int PSTN::pstnStart(QString username, QString password) {
+	char user[20], passwd[20];
+	this->username = username;
+	this->password = password;
+	strncpy(user, username.toLocal8Bit().constData(), 20);
+	strncpy(passwd, password.toLocal8Bit().constData(), 20);
+	ics_add_account(&app_data.ics_data, "192.168.2.30", user, passwd);
+}
+int PSTN::pstnPrepare() {
 	ics_init(&app_data.ics_data);
 
 	ics_set_reg_start_callback(&on_reg_start_impl); //cc
@@ -20,25 +35,20 @@ PSTN::PSTN() {
 	ics_set_call_transfer_callback(&on_call_transfer_impl);
 	ics_set_call_media_state_callback(&on_call_media_state_impl); //cc
 
-	//SEND
-	char send_to[] = "udp:239.0.0.1:6789";
-	char listen_on[] = "udp:0.0.0.0:9876";
-	arbiter_client_open(&app_data.aclient, strdup(send_to));
-
 	ics_start(&app_data.ics_data);
 	ics_connect(&app_data.ics_data, 1111);
-
-	//Arbiter path
+}
+int PSTN::pstnStartAServer() {
+	//SEND
+	arbiter_client_open(&app_data.aclient, send_to);
+}
+int PSTN::pstnStartOServer() {
     // LISTEN
     app_data.oserver.on_request_f = &on_request;
     app_data.oserver.on_open_socket_f = &on_open_socket;
 
-    oiu_server_init(&app_data.oserver, strdup(listen_on));
+    oiu_server_init(&app_data.oserver, listen_on);
     oiu_server_start(&app_data.oserver);
-
-    //End Arbiter path
-
-	ics_add_account(&app_data.ics_data, "192.168.2.30", "ntt", "1234");
 
 }
 void PSTN::setPSTNNumberSlot(QString value) {
@@ -74,4 +84,20 @@ void PSTN::runCallingState(QString msg) {
 }
 app_data_t *PSTN::getAppData() {
 	return &app_data;
+}
+void PSTN::setLoggedIn(int flag) {
+	if (flag == 1) {
+		logged_in = true;
+	} else {
+		logged_in = false;
+	}
+	emit loggedInChange(logged_in);
+}
+bool PSTN::isLoggedIn() {
+	return logged_in;
+}
+int PSTN::pstnStop() {
+	setLoggedIn(0);
+	//destroy PSTN here
+	//
 }

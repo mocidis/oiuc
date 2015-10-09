@@ -1,7 +1,7 @@
 import QtQuick 1.1
 
 ListModel {
-    ListElement {
+/*    ListElement {
         name: "Group 1"
         description: "K20 BCA"
         nodes: [
@@ -15,6 +15,7 @@ ListModel {
             }
         ]
 	}
+	*/
 	/*
     ListElement {
         name: "Group 2"

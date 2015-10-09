@@ -18,14 +18,20 @@ void on_reg_state_impl(int account_id, char* is_registration, int code, char *re
     req.msg_id = ABT_UP;
     strncpy(req.abt_up.username, data->acfg.cred_info[0].username.ptr, sizeof(req.abt_up.username));
     strncpy(req.abt_up.type, "OIU", sizeof(req.abt_up.type));
+    strncpy(req.abt_up.des, "AK-47", sizeof(req.abt_up.des));
    
-	if( strcmp(is_registration, "No") == 0 )
-        req.abt_up.is_online = 0;
-	else
-        req.abt_up.is_online = 1;
 	PSTN *pstn = PSTN::getPSTN();
 	app_data_t *app_data;
 	app_data = pstn->getAppData();
+	if( strcmp(is_registration, "No") == 0 ) {
+        req.abt_up.is_online = 0;
+		pstn->setLoggedIn(0);
+		qDebug() << "offline";
+	} else {
+        req.abt_up.is_online = 1;
+		pstn->setLoggedIn(1);
+		qDebug() << "online";
+	}
     send_to_arbiter(&app_data->aclient, &req);
 }
 
@@ -67,6 +73,7 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 	QString name = "unknown";
 	QString status="Offline";
 	QString ports_status = "";
+	QString desc = "";
 	QStringList list_radio_str;
 	int port=0;
 	OIUC *oiuc;
@@ -77,6 +84,9 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 			msg_id = req->msg_id;
 			type = QString::fromLatin1(req->oiuc_gb.type);
 			if ( type == "OIUC" ) {
+				if (!oiuc_manager->isOk()) {
+					break;
+				}
 				name = QString::fromLatin1(req->oiuc_gb.id);
 				if (req->oiuc_gb.is_online == 1)
 					status = "Online";
@@ -88,9 +98,13 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 					downtime = difftime(timer, timestamp); //type of double
 					//need emit signal if downtime detected
 				}
-				oiuc = new OIUC(msg_id, type , name , status);
+				desc = QString::fromLatin1(req->oiuc_gb.des);
+				oiuc = new OIUC(msg_id, type , name , status, desc);
 				oiuc_manager->addOIUC(oiuc);
 			} else if (type == "RIUC" ) {
+				if (!radio_manager->isOk()) {
+					break;
+				}
 				ports_status = QString::fromLatin1(req->oiuc_gb.ports_status);
 				list_radio_str = ports_status.split(", ");
 				for (int i=0; i<list_radio_str.count(); i++) {
@@ -114,9 +128,10 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 						QString port_mip = QString::fromLatin1(req->oiuc_gb.ip); // need to change port_mip 
 						int avaiable=0;
 						if (temp[2] == "1") {
-							avaiable = 1;	
+							avaiable = 1;
 						}
-						Radio *radio = new Radio(name, status, freq, loc, port_mip, avaiable, port);
+						desc = QString::fromLatin1(req->oiuc_gb.des);
+						Radio *radio = new Radio(name, status, freq, loc, port_mip, avaiable, port, desc);
 						radio_manager->addRadio(radio);
 					}
 					name = "";

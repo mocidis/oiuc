@@ -11,16 +11,18 @@ public:
 	// constructor
 	OIUC();
 	OIUC(QString name);
-	OIUC(int msg_id, QString type, QString name, QString status);
+	OIUC(int msg_id, QString type, QString name, QString status, QString desc);
 
 	//add and set functions
-	void setDowntime(QString downtime);
+	void setDowntime(double downtime);
 	void setStatus (QString status);
 	//get functions
 	QString getName();
 	QString getStatus();
 	QString getType();
-	QString getDowntime();
+	double getDowntime();
+	QString getDesc();
+	int getMsgId();
 
 
 private:
@@ -28,8 +30,8 @@ private:
 	QString _type;
 	QString _name; //name of oiu
 	QString _status;  //1=online or 0=offline
-	QString _downtime;
+	double _downtime;
+	QString _desc;
 };
-
 
 #endif

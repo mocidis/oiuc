@@ -28,22 +28,29 @@ public:
 	Q_INVOKABLE void pstnConferenceCall (QString number);
 	Q_INVOKABLE void pstnAnswerCall (QString number);
 	Q_INVOKABLE void pstnTransferCall (QString number);
+	int pstnPrepare();
+	Q_INVOKABLE int pstnStart(QString username, QString password);
+	Q_INVOKABLE int pstnStop();
+	int pstnStartAServer();
+	int pstnStartOServer();
+	void setLoggedIn(int flag);
+	Q_INVOKABLE bool isLoggedIn();
 signals:
 	void callingState(QString msg);
+	void loggedInChange(bool logged_in);
 public slots:
 	void setPSTNNumberSlot (QString value);
 	void setLastPSTNNumberSlot (QString value);
-	//void pstnCallSlot (QString number);
-	//void pstnHangupCallSlot (QString number);
-	//void pstnHangupAllCallSlot (QString number);
-	//void pstnConferenceCallSlot (QString number);
-	//void pstnAnswerCallSlot (QString number);
-	//void pstnTransferCallSlot (QString number);
 private:
 	PSTN();
 	static PSTN *singleton;
 	app_data_t app_data; 
 	QString current_dial_number;
 	QString last_dial_number;
+	bool logged_in;
+	char send_to[30];
+	char listen_on[30];
+	QString username;
+	QString password;
 };
 #endif  //end of __PSTN_H__

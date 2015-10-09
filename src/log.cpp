@@ -20,6 +20,7 @@ QString Log::getFilename() {
 	return filename;
 }
 
+/**********************************/
 void writeLog(QString msg) {
 	Log *log = Log::getLog();
 	log->logs(msg);

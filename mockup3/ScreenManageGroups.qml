@@ -102,7 +102,7 @@ ScreenCommon {
 						}
 					}
 					console.log("---------" + group);
-					groupObj.addGroup(group, grpName.text);
+					groupObj.addGroup(group, grpName.text, "there is no description");
 				}
 			}
 		}

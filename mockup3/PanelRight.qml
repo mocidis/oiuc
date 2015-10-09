@@ -10,6 +10,9 @@ PanelCommon {
 	function log(line) {
 		line = Qt.formatDateTime(new Date(), "  [hh:mm] ") + line
 		logModel.insert(0, {"log": line}); 
+		if (logModel.count > 300) {
+			logModel.clear();
+		}
 	}
 	ListModel {
 		id: logModel

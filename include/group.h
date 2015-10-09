@@ -12,32 +12,34 @@ public:
 	/*****************Constructor******************/
 	Group();
 	Group(QString name, QString radio_list_str, QString status);
+	Group(QString name, QString radio_list_str, QString status, QString desc);
+	Group(QString name, QString radio_list_str, QString status, int avaiable, QString desc);
 
 	/*****************Add and Set functions******************/
 	void setRadioList(QList<Radio*> radio_list);
 	void addRadio(Radio *radio);
 	void setStatus(QString status);
-	Q_INVOKABLE void setIState(int iState);
 	void setAvaiable(int avaiable);
+	void setDesc(QString desc);
 
 	/*****************Get functions******************/
 	QString getRadioListStr();
 	QString getGroupStatus();
 
 	//INVOKABLE METHOS
-	Q_INVOKABLE QList<QObject*> getRadioList();
+	Q_INVOKABLE QList<Radio*> getRadioList();
 	Q_INVOKABLE QString getName ();
 	Q_INVOKABLE int getRadioListSize();
 	QString getStatus();
-	Q_INVOKABLE int getIState();
 	int getAvaiable();
+	QString getDesc();
 private:
 	QString _name;
 	QString _status;
 	QString _radio_list_str;
-	QList<QObject*> _radio_list;
+	QList<Radio*> _radio_list;
 	int _avaiable;
-	int _iState; // qml used
+	QString _desc;
 };
 
 #endif

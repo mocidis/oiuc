@@ -7,7 +7,7 @@ Radio::Radio() {
 Radio::Radio(QString name) {
 	_name = name;	
 }
-Radio::Radio(QString name, QString status, double frequency, QString location, QString port_mip, int avaiable, int port) {
+Radio::Radio(QString name, QString status, double frequency, QString location, QString port_mip, int avaiable, int port, QString desc) {
 	_name = name;
 	_status = status;
 	_frequency = frequency;
@@ -15,11 +15,12 @@ Radio::Radio(QString name, QString status, double frequency, QString location, Q
 	_port_mip = port_mip;
 	_avaiable = avaiable;
 	_port = port;
+	_desc = desc;
 }
 
 /*Add and set function*/
 
-void Radio::setDowntime(QString downtime) {
+void Radio::setDowntime(double downtime) {
 	_downtime = downtime;
 	//emit signal if downtime occured
 }
@@ -52,9 +53,12 @@ QString Radio::getLocation() {
 QString Radio::getPortMIP() {
 	return _port_mip;
 }
-QString Radio::getDowntime() {
+double Radio::getDowntime() {
 	return _downtime;
 }
 int Radio::getPort() {
 	return _port;
+}
+QString Radio::getDesc() {
+	return _desc;
 }

@@ -129,14 +129,10 @@ ScreenCommon {
                     font.bold: true
                 }
                 onClicked: {
-                    if( _ROOT.appState.username == usrTextInput.text && 
-                        _ROOT.appState.password == pwdTextInput.text ) 
-                    {
-                        _ROOT.appState.login = true;
-                    }
-                    else {
-                        msgLabel.text = "Login failed !"
-                    }
+					pstn.pstnStart(usrTextInput.text, pwdTextInput.text);
+					//msgLabel.text = "Login failed !"
+					usrTextInput.text = "";	
+					pwdTextInput.text = "";
                 }
             }
             PushButton {
@@ -227,7 +223,8 @@ ScreenCommon {
                     font.pointSize: 16
                     font.bold: true
                 }
-                onClicked: _ROOT.appState.login = false;
+                //onClicked: _ROOT.appState.login = false;
+				onClicked: pstn.pstnStop();
             }
         }
     }

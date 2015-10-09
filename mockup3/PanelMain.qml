@@ -47,13 +47,12 @@ PanelCommon {
         }
         Flow {
             Repeater {
+				id: oiuRepeater
                 model: _ROOT.models[1]
                 delegate: ScreenOIU {
                     width: root.width
                     height: root.height
-                    Text {
-                        text: name + " " + index;
-                    }
+                    oModelItem: oiuRepeater.model.get(index)
                 }
             }
             Rectangle { 
