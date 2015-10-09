@@ -27,6 +27,9 @@ CORE_SRC:= ../concurrent_queue/src/queue.c \
 
 all: gen-a gen-o build
 
+MY_CFLAGS:=$(shell pkg-config --cflags libpjproject) 
+MY_LIBS:=$(shell pkg-config --libs libpjproject)
+
 APP:=app.app
 
 USERVER_DIR:=../userver
@@ -72,8 +75,9 @@ oiuc.pro:
 	echo "               ../common/include" >> oiuc.pro
 	echo "" >> oiuc.pro
 	echo "QT += declarative sql" >> oiuc.pro
-	echo "QMAKE_CFLAGS += $(shell pkg-config --cflags /usr/local/lib/pkgconfig/libpjproject.pc) -I../json-c/output/include/json-c" >> oiuc.pro
-	echo "QMAKE_LIBS += $(shell pkg-config --libs /usr/local/lib/pkgconfig/libpjproject.pc) ../json-c/output/lib/libjson-c.a" >> oiuc.pro
+	echo "QMAKE_CFLAGS += $(MY_CFLAGS) -I../json-c/output/include/json-c" >> oiuc.pro
+	echo "QMAKE_CXXFLAGS += $(MY_CFLAGS) -I../json-c/output/include/json-c" >> oiuc.pro
+	echo "QMAKE_LIBS += $(MY_LIBS) ../json-c/output/lib/libjson-c.a" >> oiuc.pro
 	echo "" >> oiuc.pro
 	echo "HEADERS += $(subst /src/,/include/,$(CPP_SRC:.cpp=.h)) $(GEN_SRC:.c=.h) $(subst /src/,/include/,$(CORE_SRC:.c=.h))" >> oiuc.pro
 	echo "" >> oiuc.pro

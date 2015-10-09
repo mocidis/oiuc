@@ -1,5 +1,5 @@
 #include "log.h"
-Log* Log::log = 0;
+Log* Log::log = NULL;
 Log* Log::getLog() {
 	if (log == NULL) {
 		log = new Log();

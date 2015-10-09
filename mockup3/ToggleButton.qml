@@ -3,6 +3,7 @@ import QtQuick 1.1
 Rectangle {
     signal clicked()
     signal longClicked()
+    property color onColor: "lightgray"
     id: root
     property bool value: false
     MouseArea {
@@ -27,7 +28,7 @@ Rectangle {
             State {
                 name: "ON"
                 when: value == true
-                PropertyChanges {target: root; color: "lightgray"}
+                PropertyChanges {target: root; color: onColor}
             }
         ]
 

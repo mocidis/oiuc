@@ -15,7 +15,7 @@ ListModel {
             }
         ]
 	}
-	/*
+/*
     ListElement {
         name: "Group 2"
         description: "K20 BCA"
@@ -29,8 +29,7 @@ ListModel {
                 itemIdx: 3
             }
         ]
-	}*/
-/*
+	}
     ListElement {
         name: "TopUsed"
         description: "K20 BCA"

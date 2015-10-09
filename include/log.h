@@ -10,6 +10,7 @@ class Log : public QObject {
 public:
 	void logs(QString msg);
 	static Log* getLog();
+    static int count;
 	void setFilename(QString _filename);
 	Q_INVOKABLE QString getFilename();
 signals:
