@@ -27,6 +27,7 @@ int main (int argc, char* argv[]) {
 	Log *log = Log::getLog();
 	log->setFilename("/tmp/oiuc.log");
 	log->start();
+	QObject::connect(&app, SIGNAL(aboutToQuit()), log, SLOT(flushLog()));
 	view.rootContext()->setContextProperty("pstn", pstn);// setup connection between qml and cpp
 	view.rootContext()->setContextProperty("ptt", ptt);// setup connection between qml and cpp
 
