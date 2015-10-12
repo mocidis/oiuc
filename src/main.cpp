@@ -16,6 +16,7 @@
 int main (int argc, char* argv[]) {
 	QApplication app(argc, argv);
 	QDeclarativeView view;
+
 	PSTN *pstn = PSTN::getPSTN();
 	pstn->pstnPrepare();
 	pstn->pstnStartAServer();
@@ -40,12 +41,14 @@ int main (int argc, char* argv[]) {
 	view.rootContext()->setContextProperty("radioObj", radio_manager);
 	view.rootContext()->setContextProperty("oiucObj", oiuc_manager);
 	view.rootContext()->setContextProperty("groupObj", grp_manager);
+
 	view.setSource(QUrl::fromLocalFile("mockup3/Application.qml"));
 
 	writeLog("Start OIUC"); //any log should declare after this line
 	radio_manager->loadRadioFromDatabase();
 	oiuc_manager->loadOIUCFromDatabase();
 	grp_manager->loadGrpFromDatabase();
+
 	view.show();
 	return app.exec();
 }
