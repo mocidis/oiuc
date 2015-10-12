@@ -1,8 +1,9 @@
 import QtQuick 1.1
 
-Rectangle {
+//Rectangle {
+DialogCommon {
     property alias text: label.text
-    property alias captionText: caption.text
+    //property alias captionText: caption.text
 
     // 0: Error/undefined; 
     // 1: Outgoing call ...;
@@ -11,45 +12,7 @@ Rectangle {
     property int dialogState: 0
 
     id: root    
-    border {
-        width: 2
-        color: "gray"
-    }
-    Rectangle {
-        color: "black"
-        height: 30
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-        }
-        Text {
-            id: caption
-            color: "white"
-            anchors {
-                left: parent.left
-                right: parent.right
-                verticalCenter: parent.verticalCenter
-                leftMargin: 5
-            }
-            text: "Caption"
-        }
-        PushButton {
-            color: "black"
-            width: 30
-            height: 30
-            anchors {
-                top: parent.top
-                right: parent.right
-            }
-            Text {
-                anchors { centerIn: parent }
-                text: "X"
-                color: "white"
-            }
-            onClicked: root.visible = (dialogState == 0) ? false : true
-        }
-    }
+    onClose: root.visible = (dialogState == 0) ? false : true
     Text {
         id: label
         anchors {

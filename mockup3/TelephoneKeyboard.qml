@@ -1,15 +1,18 @@
 import QtQuick 1.1
 
-Rectangle {
+DialogCommon {
+    id: root
     property int keySize: 100
     property int itemSpacing: 10
-    id: root
-    border {
-        width: 2
-        color: "gray"
-    }
-    width: childrenRect.width + 40
-    height: childrenRect.height + 40
+    width: content.width
+    height: content.height + 30
+    captionText: "Telephone"
+    onClose: visible = false
+Item {
+    id: content
+    width: childrenRect.width + 20
+    height: childrenRect.height + 20
+    anchors {top: parent.top; topMargin: 30}
     Flow {
         flow: Flow.TopToBottom
         spacing: itemSpacing
@@ -17,8 +20,8 @@ Rectangle {
         anchors {
             top: parent.top
             left: parent.left
-            topMargin: 20
-            leftMargin: 20
+            topMargin: 10
+            leftMargin: 10
         }
         NumberLCD {
             width: parent.width
@@ -117,4 +120,5 @@ Rectangle {
             }
         ]
     }
+}
 }

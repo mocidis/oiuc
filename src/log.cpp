@@ -31,10 +31,11 @@ void Log::run() {
 		if (!q_log.isEmpty()) {
 			out << q_log.dequeue();
 			//out.flush();
-			qDebug() << "Queue is not empty";
-		} else {
-			qDebug() << "Queue is empty";
-		}
+	//		qDebug() << "Queue is not empty";
+		} 
+        //else {
+	//		qDebug() << "Queue is empty";
+	//	}
 		msleep(500);
 	}
 	file.close();

@@ -1,7 +1,6 @@
 import QtQuick 1.1
 
 Rectangle {
-    property int iState: 0;
     property alias text: intext.text
     property variant panel: null
     property int tabIndex: -1
@@ -17,12 +16,12 @@ Rectangle {
     radius: 10
 
     function toggleActive() {
-        if(iState < 2) iState = ( iState + 1 ) % 2;
+        if(oModelItem.iState < 2) oModelItem.iState = ( oModelItem.iState + 1 ) % 2;
         else return;
     }
     function toggleControlled() {
-        if (iState == 1) iState = 2;
-        else if (iState == 2) iState = 1;
+        if (oModelItem.iState == 1) oModelItem.iState = 2;
+        else if (oModelItem.iState == 2) oModelItem.iState = 1;
         else return;
     }
     Rectangle {
@@ -64,27 +63,47 @@ Rectangle {
             itemWidth: 5
         }
     }
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
+            if (oModelItem.iState < 1) return;
+            parent.toggleControlled();
+            parent.clicked(modelIndex, tabIndex, oModelItem.iState);
+/*            if (panel != null) {
+                if (oModelItem.iState > 1)
+                    panel.hShow(modelIndex, tabIndex);
+                else {
+                    panel.hShow(-1, 0);
+                }
+            }
+            else {
+                console.log("Please bind panel and tabIndex properties to correct values");
+            }*/
+        }
+        onPressAndHold: oModelItem.iState = (oModelItem.iState < 2)?( oModelItem.iState + 1 ) % 2 : oModelItem.iState
+    }
+
 	StateGroup {
 		state: "inactive"
 
 		states: [
 			State {
 				name: "inactive"
-				when: iState == 0
+				when: oModelItem.iState == 0
 				PropertyChanges {target: root; color: "lightgray"}
                 PropertyChanges {target: inner; color: "white"; border.color: "lightgray" }
                 PropertyChanges {target: intext; color: "lightgray" }
 			}, 
 			State {
 				name: "active"
-				when: iState == 1
+				when: oModelItem.iState == 1
 				PropertyChanges {target: root; color: "lightgray"}
                 PropertyChanges {target: inner; color: "white"; border.color: "black"}
                 PropertyChanges {target: intext; color: "black" }
 			},
 			State {
 				name: "controlled"
-				when: iState == 2
+				when: oModelItem.iState == 2
 				PropertyChanges {target: root; color: "gray"}
                 PropertyChanges {target: inner; color: "black" }
                 PropertyChanges {target: intext; color: "white" }
@@ -99,25 +118,6 @@ Rectangle {
 			}
 		]*/
 	}
-    MouseArea {
-        anchors.fill: parent
-        onClicked: {
-            if (iState < 1) return;
-            parent.toggleControlled();
-            parent.clicked(modelIndex, tabIndex, iState);
-            if (panel != null) {
-                if (iState > 1)
-                    panel.hShow(modelIndex, tabIndex);
-                else {
-                    panel.hShow(-1, 0);
-                }
-            }
-            else {
-                console.log("Please bind panel and tabIndex properties to correct values");
-            }
-        }
-        onPressAndHold: iState = (iState < 2)?( iState + 1 ) % 2 : iState //parent.toggleActive();
-    }
     StateGroup {
         states: [
             State {

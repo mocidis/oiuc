@@ -24,9 +24,9 @@ PanelCommon {
                 text: "Home"
             }
             onClicked: {
-                _ROOT.main.hShow(-1, 0);
+                //_ROOT.main.hShow(-1, 0);
                 if (_ROOT.leftPanel.current != null) {
-                    _ROOT.leftPanel.current.iState = 1;
+                    _ROOT.leftPanel.current.toggleControlled();
                     _ROOT.leftPanel.current = null;
                 }
             }
@@ -41,9 +41,9 @@ PanelCommon {
                 text: "Telephone"
             }
             onClicked: { 
-                _ROOT.main.hShow(-1, 0);
+                //_ROOT.main.hShow(-1, 0);
                 if (_ROOT.leftPanel.current != null) {
-                    _ROOT.leftPanel.current.iState = 1;
+                    _ROOT.leftPanel.current.toggleControlled();
                     _ROOT.leftPanel.current = null;
                 }
                 _TELKB.visible = !_TELKB.visible;
@@ -62,7 +62,7 @@ PanelCommon {
                 //_ROOT.main.hShow(-1, 1);
                 _GMDIALOG.visible = true;
                 if (_ROOT.leftPanel.current != null) {
-                    _ROOT.leftPanel.current.iState = 1;
+                    _ROOT.leftPanel.current.toggleControlled();
                     _ROOT.leftPanel.current = null;
                 }
             }

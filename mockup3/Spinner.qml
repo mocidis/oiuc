@@ -40,7 +40,7 @@ Flow {
             text: "-"
             color: "white"
             font {
-                pointSize: 24
+                pixelSize: 24
             }
         }
         onClicked: {
@@ -63,7 +63,7 @@ Flow {
             text: "+"
             color: "white"
             font {
-                pointSize: 24
+                pixelSize: 24
             }
         }
         onClicked: {

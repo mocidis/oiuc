@@ -92,7 +92,7 @@ Item {
                         id: desctext
                         text: getDesc()
                         font {
-                            pointSize: 10
+                            pixelSize: 10
                             italic: true
                         }
                     }
@@ -114,7 +114,7 @@ Item {
                     }
                     text: "PTT"
                     font {
-                        pointSize: 18
+                        pixelSize: 18
                         bold: true;
                     }
                     color: "white"

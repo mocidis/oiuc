@@ -45,6 +45,12 @@ void GroupManager::deleteGroup(QString grp_name) {
 	}
 	deleteFromDatabase(grp_name, "databases/radio.db");
 }
+void GroupManager::deleteGroup(int idx) {
+    QString grpName = _group_list[idx]->getName();
+    _group_list.removeAt(idx);
+    emit groupDeleted(idx);
+    deleteFromDatabase(grpName, "databases/radio.db");
+}
 void GroupManager::loadGrpFromDatabase() {
 	_group_list = getBackendGroupList("databases/radio.db");	
 	determineRadioListForGroup(_group_list, _radio_manager->getRadioList());
@@ -78,5 +84,5 @@ void GroupManager::updateGroupManagerSignal(Group* group) {
 		}
 	}
 	int currentIdx = _group_list.indexOf(group);
-	emit updateGroupManager(currentIdx, name, desc, itemIdx);
+	emit groupAdded(currentIdx, name, desc, itemIdx);
 }

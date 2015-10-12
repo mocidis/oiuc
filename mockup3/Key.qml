@@ -3,7 +3,7 @@ PushButton {
     property alias text: label.text
     property alias textColor: label.color
     property string value: ""
-    property alias textSize: label.font.pointSize
+    property alias textSize: label.font.pixelSize
     property bool isCap: false
     height: width
     id: root
@@ -12,7 +12,7 @@ PushButton {
         anchors.centerIn: parent
         color: "gray"
         font {
-            pointSize: 20
+            pixelSize: 20
         }
     }
     border {
