@@ -54,6 +54,7 @@ void Log::run() {
 		if (_max_buffer_line >= max_buffer_line) {
 			out.flush();
 		}
+	} 
 		msleep(500);
 	}
 	logfile.close();

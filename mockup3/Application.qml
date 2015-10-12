@@ -24,18 +24,36 @@ Rectangle {
 	Connections {
 		target: radioObj 
 		onUpdateRadioManager: {
-			radios.append({"name": name, "status": status, "frequency":frequency, "location": location, "port_mip":port_mip, "downtime":downtime,"avaiable":avaiable,"port":port, "description":desc});
+			radios.append({
+                "name": name, 
+                "status": status, 
+                "frequency":frequency, 
+                "location": location, 
+                "port_mip": port_mip, 
+                "downtime":downtime,
+                "avaiable":avaiable,
+                "port":port, 
+                "description":desc,
+                iState: 0
+            });
 		}
 	}
 	Connections {
 		target: oiucObj
 		onUpdateOIUCManager: {
-			oius.append({"type": type, "name": name, "status":status, "downtime":downtime, "description":desc});
+			oius.append({
+                "type": type, 
+                "name": name, 
+                "status":status, 
+                "downtime":downtime, 
+                "description":desc,
+                "iState": 0
+            });
 		}
 	}
 	Connections {
 		target: groupObj
-		onUpdateGroupManager: {
+		onGroupAdded: {
 			groups.append({
 				"name": name, 
 				"description": desc,
@@ -44,13 +62,24 @@ Rectangle {
 						"modelIdx": 0,
 						"itemIdx": 0,
 					}, 
-				]
+				],
+                iState: 0
 			});
-			groups.get(currentIdx).nodes.set(0,{"modelIdx": 0, "itemIdx": itemIdx[0]});
+			groups.get(currentIdx).nodes.set(0,{
+                "modelIdx": 0, 
+                "itemIdx": itemIdx[0]
+            });
 			for (var i=1;i<itemIdx.length;i++) {
-				groups.get(currentIdx).nodes.append({"modelIdx": 0, "itemIdx": itemIdx[i]});
+				groups.get(currentIdx).nodes.append({
+                        "modelIdx": 0, 
+                        "itemIdx": itemIdx[i]
+                });
 			}
 		}
+        onGroupDeleted: {
+            console.log("group deleted");
+            groups.remove(currentIdx);
+        }
 	}
 	Connections {
 		target: pstn
@@ -100,17 +129,15 @@ Rectangle {
 			}
 			contentHeight: {
 				if ((100 * (Math.ceil(radios.count/2) + Math.ceil(oius.count/2) + Math.ceil(groups.count/2)) + 120) < parent.height) {
-					console.log("hihihi: " + parent.height);
 					return parent.height - 20
 				}else {
-					console.log("hehehehe");
 					return ( 100 * (Math.ceil(radios.count/2) + Math.ceil(oius.count/2) + Math.ceil(groups.count/2)) + 120)
 				}
 			}
 			clip: true
 		}
 		ScrollBar {
-			scrollArea: panelLeft; width: 8
+			scrollArea: panelLeft
 			anchors { right: panelLeft.right; bottom: panelLeft.bottom ; top: panelLeft.top}
 		}
 	}

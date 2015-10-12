@@ -1,11 +1,12 @@
 import QtQuick 1.0
 Item {
-    id: container
-
     property variant scrollArea
     property variant orientation: Qt.Vertical
 
+    id: container
     opacity: 0
+    
+    width: 10
 
     function position()
     {
@@ -61,8 +62,7 @@ Item {
         source: "../static/scrollbar-black-blur.svg"
         border { left: 1; right: 1; top: 1; bottom: 1 }
         x: container.orientation == Qt.Vertical ? 2 : position()
-        //width: container.orientation == Qt.Vertical ? container.width - 4 : size()
-        width: 6
+        width: parent.width
         y: container.orientation == Qt.Vertical ? position() : 2
         height: container.orientation == Qt.Vertical ? size() : container.height - 4
     }
@@ -72,9 +72,4 @@ Item {
         when: container.orientation == Qt.Vertical ? scrollArea.movingVertically : scrollArea.movingHorizontally
         PropertyChanges { target: container; opacity: 1.0 }
     }
-
-/*    transitions: Transition {
-        from: "visible"; to: ""
-        NumberAnimation { properties: "opacity"; duration: 600 }
-    }*/
 }

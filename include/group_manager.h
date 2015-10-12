@@ -21,6 +21,7 @@ public:
 	Q_INVOKABLE void addGroup (QString radio, QString grp_name);
 	Q_INVOKABLE void addGroup (QString radio, QString grp_name, QString desc);
 	Q_INVOKABLE void deleteGroup(QString grp_name);
+	Q_INVOKABLE void deleteGroup(int idx);
 	void addRadio(Radio *radio);
 	void loadGrpFromDatabase();
 
@@ -28,7 +29,8 @@ public:
 	QList<QObject*>getGroupModel();
 	void updateGroupManagerSignal(Group* group);
 signals: 
-	void updateGroupManager(int currentIdx, QString name, QString desc, QList<int> itemIdx);
+	void groupAdded(int currentIdx, QString name, QString desc, QList<int> itemIdx);
+    void groupDeleted(int currentIdx);
 private:
 	/*****************Constructor******************/
 	GroupManager(RadioManager *radio_manager);

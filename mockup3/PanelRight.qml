@@ -14,7 +14,7 @@ PanelCommon {
 	}
 	ListModel {
 		id: logModel
-        ListElement {
+/*        ListElement {
             log: "test messages"
             count: 0
         }
@@ -26,6 +26,7 @@ PanelCommon {
             log: "TEst messages"
             count: 2
         }
+*/
 	}
 	ListView {
 		id: listview
@@ -54,8 +55,12 @@ PanelCommon {
 		clip: true
 	}
 	ScrollBar {
-		scrollArea: listview; width: 8
-		anchors { right: listview.right; rightMargin: 8; bottom: listview.bottom ; top: listview.top}
+		scrollArea: listview
+		anchors { 
+            right: listview.right
+            bottom: listview.bottom
+            top: listview.top
+        }
 	}
 }
 

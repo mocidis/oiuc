@@ -1,45 +1,9 @@
 import QtQuick 1.1
 
-Rectangle {
-    property alias captionText: caption.text
+DialogCommon {
     id: root
-    border { width: 2; color: "gray" }
-    color: "lightgray"
-    Rectangle {
-        color: "black"
-        height: 30
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-        }
-        Text {
-            id: caption
-            color: "white"
-            anchors {
-                left: parent.left
-                right: parent.right
-                verticalCenter: parent.verticalCenter
-                leftMargin: 5
-            }
-            text: "Caption"
-        }
-        PushButton {
-            color: "black"
-            width: 30
-            height: 30
-            anchors {
-                top: parent.top
-                right: parent.right
-            }
-            Text {
-                anchors { centerIn: parent }
-                text: "X"
-                color: "white"
-            }
-            onClicked: root.visible = false
-        }
-    }
+    captionText: "Create groups"
+    onClose: visible = false
     Flow {
         spacing: 5
         flow: Flow.TopToBottom
@@ -109,7 +73,8 @@ Rectangle {
                     right: parent.right
                     leftMargin: 10
                 }
-                text: "Group name"
+                text: "Group 1"
+                maximumLength: 7
                 font {
                     italic: true
                 }
@@ -197,7 +162,7 @@ Rectangle {
                 }
             }
             ScrollBar {
-                scrollArea: scrollArea; width: 8
+                scrollArea: scrollArea
                 anchors { 
                     right: scrollArea.right; 
                     bottom: scrollArea.bottom ; 

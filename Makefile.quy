@@ -34,6 +34,7 @@ CFLAGS+=-I$(ICS_DIR)/include -I$(Q_DIR)/include -I$(O_DIR)/include
 CFLAGS+=-I$(C_DIR)/include
 CFLAGS+= -I../json-c/output/include/json-c
 CFLAGS+= -I../arbiter/include
+CFLAGS+= -I$(STREAM_DIR)/include
 CFLAGS+= -D_GNU_SOURCE
 CFLAGS += -I$(GEN_DIR) -I$(SERIAL_DIR)/include
 

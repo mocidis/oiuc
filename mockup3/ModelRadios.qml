@@ -9,6 +9,7 @@ ListModel {
         isRed: false
         isGreen: false
         isYellow: false
+        iState: 0
     }
     ListElement {
         name: "Barrt"
@@ -17,6 +18,7 @@ ListModel {
         isRed: false
         isGreen: false
         isYellow: false
+        iState: 0
     }
     ListElement {
         name: "Barrt"
@@ -25,6 +27,7 @@ ListModel {
         isRed: false
         isGreen: false
         isYellow: false
+        iState: 0
     }
     ListElement {
         name: "Barrt"
@@ -33,6 +36,7 @@ ListModel {
         isRed: false
         isGreen: false
         isYellow: false
+        iState: 0
     }
 
     ListElement {
@@ -42,6 +46,7 @@ ListModel {
         isRed: false
         isGreen: false
         isYellow: false
+        iState: 0
     }
     ListElement {
         name: "Motor"
@@ -50,6 +55,7 @@ ListModel {
         isRed: false
         isGreen: false
         isYellow: false
+        iState: 0
     }
 	*/
 }

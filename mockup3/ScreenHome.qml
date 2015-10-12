@@ -12,7 +12,7 @@ ScreenCommon {
         spacing: 10
         Text {
             id: title
-            font.pointSize: 30
+            font.pixelSize: 30
             font.bold: true
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
@@ -170,7 +170,7 @@ ScreenCommon {
         }
         spacing: 10
         Text {
-            font.pointSize: 30
+            font.pixelSize: 30
             font.bold: true
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
@@ -196,7 +196,7 @@ ScreenCommon {
                     topMargin: 10
                 }
                 font {
-                    pointSize: 12
+                    pixelSize: 12
                     italic: true
                 }
                 color: "navy"
@@ -219,7 +219,7 @@ ScreenCommon {
                 Text {
                     anchors.centerIn: parent
                     text: "Logout"
-                    font.pointSize: 16
+                    font.pixelSize: 16
                     font.bold: true
                 }
                 //onClicked: _ROOT.appState.login = false;
@@ -237,7 +237,7 @@ ScreenCommon {
             topMargin: 20
         }
         font.italic: true
-        font.pointSize: 12
+        font.pixelSize: 12
         align: Text.AlignHCenter
         text: "Copyright © 2015–2020 Dicom Technology Co., Ltd.\nAll rights reserved."
         textColor: "darkgray"

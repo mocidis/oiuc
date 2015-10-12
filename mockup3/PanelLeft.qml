@@ -52,6 +52,7 @@ PanelCommon {
                     panel:root.panel; 
                     modelIndex: 1;
                     tabIndex: index
+                    oModelItem: oiuRepeater.model.get(index)
                     onClicked: {
                         if( iState == 1 ) {
                             current = null;
@@ -80,6 +81,7 @@ PanelCommon {
                     panel: root.panel;
                     modelIndex: 2;
                     tabIndex: index
+                    oModelItem: groupRepeater.model.get(index)
                     onClicked: {
                         if( iState == 1 ) {
                             current = null;
