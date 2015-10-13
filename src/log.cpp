@@ -88,9 +88,6 @@ LogModel* Log::getLogModel() {
 /************LOGMODEL**************/
 LogModel::LogModel () {
 	qRegisterMetaType<QModelIndex>("QModelIndex");
-	QHash<int, QByteArray> roles;
-	roles[logRole] = "log";
-	setRoleNames(roles);
 }
 void LogModel::addLog(QString msg)
 {
@@ -123,6 +120,12 @@ void LogModel::removeAt(int index) {
 	endRemoveRows();
 }
 
+QHash<int, QByteArray> LogModel::roleNames() const {
+	QHash<int, QByteArray> roles;
+	roles[logRole] = "log";
+    return roles;
+}
+
 /**********************************/
 void writeLog(QString msg) {
 	Log *log = Log::getLog();
@@ -134,3 +137,4 @@ void writeLog(QString msg) {
 	log->logs(line);
 	q_log.enqueue(line);
 }
+
