@@ -3,7 +3,7 @@ import QtQuick 1.1
 PanelCommon {
     property int itemWidth: 120
     id: root
-    height: 45
+    height: 50
     color: "#F0F0F0"
     Flow {
         id: menu
@@ -71,10 +71,10 @@ PanelCommon {
     Text {
         id: time
         anchors {
-            top: parent.top
+            verticalCenter: parent.verticalCenter
             right: parent.right
-            bottom: parent.bottom
             margins: 15
+            rightMargin: 15 + 2*root.height
         }
         text: "--/--/--"
 		font {
@@ -85,6 +85,55 @@ PanelCommon {
         Timer {
             interval: 500; running: true; repeat: true
             onTriggered: parent.text = Qt.formatDateTime(new Date(), "hh:mm:ss -- dd/MM/yyyy")
+        }
+    }
+    ToggleButton {
+        property double rValue: 0.5
+        id: speaker
+        onColor: "white"
+        color: "transparent"
+        anchors {
+            top: parent.top
+            right: parent.right
+            rightMargin: root.height
+        }
+        width: root.height
+        height: root.height
+        Image {
+            anchors { centerIn: parent }
+            smooth: true
+            width: 20
+            height: 20
+            fillMode: Image.PreserveAspectFit
+            source: (parent.rValue > 0)?"../static/Speaker-fill-black-small.svg":"../static/Speaker-mute-fill-black-small.svg"
+        }
+        onClicked: {
+            microphone.value = false;
+            _SLIDER.object = value?speaker:null
+        }
+    }
+    ToggleButton {
+        property double rValue: 0.5
+        id: microphone
+        onColor: "white"
+        color: "transparent"
+        anchors {
+            top: parent.top
+            right: parent.right
+        }
+        width: root.height
+        height: root.height
+        Image {
+            anchors { centerIn: parent }
+            smooth: true
+            width: 20
+            height: 20
+            fillMode: Image.PreserveAspectFit
+            source: (parent.rValue > 0)?"../static/Mic-fill-black-small.svg":"../static/Mic-mute-fill-black-small.svg"
+        }
+        onClicked: { 
+            speaker.value = false; 
+            _SLIDER.object = value?microphone:null;
         }
     }
     Rectangle {

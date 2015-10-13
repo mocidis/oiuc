@@ -198,6 +198,18 @@ Rectangle {
         }
         visible: false
     }
+    MySlider {
+        id: _SLIDER
+        width: 200
+        height: 50
+        fontSize: 16
+        anchors {
+            top: panelTop.bottom
+            right: panelTop.right
+            rightMargin: (object == null) ? 0:object.anchors.rightMargin
+        }
+        visible: object != null
+    }
     StateGroup {
         states: [
             State {

@@ -155,7 +155,7 @@ Item {
                 height: 40
                 width: 190
                 anchors.centerIn: parent
-                normalSource: "../static/mic-fill-white-small.svg"
+                normalSource: "../static/Mic-fill-white-small.svg"
                 muteSource: "../static/Mic-mute-fill-white-small.svg"
             }
         }

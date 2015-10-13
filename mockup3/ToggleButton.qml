@@ -3,15 +3,19 @@ import QtQuick 1.1
 Rectangle {
     signal clicked()
     signal longClicked()
+    signal selected()
+    signal deselected()
     property color onColor: "lightgray"
-    id: root
     property bool value: false
+    id: root
     MouseArea {
         id: mouseArea
         anchors.fill: parent
         onClicked: {
             parent.value = !parent.value;
             parent.clicked();
+            if(parent.value) parent.selected();
+            else parent.deselected();
         }
         onPressAndHold: {
             parent.longClicked();
@@ -31,7 +35,7 @@ Rectangle {
                 PropertyChanges {target: root; color: onColor}
             }
         ]
-
+/*
         transitions: [
             Transition {
                 from: "ON"
@@ -44,5 +48,6 @@ Rectangle {
                 ColorAnimation {duration: 200}
             }
         ]
+*/
     }
 }

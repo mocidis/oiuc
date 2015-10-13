@@ -1,6 +1,7 @@
 import QtQuick 1.1
 ScreenCommon {
     property alias oModelItem: oiu.oModelItem
+    visible: oModelItem.iState == 2
     DeviceRadio {
 		id: oiu
         height: parent.width/2
