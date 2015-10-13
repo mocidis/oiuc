@@ -51,7 +51,8 @@ int main(int argc, char *argv[]) {
 	int chose;
 	char sip_add[50];
 	//
-
+    ics_pool_init(&app_data.ics_data);
+    ics_pjsua_init(&app_data.ics_data);
 	ics_init(&app_data.ics_data);
 
 	ics_set_default_callback(&on_reg_start_default);
@@ -79,12 +80,13 @@ int main(int argc, char *argv[]) {
 
     //End Arbiter path
 
+
     //For test make cmd to RIUC only
     arbiter_request_t req;
     req.msg_id = ABT_PTT;
     strncpy(req.abt_ptt.list, "RIUC1RIUC3", sizeof(req.abt_ptt.list));
 
-	ics_add_account(&app_data.ics_data, "192.168.2.30", "111", "1234");
+	ics_add_account(&app_data.ics_data, "192.168.2.50", "quy", "1234");
 
 	is_running = 1;
 	while(is_running) {

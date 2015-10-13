@@ -26,7 +26,11 @@ void PSTN::pstnStart(QString username, QString password) {
 	ics_add_account(&app_data.ics_data, "192.168.2.30", user, passwd);
 }
 void PSTN::pstnPrepare() {
+    ics_pool_init(&app_data.ics_data);
+    ics_pjsua_init(&app_data.ics_data); 
 	ics_init(&app_data.ics_data);
+
+	ics_set_default_callback(&on_reg_start_default);
 
 	ics_set_reg_start_callback(&on_reg_start_impl); //cc
 	ics_set_reg_state_callback(&on_reg_state_impl);
