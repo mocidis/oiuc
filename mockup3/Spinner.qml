@@ -11,13 +11,12 @@ Flow {
         radius: 3
         color: "transparent"
         Image {
+            width: 30
+            height: 30
+            fillMode: Image.PreserveAspectFit
             id: iconImg
-            anchors.fill: parent
+            anchors.centerIn: parent
             source: "../static/Speaker-fill-black-small.svg"
-            sourceSize {
-                width: parent.width * 0.7
-                height: width
-            }
             smooth: true
         }
         onClicked: {

@@ -1,10 +1,9 @@
 import QtQuick 1.1
 Rectangle {
-    width: 300
-    height: 600
+    width: 150
+    height: 30
     id: _ROOT
-    property list<ListModel> models: [ ModelRadios{}, ModelOIUs{}, ModelGroups{} ]
-    GroupManDialog {
+    MySlider {
         anchors {fill:parent}
     }
 }
