@@ -6,6 +6,22 @@
 #include <QDateTime>
 #include <QFile>
 class Log;
+class LogModel;
+class LogModel : public QAbstractListModel {
+	Q_OBJECT
+public:
+	enum LogRole{
+		logRole	
+	};
+	LogModel ();
+    int rowCount(const QModelIndex & parent = QModelIndex()) const;
+    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+	void clear();
+	void removeAt(int index);
+	void addLog(QString msg);
+private:
+	QList <QString> list;
+};
 class Log : public QThread {
 	Q_OBJECT
 public:
@@ -13,17 +29,18 @@ public:
 	static Log* getLog();
 	void setFilename(QString _filename);
 	Q_INVOKABLE QString getFilename();
-signals:
-	void writeLog(QString msg);
+	LogModel* getLogModel();
 public slots:
 	void flushLog();
 private:
 	Log();
-	void run();
+	static Log* log;
+	void run(); //thread
+	void fileMaintenance(); //mananage log file
+	//properties
+	LogModel *logModel;
 	QFile logfile;
 	QTextStream out;
-	void fileMaintenance();
-	static Log* log;
 	QString filename;
 	int max_file;
 	int max_line;

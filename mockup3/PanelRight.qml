@@ -1,33 +1,6 @@
 import QtQuick 1.1
 PanelCommon {
 	id: root
-	Connections {
-		target: logObj
-		onWriteLog: {
-		    logModel.insert(
-                0, 
-                {
-                    "log": Qt.formatDateTime(new Date(), "[hh:mm] ") + msg
-                }
-            ); 
-		}
-	}
-	ListModel {
-		id: logModel
-/*        ListElement {
-            log: "test messages"
-            count: 0
-        }
-        ListElement {
-            log: "Test messages Test messages Test messages Test messages Test messages Test messages "
-            count: 1
-        }
-        ListElement {
-            log: "TEst messages"
-            count: 2
-        }
-*/
-	}
 	ListView {
 		id: listview
 		anchors {

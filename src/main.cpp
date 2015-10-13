@@ -38,7 +38,7 @@ int main (int argc, char* argv[]) {
 
 	//view.rootContext()->setContextProperty("grpManager", grp_manager);// setup connection between qml and cpp
 	//view.rootContext()->setContextProperty("modelOIUC", QVariant::fromValue(oiuc_manager->getModelOIUC()));
-	view.rootContext()->setContextProperty("logObj", log);
+	view.rootContext()->setContextProperty("logModel", log->getLogModel());
 	view.rootContext()->setContextProperty("radioObj", radio_manager);
 	view.rootContext()->setContextProperty("oiucObj", oiuc_manager);
 	view.rootContext()->setContextProperty("groupObj", grp_manager);

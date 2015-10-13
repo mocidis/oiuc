@@ -9,12 +9,12 @@ Rectangle {
         property bool login: true
         //property bool login: pstn.isLoggedIn()
     }
-	//Connections {
-		//target: pstn
-		//onLoggedInChange: {
-			//appState.login = pstn.isLoggedIn();
-		//}
-	//}
+	/*Connections {
+		target: pstn
+		onLoggedInChange: {
+			appState.login = pstn.isLoggedIn();
+		}
+	}*/
     property alias main: panelMain
     property alias leftPanel: panelLeft
     property alias rightPanel: panelRight
@@ -34,7 +34,7 @@ Rectangle {
                 "avaiable":avaiable,
                 "port":port, 
                 "description":desc,
-                iState: 0
+                "iState": 0
             });
 		}
 	}
@@ -63,7 +63,7 @@ Rectangle {
 						"itemIdx": 0,
 					}, 
 				],
-                iState: 0
+                "iState": 0
 			});
 			groups.get(currentIdx).nodes.set(0,{
                 "modelIdx": 0, 
