@@ -19,18 +19,25 @@ void RadioManager::loadRadioFromDatabase() {
 	writeLog("Loading Radio from databases");
 	_radio_list = getBackendRadioList("databases/radio.db");
 	for (int i=0;i<_radio_list.count();i++) {
-		updateRadioManagerSignal(_radio_list[i]);
+		updateRadioManagerSignal(_radio_list[i], -1);
 	}
 	_flag = true;
 }
 void RadioManager::addRadio(Radio *radio) {
 	int flags = 0;
+	int mIndex = -1;
 	for (int i=0; i < _radio_list.count(); i++) {
 		if (_radio_list[i]->getName() == radio->getName()) {
 			flags = 1;
 			if (_radio_list[i]->getStatus() != radio->getStatus()) {
 				_radio_list[i]->setStatus(radio->getStatus());
 				flags = 2;
+				mIndex = i;
+			}
+			if (_radio_list[i]->getAvaiable() != radio->getAvaiable()) {
+				_radio_list[i]->setAvaiable(radio->getAvaiable());
+				flags = 2;
+				mIndex = i;
 			}
 			break;
 		}
@@ -38,9 +45,13 @@ void RadioManager::addRadio(Radio *radio) {
 	if (flags == 0 || flags == 2) {
 		if (flags == 0) {
 			_radio_list.append(radio);
-			appendToDatabase(radio, "databases/radio.db");
-			updateRadioManagerSignal(radio);
-			writeLog("new radio" + radio->getName() + "detected");
+			appendToDatabase(radio, "databases/radio.db", 0);
+			updateRadioManagerSignal(radio, mIndex);
+			writeLog("new radio " + radio->getName() + " detected");
+		} else {
+			appendToDatabase(radio, "databases/radio.db", 1);
+			updateRadioManagerSignal(radio, mIndex);
+			writeLog(radio->getName() + " changed state");
 		}
 	}
 }
@@ -62,7 +73,7 @@ QList<QObject*> RadioManager::getModelRadio() { //return radio_list in QList<QOb
 QList<Radio*> RadioManager::getRadioList() {
 	return _radio_list;
 }
-void RadioManager::updateRadioManagerSignal(Radio* radio) {
+void RadioManager::updateRadioManagerSignal(Radio* radio, int mIndex) {
 	QString name = radio->getName();
 	QString status = radio->getStatus();
 	double frequency = radio->getFrequency();
@@ -72,7 +83,7 @@ void RadioManager::updateRadioManagerSignal(Radio* radio) {
 	int avaiable = radio->getAvaiable();
 	int port = radio->getPort();
 	QString desc = radio->getDesc();
-	emit updateRadioManager(name, status, frequency, location, port_mip, downtime, avaiable, port, desc);
+	emit updateRadioManager(name, status, frequency, location, port_mip, downtime, avaiable, port, desc, mIndex);
 }
 bool RadioManager::isOk() {
 	return _flag;

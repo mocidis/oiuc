@@ -6,6 +6,7 @@ Rectangle {
     property int tabIndex: -1
     property int modelIndex: -1
     property alias oModelItem: indicator.oModelItem
+	property int mType
     
     signal clicked(int modelIndex, int tabIndex, int iState)
 
@@ -132,22 +133,37 @@ Rectangle {
             }
         ]
     }
-    Timer {
+    /*Timer {
         interval: 1000; running: true; repeat: true
         onTriggered: {
-            var v, v1, bv;
-            v = Math.random();
-            v1 = Math.random();
-            bv = (v1 > 0.5);
-            if( v < 0.33) {
-                indicator.setRed(bv);
-            }
-            else if (v < 0.67) {
-                indicator.setYellow(bv);
-            }
-            else {
-                indicator.setGreen(bv);
-            }
+			if (mType == 0) {
+				if (status == "Online") {
+					indicator.setRed(false);
+				} else {
+					indicator.setRed(true);
+				}
+				if (avaiable == 1) {
+					indicator.setYellow(true);
+					indicator.setGreen(false);
+				} else if (avaiable == 2) {
+					indicator.setGreen(true);
+					indicator.setYellow(false);
+				}
+			} else if (mType == 1) {
+				if (status == "Online") {
+					indicator.setRed(false);
+					indicator.setYellow(false);
+					indicator.setGreen(false);
+				} else {
+					indicator.setRed(true);
+					indicator.setYellow(false);
+					indicator.setGreen(false);
+				}
+			} else {
+				indicator.setRed(false);
+				indicator.setYellow(false);
+				indicator.setGreen(false);
+			}
         }
-    }
+	}*/
 }

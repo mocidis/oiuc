@@ -20,10 +20,11 @@ public:
 	void loadOIUCFromDatabase();
 	/*****************Get functions******************/
 	QList<QObject*> getModelOIUC(); //return oiuc_list in QList<QObject*>
-	void updateOIUCManagerSignal (OIUC *oiuc);
+	QList<OIUC*> getOIUCList();
+	void updateOIUCManagerSignal (OIUC *oiuc, int mIndex);
 	bool isOk();
 signals: 
-	void updateOIUCManager (QString type, QString name, QString status, double downtime, QString desc);
+	void updateOIUCManager (QString type, QString name, QString status, double downtime, QString desc, int mIndex);
 private:
 	/*****************Constructor*******************/
 	OIUCManager (QList<OIUC*> oiuc_list);

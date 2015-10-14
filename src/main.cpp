@@ -22,7 +22,6 @@ int main (int argc, char* argv[]) {
 	pstn->pstnStartAServer();
 	pstn->pstnStartOServer();
 	pstn->pstnStart("ntt", "1234");
-	
 
 	PTT *ptt = PTT::getPTT();
 	Log *log = Log::getLog();

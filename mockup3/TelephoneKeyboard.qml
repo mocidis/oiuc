@@ -101,6 +101,7 @@ Item {
                 isCap: true
                 textColor: "black"
                 value: "RDL"
+				onClicked: numberLCD.text = pstn.getLastDialNumber();
             }
         }
     }

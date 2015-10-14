@@ -8,6 +8,10 @@ GroupManager* GroupManager::getGroupManager(RadioManager *radio_manager) {
 	}
 	return _grp_manager;
 }
+GroupManager* GroupManager::getGroupManager() {
+	//call getGroupManager(radio_manager) first
+	return _grp_manager;
+}
 GroupManager::GroupManager(RadioManager *radio_manager) {
 	_radio_manager = radio_manager;
 }
@@ -24,7 +28,7 @@ void GroupManager::addGroup (QString radio, QString grp_name) {
 	QList<Radio*> radio_list = _radio_manager->getRadioList();
 
 	determineRadioListLastGroup(_group_list, radio_list);
-	appendToDatabase(_group_list.last(), "databases/radio.db");
+	appendToDatabase(_group_list.last(), "databases/radio.db", 0);
 	updateGroupManagerSignal(grp);
 }
 void GroupManager::addGroup (QString radio, QString grp_name, QString desc) {
@@ -34,7 +38,7 @@ void GroupManager::addGroup (QString radio, QString grp_name, QString desc) {
 	QList<Radio*> radio_list = _radio_manager->getRadioList();
 
 	determineRadioListLastGroup(_group_list, radio_list);
-	appendToDatabase(_group_list.last(), "databases/radio.db");
+	appendToDatabase(_group_list.last(), "databases/radio.db", 0);
 	updateGroupManagerSignal(grp);
 }
 void GroupManager::deleteGroup(QString grp_name) {
@@ -65,6 +69,9 @@ QList<QObject*> GroupManager::getGroupModel() {
 		group_list_obj.append(_group_list[i]);
 	}
 	return group_list_obj;
+}
+QList<Group*> GroupManager::getGroupList() {
+	return _group_list;
 }
 void GroupManager::updateGroupManagerSignal(Group* group) {
 	QString name = group->getName();

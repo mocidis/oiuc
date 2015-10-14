@@ -1,8 +1,10 @@
 import QtQuick 1.1
 
 Rectangle {
+    signal pressed()
     signal clicked()
     signal longClicked()
+	signal released();
     
     id: root
 
@@ -10,12 +12,18 @@ Rectangle {
         id: mouseArea
         width: parent.width
         height: parent.height
+        onPressed: {
+            parent.pressed();
+        }
         onClicked: {
             parent.clicked();
         }
         onPressAndHold: {
             parent.longClicked();
         }
+		onReleased: {
+			parent.released();
+		}
     }
     state: "NORMAL"
 

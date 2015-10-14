@@ -14,7 +14,8 @@ void  determineRadioListForGroup (QList<Group*> group, QList<Radio*> radio);
 void determineRadioListLastGroup (QList<Group*> group, QList<Radio*> radio);
 void writeToDatabase (QList<Group*> group, QString backend_location);
 void deleteFromDatabase (QString grp_name, QString backend_location);
-void appendToDatabase ( Radio *radio, QString backend_location);
-void appendToDatabase ( Group *group, QString backend_location);
-void appendToDatabase (OIUC* oiuc, QString backend_location);
+void appendToDatabase ( Radio *radio, QString backend_location, int dtype);
+void appendToDatabase ( Group *group, QString backend_location, int dtype);
+void appendToDatabase (OIUC* oiuc, QString backend_location, int dtype);
+QString getAsteriskServer(QString backend_location);
 #endif

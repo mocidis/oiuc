@@ -106,6 +106,8 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 					break;
 				}
 				ports_status = QString::fromLatin1(req->oiuc_gb.ports_status);
+				ports_status.remove("{");
+				ports_status.remove("}");
 				list_radio_str = ports_status.split(", ");
 				for (int i=0; i<list_radio_str.count(); i++) {
 					QStringList temp = list_radio_str[i].split("-");
@@ -129,6 +131,8 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 						int avaiable=0;
 						if (temp[2] == "1") {
 							avaiable = 1;
+						} else if (temp[2] == "2" ) {
+							avaiable = 2;	
 						}
 						desc = QString::fromLatin1(req->oiuc_gb.des);
 						Radio *radio = new Radio(name, status, freq, loc, port_mip, avaiable, port, desc);

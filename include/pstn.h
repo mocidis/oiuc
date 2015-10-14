@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QString>
 #include "ctocpp.h"
+#include "backend.h"
 extern "C"
 {
 #include "ics-command.h"
@@ -35,22 +36,21 @@ public:
 	void pstnStartOServer();
 	void setLoggedIn(int flag);
 	Q_INVOKABLE bool isLoggedIn();
+	Q_INVOKABLE QString getLastDialNumber();
 signals:
 	void callingState(QString msg);
 	void loggedInChange(bool logged_in);
 public slots:
-	void setPSTNNumberSlot (QString value);
-	void setLastPSTNNumberSlot (QString value);
 private:
 	PSTN();
 	static PSTN *singleton;
 	app_data_t app_data; 
 	QString current_dial_number;
-	QString last_dial_number;
 	bool logged_in;
 	char send_to[30];
 	char listen_on[30];
 	QString username;
 	QString password;
+	QString ip_addr;
 };
 #endif  //end of __PSTN_H__

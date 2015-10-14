@@ -10,20 +10,22 @@ PSTN* PSTN:: getPSTN() {
 }
 PSTN::PSTN() {
 	current_dial_number="000"; 
-	last_dial_number=current_dial_number;
-	username = "ntt";
-	password = "1234";
+	username = "youhavenoname";
+	password = "youhavenopassword";
 	logged_in = false;
+	ip_addr = "127.0.0.1";
 	strcpy(send_to, "udp:239.0.0.1:6789");
 	strcpy(listen_on, "udp:0.0.0.0:9876");
 }
 void PSTN::pstnStart(QString username, QString password) {
-	char user[20], passwd[20];
+	char user[20], passwd[20], ip[20];
 	this->username = username;
 	this->password = password;
 	strncpy(user, username.toLocal8Bit().constData(), 20);
 	strncpy(passwd, password.toLocal8Bit().constData(), 20);
-	ics_add_account(&app_data.ics_data, "192.168.2.30", user, passwd);
+	ip_addr = getAsteriskServer("databases/radio.db");
+	strncpy(ip, ip_addr.toLocal8Bit().constData(), 20);
+	ics_add_account(&app_data.ics_data, ip, user, passwd);
 }
 void PSTN::pstnPrepare() {
     ics_pool_init(&app_data.ics_data);
@@ -55,15 +57,9 @@ void PSTN::pstnStartOServer() {
     oiu_server_start(&app_data.oserver);
 
 }
-void PSTN::setPSTNNumberSlot(QString value) {
-	current_dial_number=value;
-	last_dial_number=current_dial_number;
-}
-void PSTN::setLastPSTNNumberSlot(QString value) {
-	last_dial_number=value;
-}
 void PSTN::pstnCall (QString number) {
-	number="sip:" + number + "@192.168.2.30";
+	current_dial_number = number;
+	number="sip:" + number + "@" + ip_addr;
 	char *c_uri = number.toLatin1().data();
 	ics_make_call(&app_data.ics_data, c_uri);
 }
@@ -88,6 +84,9 @@ void PSTN::runCallingState(QString msg) {
 }
 app_data_t *PSTN::getAppData() {
 	return &app_data;
+}
+QString PSTN::getLastDialNumber() {
+	return current_dial_number;
 }
 void PSTN::setLoggedIn(int flag) {
 	if (flag == 1) {

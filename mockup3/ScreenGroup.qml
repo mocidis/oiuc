@@ -33,9 +33,12 @@ ScreenCommon {
                         text: "Push-To-Talk"
                         color: "white"
                     }
-                    onClicked : {
-                        console.log("PTT button clicked");
+                    onPressed : {
+						ptt.setPTT(index, 2, 1);
                     }
+					onReleased: {
+						ptt.setPTT(index, 2, 0);
+					}
                 }
             }
             Repeater {

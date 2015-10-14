@@ -19,7 +19,7 @@ public:
 	void clear();
 	void removeAt(int index);
 	void addLog(QString msg);
-    QHash<int, QByteArray> roleNames() const;
+    //QHash<int, QByteArray> roleNames() const;
 private:
 	QList <QString> list;
 };

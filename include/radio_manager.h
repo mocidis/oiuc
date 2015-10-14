@@ -17,13 +17,13 @@ public:
 	void addRadio (Radio *radio);
 	void deleteRadio (Radio *radio);
 	void loadRadioFromDatabase();
-	void updateRadioManagerSignal(Radio* radio);
+	void updateRadioManagerSignal(Radio* radio, int mIndex);
 	/*****************Get functions**************************/
 	QList<QObject*> getModelRadio(); //return radio_list in QList<QObject*>
 	QList<Radio*> getRadioList();
 	bool isOk();
 signals: 
-	void updateRadioManager(QString name, QString status, double frequency, QString location, QString port_mip, double downtime, int avaiable, int port, QString desc);
+	void updateRadioManager(QString name, QString status, double frequency, QString location, QString port_mip, double downtime, int avaiable, int port, QString desc, int mIndex);
 private:
 	/*****************Constructor*******************/
 	RadioManager (QList<Radio*> radio_list);

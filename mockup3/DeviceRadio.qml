@@ -2,6 +2,9 @@ import QtQuick 1.1
 
 //Flow {
 Item {
+	Connections {
+		target: ptt
+	}
     property alias oModelItem: indicator.oModelItem
     function getName() {
         if (oModelItem == null) return "NaN";
@@ -99,7 +102,7 @@ Item {
                 }
             }
             PushButton {
-                id:ptt
+                id:ptt_button
                 width: parent.width / 5
                 anchors {
                     top: parent.top
@@ -119,6 +122,13 @@ Item {
                     }
                     color: "white"
                 }
+				onPressed: {
+					ptt.setPTT(index, 0, 1);
+				}
+				onReleased: {
+					ptt.setPTT(index, 0, 0);
+				}
+				
             }
         }
         Rectangle {

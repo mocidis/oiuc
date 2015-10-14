@@ -126,7 +126,7 @@ void determineRadioListLastGroup (QList<Group*> group, QList<Radio*> radio) {
 		}
 	}
 }
-void appendToDatabase (Group* group, QString backend_location) {
+void appendToDatabase (Group* group, QString backend_location, int dtype) {
 	{
 		QSqlDatabase db;
 		if (QSqlDatabase::contains("ics-database")) {
@@ -148,17 +148,27 @@ void appendToDatabase (Group* group, QString backend_location) {
 		int avaiable = group->getAvaiable();
 		QString desc = group->getDesc();
 		QSqlQuery query(db);
-		query.prepare("INSERT INTO ics_group (name, radio_list, status, avaiable, desc)" "VALUES (:name, :radio_list, :status, :avaiable, :desc)");
-		query.bindValue(":name", name);
-		query.bindValue(":radio_list", radio_list);
-		query.bindValue(":status", status);
-		query.bindValue(":avaiable", avaiable);
-		query.bindValue(":desc", desc);
+		if (dtype == 0) {
+			query.prepare("INSERT INTO ics_group (name, radio_list, status, avaiable, desc)" "VALUES (:name, :radio_list, :status, :avaiable, :desc)");
+			query.bindValue(":name", name);
+			query.bindValue(":radio_list", radio_list);
+			query.bindValue(":status", status);
+			query.bindValue(":avaiable", avaiable);
+			query.bindValue(":desc", desc);
+		} else if (dtype == 1) {
+			query.prepare("UPDATE ics_group SET name=?, radio_list=?, status=? , avaiable=?, desc=? WHERE name=?");
+			query.addBindValue(name);
+			query.addBindValue(radio_list);
+			query.addBindValue(status);
+			query.addBindValue(avaiable);
+			query.addBindValue(desc);
+			query.addBindValue(name);
+		}
 		query.exec();
 	}
 	QSqlDatabase::removeDatabase(backend_location);
 }
-void appendToDatabase (OIUC* oiuc, QString backend_location) {
+void appendToDatabase (OIUC* oiuc, QString backend_location, int dtype) {
 	{
 		QSqlDatabase db;
 		if (QSqlDatabase::contains("ics-database")) {
@@ -181,18 +191,29 @@ void appendToDatabase (OIUC* oiuc, QString backend_location) {
 		double downtime = oiuc->getDowntime();
 		QString desc = oiuc->getDesc();
 		QSqlQuery query(db);
-		query.prepare("INSERT INTO ics_oiuc (msg_id, type, name, status, downtime, desc)" "VALUES (:msg_id, :type, :name, :status, :downtime, :desc)");
-		query.bindValue(":msg_id", msg_id);
-		query.bindValue(":type", type);
-		query.bindValue(":name", name);
-		query.bindValue(":status", status);
-		query.bindValue(":downtime", downtime);
-		query.bindValue(":desc", desc);
+		if (dtype == 0) {
+			query.prepare("INSERT INTO ics_oiuc (msg_id, type, name, status, downtime, desc)" "VALUES (:msg_id, :type, :name, :status, :downtime, :desc)");
+			query.bindValue(":msg_id", msg_id);
+			query.bindValue(":type", type);
+			query.bindValue(":name", name);
+			query.bindValue(":status", status);
+			query.bindValue(":downtime", downtime);
+			query.bindValue(":desc", desc);
+		} else if (dtype == 1) {
+			query.prepare("UPDATE ics_oiuc SET msg_id=?, type=?, name=? , status=?, downtime=? , desc=? WHERE name=?");
+			query.addBindValue(msg_id);
+			query.addBindValue(type);
+			query.addBindValue(name);
+			query.addBindValue(status);
+			query.addBindValue(downtime);
+			query.addBindValue(desc);
+			query.addBindValue(name);
+		}
 		query.exec();
 	}
 	QSqlDatabase::removeDatabase(backend_location);
 }
-void appendToDatabase (Radio *radio, QString backend_location) {
+void appendToDatabase (Radio *radio, QString backend_location, int dtype) { //type: 0-insert, 1-update
 	{
 		QSqlDatabase db;
 		if (QSqlDatabase::contains("ics-database")) {
@@ -206,7 +227,7 @@ void appendToDatabase (Radio *radio, QString backend_location) {
 			qDebug() << "database is opened";
 		} else {
 			qDebug() << "database is not opened";
-		}
+		} 
 		QString name = radio->getName();
 		QString status = radio->getStatus();
 		double freq = radio->getFrequency();
@@ -217,16 +238,30 @@ void appendToDatabase (Radio *radio, QString backend_location) {
 		int port = radio->getPort();
 		int avaiable = radio->getAvaiable(); 
 		QSqlQuery query(db);
-		query.prepare("INSERT INTO ics_radio (name, status, frequency, localtion, port_mip, downtime, avaiable, port, desc)" "VALUES (:name, :status, :freq, :localtion, :p_mip, :downtime, :avaiable, :port, :desc)");
-		query.bindValue(":name", name);
-		query.bindValue(":status", status);
-		query.bindValue(":freq", freq);
-		query.bindValue(":localtion", localtion);
-		query.bindValue(":p_mip", p_mip);
-		query.bindValue(":downtime", downtime);
-		query.bindValue(":avaiable",avaiable);
-		query.bindValue(":port", port);
-		query.bindValue(":desc", desc);
+		if (dtype == 0) {
+			query.prepare("INSERT INTO ics_radio (name, status, frequency, localtion, port_mip, downtime, avaiable, port, desc)" "VALUES (:name, :status, :freq, :localtion, :p_mip, :downtime, :avaiable, :port, :desc)");
+			query.bindValue(":name", name);
+			query.bindValue(":status", status);
+			query.bindValue(":freq", freq);
+			query.bindValue(":localtion", localtion);
+			query.bindValue(":p_mip", p_mip);
+			query.bindValue(":downtime", downtime);
+			query.bindValue(":avaiable",avaiable);
+			query.bindValue(":port", port);
+			query.bindValue(":desc", desc);
+		} else if (dtype == 1) {
+			query.prepare("UPDATE ics_radio SET name=?, status=?, frequency=? , localtion=?, port_mip=?, downtime=?, avaiable=?, port=?, desc=? WHERE name=?");
+			query.addBindValue(name);
+			query.addBindValue(status);
+			query.addBindValue(freq);
+			query.addBindValue(localtion);
+			query.addBindValue(p_mip);
+			query.addBindValue(downtime);
+			query.addBindValue(avaiable);
+			query.addBindValue(port);
+			query.addBindValue(desc);
+			query.addBindValue(name);
+		}
 		query.exec();
 	}
 	QSqlDatabase::removeDatabase(backend_location);
@@ -251,4 +286,35 @@ void deleteFromDatabase (QString grp_name, QString backend_location) {
 		writeLog(QString::number(query.numRowsAffected()) + " group was deleted");
 	}
 	QSqlDatabase::removeDatabase(backend_location);
+}
+QString getAsteriskServer(QString backend_location) {
+	QString ip;
+	{
+		QSqlDatabase db;
+		if (QSqlDatabase::contains("ics-database")) {
+			db = QSqlDatabase::database("ics-database");
+		} else {
+			db = QSqlDatabase::addDatabase("QSQLITE", "ics-database");
+			db.setDatabaseName(backend_location);
+			db.open();
+		}
+		if (db.isOpen()) {
+			qDebug() << "database is opened";
+		} else {
+			qDebug() << "database is not opened";
+		}
+		QString command = "select * from ics_config";
+		QSqlQuery query = db.exec(command);
+		//QString hostname = query.value(0).toString();
+		while (query.next()) {
+			ip = query.value(1).toString();
+		}
+		writeLog("Query Asterisk Server");
+	}
+	QSqlDatabase::removeDatabase(backend_location);
+	if (ip != "") {
+		return "127.0.0.1";
+	}
+	return ip;
+	
 }

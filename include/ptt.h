@@ -8,12 +8,16 @@
 #include "radio.h"
 #include "group.h"
 #include "oiuc.h"
+#include "radio_manager.h"
+#include "oiuc_manager.h"
+#include "group_manager.h"
 class PTT;
 class PTT : public QDeclarativeItem{
 	Q_OBJECT
 public:
 	static PTT* getPTT();
-	Q_INVOKABLE void setPTT (QObject *oiuc, int type, int is_pressed);
+	//Q_INVOKABLE void setPTT (QObject *oiuc, int type, int is_pressed);
+	Q_INVOKABLE void setPTT (int index, int type, int is_pressed);
 	Q_INVOKABLE void setIsPressedPTT (int is_pressed);
 	Q_INVOKABLE void setTypePTT (int type);
 private:

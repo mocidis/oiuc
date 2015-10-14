@@ -13,6 +13,7 @@ Log::Log() {
 	max_line = 1000;
 	max_buffer_line = 3;
 	logModel = new LogModel();
+	logModel->roleNames();
 }
 void Log::logs(QString msg) {
 	logModel->addLog(msg);
@@ -88,6 +89,9 @@ LogModel* Log::getLogModel() {
 /************LOGMODEL**************/
 LogModel::LogModel () {
 	qRegisterMetaType<QModelIndex>("QModelIndex");
+	QHash<int, QByteArray> roles;
+	roles[logRole] = "log";
+	setRoleNames(roles);
 }
 void LogModel::addLog(QString msg)
 {
@@ -120,11 +124,11 @@ void LogModel::removeAt(int index) {
 	endRemoveRows();
 }
 
-QHash<int, QByteArray> LogModel::roleNames() const {
+/*QHash<int, QByteArray> LogModel::roleNames() const {
 	QHash<int, QByteArray> roles;
 	roles[logRole] = "log";
     return roles;
-}
+}*/
 
 /**********************************/
 void writeLog(QString msg) {

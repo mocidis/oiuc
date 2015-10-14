@@ -24,31 +24,51 @@ Rectangle {
 	Connections {
 		target: radioObj 
 		onUpdateRadioManager: {
-			radios.append({
-                "name": name, 
-                "status": status, 
-                "frequency":frequency, 
-                "location": location, 
-                "port_mip": port_mip, 
-                "downtime":downtime,
-                "avaiable":avaiable,
-                "port":port, 
-                "description":desc,
-                "iState": 0
-            });
+			if (mIndex == -1) {
+				radios.append({
+					"name": name, 
+					"status": status, 
+					"frequency":frequency, 
+					"location": location, 
+					"port_mip": port_mip, 
+					"downtime":downtime,
+					"avaiable":avaiable,
+					"port":port, 
+					"description":desc,
+					"iState": 0
+				});
+			} else {
+				radios.setProperty(mIndex,"name", name);
+				radios.setProperty(mIndex,"status", status);
+				radios.setProperty(mIndex,"frequency", frequency);
+				radios.setProperty(mIndex,"location", location);
+				radios.setProperty(mIndex,"port_mip", port_mip);
+				radios.setProperty(mIndex,"downtime", downtime);
+				radios.setProperty(mIndex,"avaiable", avaiable);
+				radios.setProperty(mIndex,"port", port);
+				radios.setProperty(mIndex,"description", desc);
+			}
 		}
 	}
 	Connections {
 		target: oiucObj
 		onUpdateOIUCManager: {
-			oius.append({
-                "type": type, 
-                "name": name, 
-                "status":status, 
-                "downtime":downtime, 
-                "description":desc,
-                "iState": 0
-            });
+			if (mIndex == -1) {
+				oius.append({
+					"type": type, 
+					"name": name, 
+					"status":status, 
+					"downtime":downtime, 
+					"description":desc,
+					"iState": 0
+				});
+			} else {
+				oius.setProperty(mIndex, "type", type);
+				oius.setProperty(mIndex, "name", name);
+				oius.setProperty(mIndex, "status", status);
+				oius.setProperty(mIndex, "downtime", downtime);
+				oius.setProperty(mIndex, "description", desc);
+			}
 		}
 	}
 	Connections {
