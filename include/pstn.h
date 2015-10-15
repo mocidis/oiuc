@@ -21,7 +21,7 @@ class PSTN : public QDeclarativeItem {
 public:
 	void debug();
 	static PSTN* getPSTN();
-	void runCallingState(QString msg);
+	void runCallingState(QString msg, int st_code);
 	app_data_t *getAppData();
 	Q_INVOKABLE void pstnCall (QString number);
 	Q_INVOKABLE void pstnHangupCall ();
@@ -29,6 +29,8 @@ public:
 	Q_INVOKABLE void pstnConferenceCall (QString number);
 	Q_INVOKABLE void pstnAnswerCall ();
 	Q_INVOKABLE void pstnTransferCall (QString number);
+	Q_INVOKABLE void pstnHoldCall ();
+	Q_INVOKABLE void pstnReleaseHoldCall ();
 	void pstnPrepare();
 	Q_INVOKABLE void pstnStart(QString username, QString password);
 	Q_INVOKABLE void pstnStop();
@@ -38,7 +40,7 @@ public:
 	Q_INVOKABLE bool isLoggedIn();
 	Q_INVOKABLE QString getLastDialNumber();
 signals:
-	void callingState(QString msg);
+	void callingState(QString msg, int st_code);
 	void loggedInChange(bool logged_in);
 public slots:
 private:

@@ -14,7 +14,8 @@ PSTN::PSTN() {
 	password = "youhavenopassword";
 	logged_in = false;
 	ip_addr = "127.0.0.1";
-	strcpy(send_to, "udp:239.0.0.1:6789");
+	//strcpy(send_to, "udp:239.0.0.1:6789");
+	strcpy(send_to, "udp:192.168.2.30:6789");
 	strcpy(listen_on, "udp:0.0.0.0:9876");
 }
 void PSTN::pstnStart(QString username, QString password) {
@@ -78,9 +79,15 @@ void PSTN::pstnAnswerCall () {
 void PSTN::pstnTransferCall (QString number) {
 	ics_transfer_call(&app_data.ics_data, 1, 2);
 }
+void PSTN::pstnHoldCall () {
+	ics_hold_call(&app_data.ics_data);
+}
+void PSTN::pstnReleaseHoldCall () {
+	ics_release_hold(&app_data.ics_data);
+}
 
-void PSTN::runCallingState(QString msg) {
-	emit callingState(msg);
+void PSTN::runCallingState(QString msg, int st_code) {
+	emit callingState(msg, st_code);
 }
 app_data_t *PSTN::getAppData() {
 	return &app_data;

@@ -14,9 +14,9 @@ Item {
         if (oModelItem == null) return "NaN";
         return oModelItem.description;
     }
-    function getPort() {
+    function getFreq() {
         if (oModelItem == null) return -1;
-        return oModelItem.port;
+        return oModelItem.frequency;
     }
 
     //flow: Flow.TopToBottom
@@ -84,7 +84,7 @@ Item {
                             text: getName()
                         }
                         Text {
-                            text: "CH " + getPort()
+                            text: getFreq() + " MHz"
                             anchors {
                                 top: parent.top
                                 right: parent.right

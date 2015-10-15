@@ -45,7 +45,7 @@ DialogCommon {
                 anchors { centerIn:parent }
                 text: "Answer"
             }
-            onClicked: pstn.answerCall()
+            onClicked: pstn.pstnAnswerCall();
         }
         PushButton {
             property alias text: rightLabel.text
@@ -62,7 +62,7 @@ DialogCommon {
                 anchors { centerIn:parent }
                 text: "Reject"
             }
-            onClicked: pstn.hangupCall()
+            onClicked: pstn.pstnHangupCall()
         }
     }
     StateGroup {
@@ -90,7 +90,7 @@ DialogCommon {
                 name: "connected"
                 when: dialogState == 3
                 PropertyChanges { target: caption; text: "In conversation" }
-                PropertyChanges { target: leftBtn; visible: true; text: "Hold"; onClicked: pstn.holdCall() }
+                PropertyChanges { target: leftBtn; visible: true; text: "Hold"; onClicked: pstn.pstnHoldCall() }
                 PropertyChanges { target: rightBtn; visible: true; text: "Disconnect"; onClicked: pstn.pstnHangupCall() }
             }
         ]

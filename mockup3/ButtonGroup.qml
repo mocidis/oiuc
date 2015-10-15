@@ -6,7 +6,7 @@ Rectangle {
     property int tabIndex: -1
     property int modelIndex: -1
     property alias oModelItem: indicator.oModelItem
-	property int mType
+	//property int mType
     
     signal clicked(int modelIndex, int tabIndex, int iState)
 

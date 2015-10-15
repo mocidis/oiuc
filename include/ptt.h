@@ -11,6 +11,7 @@
 #include "radio_manager.h"
 #include "oiuc_manager.h"
 #include "group_manager.h"
+#include "ctocpp.h"
 class PTT;
 class PTT : public QDeclarativeItem{
 	Q_OBJECT

@@ -21,6 +21,7 @@ typedef struct {
     arbiter_client_t aclient;
     oiu_server_t oserver;
 } app_data_t;
+void send_cmd_to_arbiter(char *radio_list, char *cmd);
 //callback functions
 void on_reg_start_impl (int account_id);
 void on_reg_state_impl(int account_id, char* is_registration, int code, char *reason);

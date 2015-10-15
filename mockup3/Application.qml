@@ -104,20 +104,29 @@ Rectangle {
 	Connections {
 		target: pstn
 		onCallingState: {
-            _CALLDIALOG.visible = true;
             _CALLDIALOG.text = msg;
-            if ( msg == "CONFIRMED" ) {
-                _CALLDIALOG.dialogState = 3
-            }
-            else if ( msg == "DISCONNCTD" ) {
-                _CALLDIALOG.dialogState = 0;
-            }
-            else if ( msg == "EARLY" ) {
-                _CALLDIALOG.dialogState = 1;
-            } 
-            else {
-                _CALLDIALOG.dialogState = 2;
-            }
+	/*
+	0 PJSIP_INV_STATE_NULL 	Before INVITE is sent or received 
+	1 PJSIP_INV_STATE_CALLING 	After INVITE is sent
+	2 PJSIP_INV_STATE_INCOMING 	After INVITE is received.
+	3 PJSIP_INV_STATE_EARLY 	After response with To tag.
+	4 PJSIP_INV_STATE_CONNECTING 	After 2xx is sent/received.
+	5 PJSIP_INV_STATE_CONFIRMED 	After ACK is sent/received.
+	6 PJSIP_INV_STATE_DISCONNECTED 	Session is terminated. 
+	*/
+   			if (st_code == -1) {
+				_CALLDIALOG.dialogState = 2; 
+			} else if ( st_code == 0) {
+				_CALLDIALOG.dialogState	= 0;
+			} else if (st_code == 1) {
+				_CALLDIALOG.dialogState	= 1;
+			} else if (st_code == 2) {
+				_CALLDIALOG.dialogState = 2;	
+			} else if (st_code == 5) {
+				_CALLDIALOG.dialogState = 3;
+			} else if (st_code == 6) {
+				_CALLDIALOG.dialogState = 0;	
+			}
         }
 	}
 	FontLoader {id: lcdFont; source: "../static/fonts/digital-7 (mono).ttf"}

@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
 	arbiter_client_open(&app_data.aclient, argv[1]);
     
 	ics_start(&app_data.ics_data);
-	ics_connect(&app_data.ics_data, 22222);
+	ics_connect(&app_data.ics_data, 22242);
 
 	//Arbiter path
     // LISTEN
@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
     strncpy(req.abt_ptt.cmd_ptt, "{1001, 1101}", sizeof(req.abt_ptt.cmd_ptt));
     //End of test cmd path
 
-	ics_add_account(&app_data.ics_data, "192.168.2.50", "quy", "1234");
+	ics_add_account(&app_data.ics_data, "192.168.2.30", "112", "1234");
 
 	is_running = 1;
 	while(is_running) {
@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
                 break;
 			case 'm':
 				printf("Chose a call:\n");
-				printf("1.quy2@192.168.2.50\n");
+				printf("1.113@192.168.2.30\n");
 				printf("2.quy3@192.168.2.50\n");
 				printf("3.quy10@192.168.2.50\n");
 				printf("4.ntt@192.168.2.50\n");
@@ -123,7 +123,7 @@ int main(int argc, char *argv[]) {
 				}
 				switch(chose) {
 					case 1:
-						strcpy(sip_add, "sip:quy2@192.168.2.50");
+						strcpy(sip_add, "sip:113@192.168.2.30");
 						ics_make_call(&app_data.ics_data, sip_add);
 						break;
 					case 2:

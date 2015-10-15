@@ -7,6 +7,18 @@
 #include <QtCore>
 #include <QString>
 #define MAX_URI_LENGTH 100
+
+void send_cmd_to_arbiter(char *radio_list, char *cmd) {
+	PSTN *pstn = PSTN::getPSTN();
+	app_data_t *app_data;
+	app_data = pstn->getAppData();
+    arbiter_request_t req;
+    req.msg_id = ABT_PTT;
+    strncpy(req.abt_ptt.list, radio_list, sizeof(req.abt_ptt.list));
+    strncpy(req.abt_ptt.cmd, cmd, sizeof(req.abt_ptt.cmd));
+    send_to_arbiter(&app_data->aclient, &req);
+}
+
 void on_reg_start_impl(int account_id) {
 	printf("Acc id:: %d\n", account_id); 
 }
@@ -37,21 +49,20 @@ void on_reg_state_impl(int account_id, char* is_registration, int code, char *re
 
 void on_incoming_call_impl(int account_id, int call_id, char *remote_contact, char *local_contact) {
 	QString msg = QString::fromUtf8(remote_contact);
-	//msg = "incoming call from: " + msg;
 	PSTN *dial = PSTN::getPSTN();
-	dial->runCallingState(msg);
+	dial->runCallingState(msg, -1);
 }
 
 void on_call_state_impl(int call_id, int st_code, char *st_text) {
 	QString msg = QString::fromUtf8(st_text);
 	PSTN *dial = PSTN::getPSTN();
-	dial->runCallingState(msg);
+	dial->runCallingState(msg, st_code);
 }
 
 void on_call_transfer_impl(int call_id, int st_code, char *st_text) {
 	QString msg = QString::fromUtf8(st_text);
 	PSTN *dial = PSTN::getPSTN();
-	dial->runCallingState(msg);
+	dial->runCallingState(msg, st_code);
 }
 
 void on_call_media_state_impl(int call_id, int st_code) {

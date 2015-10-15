@@ -312,7 +312,7 @@ QString getAsteriskServer(QString backend_location) {
 		writeLog("Query Asterisk Server");
 	}
 	QSqlDatabase::removeDatabase(backend_location);
-	if (ip != "") {
+	if (ip == "") {
 		return "127.0.0.1";
 	}
 	return ip;
