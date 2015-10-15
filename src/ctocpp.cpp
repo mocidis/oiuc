@@ -42,7 +42,7 @@ void on_incoming_call_impl(int account_id, int call_id, char *remote_contact, ch
 	dial->runCallingState(msg);
 }
 
-void on_call_state_impl(int call_id, char *st_text) {
+void on_call_state_impl(int call_id, int st_code, char *st_text) {
 	QString msg = QString::fromUtf8(st_text);
 	PSTN *dial = PSTN::getPSTN();
 	dial->runCallingState(msg);

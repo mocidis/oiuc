@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
 	arbiter_client_open(&app_data.aclient, argv[1]);
     
 	ics_start(&app_data.ics_data);
-	ics_connect(&app_data.ics_data, 1111);
+	ics_connect(&app_data.ics_data, 22222);
 
 	//Arbiter path
     // LISTEN
@@ -84,7 +84,9 @@ int main(int argc, char *argv[]) {
     //For test make cmd to RIUC only
     arbiter_request_t req;
     req.msg_id = ABT_PTT;
-    strncpy(req.abt_ptt.list, "RIUC1RIUC3", sizeof(req.abt_ptt.list));
+    strncpy(req.abt_ptt.list, "{R1, R3}", sizeof(req.abt_ptt.list));
+    strncpy(req.abt_ptt.cmd_ptt, "{1001, 1101}", sizeof(req.abt_ptt.cmd_ptt));
+    //End of test cmd path
 
 	ics_add_account(&app_data.ics_data, "192.168.2.50", "quy", "1234");
 
@@ -98,6 +100,7 @@ int main(int argc, char *argv[]) {
             case '2':
             case '3':
             case '4':
+            case 'p':
                 strncpy(req.abt_ptt.cmd, option, sizeof(req.abt_ptt.cmd));
                 send_to_arbiter(&app_data.aclient, &req);
                 break;
@@ -189,7 +192,7 @@ int main(int argc, char *argv[]) {
 			case 'l':
 				ics_list_call(&app_data.ics_data);
 				break;
-			case 'p':
+			case 's':
 				print_menu();
 				break;
 			default:
