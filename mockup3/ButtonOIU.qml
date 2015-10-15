@@ -56,6 +56,7 @@ Rectangle {
         }
         TriLED {
             id: indicator
+			fullLed: 1
             anchors {
                 horizontalCenter:parent.horizontalCenter
                 bottom: parent.bottom
