@@ -33,7 +33,7 @@ int main (int argc, char* argv[]) {
 
 	PTT *ptt = PTT::getPTT();
 	Log *log = Log::getLog();
-	log->setFilename("/tmp/oiuc.log");
+	log->setFilename(oiuc_config->getLogDir() + "oiuc.log");
 	log->start();
 	QObject::connect(&app, SIGNAL(aboutToQuit()), log, SLOT(flushLog()));
 	view.rootContext()->setContextProperty("pstn", pstn);// setup connection between qml and cpp

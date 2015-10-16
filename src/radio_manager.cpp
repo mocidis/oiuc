@@ -33,6 +33,7 @@ void RadioManager::addRadio(Radio *radio) {
 				_radio_list[i]->setStatus(radio->getStatus());
 				flags = 2;
 				mIndex = i;
+				qDebug() << "---------------------------------------";
 			}
 			if (_radio_list[i]->getAvaiable() != radio->getAvaiable()) {
 				_radio_list[i]->setAvaiable(radio->getAvaiable());

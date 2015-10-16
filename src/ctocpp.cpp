@@ -9,6 +9,7 @@
 #define MAX_URI_LENGTH 100
 
 void send_cmd_to_arbiter(char *radio_list, char *cmd) {
+	writeLog("send PTT command");
 	PSTN *pstn = PSTN::getPSTN();
 	app_data_t *app_data;
 	app_data = pstn->getAppData();

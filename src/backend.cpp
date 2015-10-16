@@ -19,12 +19,14 @@ QList<Radio*> getBackendRadioList (QString backend_location) {
 		QSqlQuery query = db.exec("select * from ics_radio;");
 		while (query.next()) {
 			QString name = query.value(0).toString();
-			QString status = query.value(1).toString();
+			//QString status = query.value(1).toString();
+			QString status = "Offline";
 			double frequency = query.value(2).toDouble(); 
 			QString location = query.value(3).toString();
 			QString port_mip = query.value(4).toString();
 			double downtime = query.value(5).toDouble();
-			int avaiable = query.value(6).toInt();	
+			//int avaiable = query.value(6).toInt();	
+			int avaiable = 0;
 			int port = query.value(7).toInt();
 			QString desc = query.value(8).toString();
 			Radio *radio = new Radio(name,status,frequency,location,port_mip,avaiable,port,desc);
@@ -57,7 +59,8 @@ QList<OIUC*> getBackendOIUCList (QString backend_location) {
 			int msg_id = query.value(0).toInt();
 			QString type = query.value(1).toString();
 			QString name = query.value(2).toString();
-			QString status = query.value(3).toString();
+			//QString status = query.value(3).toString();
+			QString status = "Offline";
 			double downtime = query.value(4).toDouble();
 			QString desc = query.value(5).toString();
 			OIUC *oiuc = new OIUC(msg_id, type, name, status, desc);
@@ -312,6 +315,7 @@ void loadGeneralConfig(OIUCConfig *oiuc_config, QString backend_location) {
 		QString oiuc_description; 
 		double speaker_volume=0;
 		double microphone_volume=0;
+		QString log_dir;
 		while (query.next()) {
 			asterisk_ip = query.value(0).toString();
 			port_connect_asterisk = query.value(1).toInt();
@@ -321,6 +325,7 @@ void loadGeneralConfig(OIUCConfig *oiuc_config, QString backend_location) {
 			oiuc_description = query.value(5).toString(); 
 			speaker_volume = query.value(6).toDouble();
 			microphone_volume = query.value(7).toDouble();
+			log_dir = query.value(8).toString();
 		}
 		oiuc_config->setAsteriskIP (asterisk_ip);
 		oiuc_config->setPortAsterisk (port_connect_asterisk);
@@ -330,6 +335,7 @@ void loadGeneralConfig(OIUCConfig *oiuc_config, QString backend_location) {
 		oiuc_config->setOIUCDescription (oiuc_description);
 		oiuc_config->setSpeakerVolume (speaker_volume);
 		oiuc_config->setMicrophoneVolume (microphone_volume);
+		oiuc_config->setLogDir(log_dir);
 			//qDebug() << "run in load config---------------------" << asterisk_ip << "=" << port_connect_asterisk << arbiter_ip << port_sendto_arbiter << port_oiuc_listen << oiuc_description << speaker_volume << microphone_volume;
 		writeLog("Loading Config");
 	}

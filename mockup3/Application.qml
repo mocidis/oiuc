@@ -32,7 +32,7 @@ Rectangle {
 					"location": location, 
 					"port_mip": port_mip, 
 					"downtime":downtime,
-					"avaiable": 0,
+					"avaiable": avaiable,
 					"port":port, 
 					"description":desc,
 					"iState": 0

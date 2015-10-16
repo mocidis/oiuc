@@ -21,6 +21,7 @@ public:
 	Q_INVOKABLE void setOIUCDescription(QString value);
 	Q_INVOKABLE void setSpeakerVolume(double value);
 	Q_INVOKABLE void setMicrophoneVolume(double value);
+	Q_INVOKABLE void setLogDir(QString value);
 	/**************GET FUNCTIONS*************/
 	Q_INVOKABLE QString getAsteriskIP();
 	Q_INVOKABLE int getPortAsterisk();
@@ -30,6 +31,7 @@ public:
 	Q_INVOKABLE QString getOIUCDescription();
 	Q_INVOKABLE double getSpeakerVolume();
 	Q_INVOKABLE double getMicrophoneVolume();
+	Q_INVOKABLE QString getLogDir();
 private:
 	/*****************Constructor*******************/
 	OIUCConfig ();
@@ -43,6 +45,7 @@ private:
 	QString oiuc_description; 
 	double speaker_volume;
 	double microphone_volume;
+	QString log_dir;
 };
 
 #endif

@@ -41,6 +41,12 @@ void OIUCConfig::setSpeakerVolume(double value) {
 void OIUCConfig::setMicrophoneVolume(double value) {
 	microphone_volume = value;
 }
+void OIUCConfig::setLogDir(QString value) {
+	log_dir = value;
+}
+QString OIUCConfig::getLogDir() {
+	return log_dir;
+}
 /**************GET FUNCTIONS*************/
 QString OIUCConfig::getAsteriskIP() {
 	return asterisk_ip;
