@@ -41,7 +41,7 @@ void Log::run() {
 	QString filenameS="";
 	while(1) {
 		if (!q_log.isEmpty()) {
-			out << q_log.dequeue();
+			out << "\n" << q_log.dequeue();
 			_max_buffer_line++;
 			_max_line++;
 		}
@@ -139,9 +139,9 @@ void writeLog(QString msg) {
 	Log *log = Log::getLog();
 	QDateTime currentDate = QDateTime::currentDateTime();
 	QString time = currentDate.toString("dd/MM/yy -- hh:mm:ss");
-	QString line = "\n [ ";
+	QString line = "[";
 	line.append(time);
-	line =	line + " ] " + msg;
+	line =	line + "] " + msg;
 	log->logs(line);
 	q_log.enqueue(line);
 }
