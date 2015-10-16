@@ -19,7 +19,9 @@ public:
 	void clear();
 	void removeAt(int index);
 	void addLog(QString msg);
-    //QHash<int, QByteArray> roleNames() const;
+#if QT_VERSION > 0x050000
+    QHash<int, QByteArray> roleNames() const;
+#endif
 private:
 	QList <QString> list;
 };
