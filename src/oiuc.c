@@ -16,8 +16,8 @@ static void print_menu();
 //Callback function for Asterisk
 static void on_reg_start_impl(int account_id);
 static void on_reg_state_impl(int account_id, char* is_registration, int code, char *reason);
-static void on_incoming_call_impl(int account_id, int call_id, char *remote_contact, char *local_contact);
-static void on_call_state_impl(int call_id, char *st_text);
+static void on_incoming_call_impl(int account_id, int call_id, int st_code, char *remote_contact, char *local_contact);
+static void on_call_state_impl(int call_id, int st_code, char *st_text);
 static void on_call_transfer_impl(int call_id, int st_code, char *st_text);
 static void on_call_media_state_impl(int call_id, int st_code);
 //End
@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
 	arbiter_client_open(&app_data.aclient, argv[1]);
     
 	ics_start(&app_data.ics_data);
-	ics_connect(&app_data.ics_data, 22242);
+	ics_connect(&app_data.ics_data, 2222);
 
 	//Arbiter path
     // LISTEN
@@ -84,11 +84,11 @@ int main(int argc, char *argv[]) {
     //For test make cmd to RIUC only
     arbiter_request_t req;
     req.msg_id = ABT_PTT;
-    strncpy(req.abt_ptt.list, "{R1, R3}", sizeof(req.abt_ptt.list));
-    strncpy(req.abt_ptt.cmd_ptt, "{1001, 1101}", sizeof(req.abt_ptt.cmd_ptt));
+    strncpy(req.abt_ptt.list, "R1_1:R1_4:R1_2:R2_1:R2_2", sizeof(req.abt_ptt.list));
+    strncpy(req.abt_ptt.cmd_ptt, "on", sizeof(req.abt_ptt.cmd_ptt));
     //End of test cmd path
 
-	ics_add_account(&app_data.ics_data, "192.168.2.30", "112", "1234");
+	ics_add_account(&app_data.ics_data, "192.168.2.50", "quy", "1234");
 
 	is_running = 1;
 	while(is_running) {
@@ -96,12 +96,7 @@ int main(int argc, char *argv[]) {
 			puts("NULL command\n");
 		}
 		switch(option[0]) {
-            case '1':
-            case '2':
-            case '3':
-            case '4':
             case 'p':
-                strncpy(req.abt_ptt.cmd, option, sizeof(req.abt_ptt.cmd));
                 send_to_arbiter(&app_data.aclient, &req);
                 break;
             case 'j':
@@ -112,41 +107,20 @@ int main(int argc, char *argv[]) {
                 break;
 			case 'm':
 				printf("Chose a call:\n");
-				printf("1.113@192.168.2.30\n");
-				printf("2.quy3@192.168.2.50\n");
-				printf("3.quy10@192.168.2.50\n");
-				printf("4.ntt@192.168.2.50\n");
-				printf("5.ntt1@191.168.2.50\n");
-				printf("6. 1\n");
+				printf("1.ntt@192.168.2.30\n");
+				printf("4.111@192.168.2.30\n");
 				if (scanf("%d",&chose) != 1){
 					printf("Invalid input value\n");
 				}
 				switch(chose) {
 					case 1:
-						strcpy(sip_add, "sip:113@192.168.2.30");
+						strcpy(sip_add, "sip:ntt@192.168.2.30");
 						ics_make_call(&app_data.ics_data, sip_add);
 						break;
 					case 2:
-						strcpy(sip_add, "sip:quy3@192.168.2.50");
+						strcpy(sip_add, "sip:111@192.168.2.30");
 						ics_make_call(&app_data.ics_data, sip_add);
 						break;	
-					case 3:
-                        strcpy(sip_add, "sip:quy10@192.168.2.50");
-                        ics_make_call(&app_data.ics_data, sip_add);
-                        break;
-                    case 4:
-                        strcpy(sip_add, "sip:ntt@192.168.2.50");
-                        ics_make_call(&app_data.ics_data, sip_add);
-                        break;
-                    case 5:
-                        strcpy(sip_add, "sip:ntt1@192.168.2.50");
-                        ics_make_call(&app_data.ics_data, sip_add);
-                        break;
-                    case 6:
-                        strcpy(sip_add, "sip:1@192.168.2.50");
-                        ics_make_call(&app_data.ics_data, sip_add);
-                        break;
-
                     default:
                         printf("Press 'm' to make another call\n");
                         break;
@@ -248,15 +222,16 @@ static void on_reg_state_impl(int account_id, char* is_registration, int code, c
     send_to_arbiter(&app_data.aclient, &req);
 }
 
-static void on_incoming_call_impl(int account_id, int call_id, char *remote_contact, char *local_contact) {
+static void on_incoming_call_impl(int account_id, int call_id, int st_code, char *remote_contact, char *local_contact) {
 	printf("Acc id: %d\n", account_id);
 	printf("Call id: %d\n", call_id);
 	printf("From: %s\n", remote_contact);	
 	printf("To: %s\n", local_contact);
+    printf("Call state: %d\n", st_code);
 }
 
-static void on_call_state_impl(int call_id, char *st_text) {
-	printf("Call %d state= %s\n", call_id, st_text);
+static void on_call_state_impl(int call_id, int st_code, char *st_text) {
+	printf("Call %d state= %s(%d)\n", call_id, st_text, st_code);
 }
 
 static void on_call_transfer_impl(int call_id, int st_code, char *st_text) {
