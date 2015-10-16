@@ -30,7 +30,8 @@ void on_reg_state_impl(int account_id, char* is_registration, int code, char *re
     req.msg_id = ABT_UP;
     strncpy(req.abt_up.username, data->acfg.cred_info[0].username.ptr, sizeof(req.abt_up.username));
     strncpy(req.abt_up.type, "OIU", sizeof(req.abt_up.type));
-    strncpy(req.abt_up.des, "AK-47", sizeof(req.abt_up.des));
+	OIUCConfig *oiuc_config = OIUCConfig::getOIUCConfig();
+    strncpy(req.abt_up.des, oiuc_config->getOIUCDescription().toLocal8Bit().data(), sizeof(req.abt_up.des));
    
 	PSTN *pstn = PSTN::getPSTN();
 	app_data_t *app_data;
@@ -47,10 +48,10 @@ void on_reg_state_impl(int account_id, char* is_registration, int code, char *re
     send_to_arbiter(&app_data->aclient, &req);
 }
 
-void on_incoming_call_impl(int account_id, int call_id, char *remote_contact, char *local_contact) {
+void on_incoming_call_impl(int account_id, int call_id, int st_code, char *remote_contact, char *local_contact) {
 	QString msg = QString::fromUtf8(remote_contact);
 	PSTN *dial = PSTN::getPSTN();
-	dial->runCallingState(msg, -1);
+	dial->runCallingState(msg, st_code);
 }
 
 void on_call_state_impl(int call_id, int st_code, char *st_text) {

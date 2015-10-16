@@ -11,7 +11,8 @@ CPP_SRC:= ./src/ctocpp.cpp \
 		  ./src/oiuc_manager.cpp \
 		  ./src/ptt.cpp \
 		  ./src/radio_manager.cpp \
-		  ./src/log.cpp
+		  ./src/log.cpp \
+		  ./src/oiuc-config.cpp
 
 GEN_SRC:= gen/arbiter-client.c \
 		  gen/arbiter-server.c \
@@ -27,8 +28,8 @@ CORE_SRC:= ../concurrent_queue/src/queue.c \
 
 all: gen-a gen-o build
 
-MY_CFLAGS:=$(shell pkg-config --cflags libpjproject) 
-MY_LIBS:=$(shell pkg-config --libs libpjproject)
+MY_CFLAGS:=-g $(shell pkg-config --cflags libpjproject) 
+MY_LIBS:=-g $(shell pkg-config --libs libpjproject)
 
 APP:=app.app
 
