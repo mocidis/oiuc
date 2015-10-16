@@ -32,7 +32,7 @@ Rectangle {
 					"location": location, 
 					"port_mip": port_mip, 
 					"downtime":downtime,
-					"avaiable":avaiable,
+					"avaiable": 0,
 					"port":port, 
 					"description":desc,
 					"iState": 0
@@ -114,14 +114,12 @@ Rectangle {
 	5 PJSIP_INV_STATE_CONFIRMED 	After ACK is sent/received.
 	6 PJSIP_INV_STATE_DISCONNECTED 	Session is terminated. 
 	*/
-   			if (st_code == -1) {
+   			if (st_code == 2) {
 				_CALLDIALOG.dialogState = 2; 
 			} else if ( st_code == 0) {
 				_CALLDIALOG.dialogState	= 0;
 			} else if (st_code == 1) {
 				_CALLDIALOG.dialogState	= 1;
-			} else if (st_code == 2) {
-				_CALLDIALOG.dialogState = 2;	
 			} else if (st_code == 5) {
 				_CALLDIALOG.dialogState = 3;
 			} else if (st_code == 6) {

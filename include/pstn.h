@@ -6,6 +6,7 @@
 #include <QString>
 #include "ctocpp.h"
 #include "backend.h"
+#include "oiuc-config.h"
 extern "C"
 {
 #include "ics-command.h"
@@ -49,10 +50,11 @@ private:
 	app_data_t app_data; 
 	QString current_dial_number;
 	bool logged_in;
-	char send_to[30];
-	char listen_on[30];
+	//char send_to[30];
+	//char listen_on[30];
 	QString username;
 	QString password;
-	QString ip_addr;
+	OIUCConfig *oiuc_config;
+	//QString ip_addr;
 };
 #endif  //end of __PSTN_H__

@@ -287,8 +287,7 @@ void deleteFromDatabase (QString grp_name, QString backend_location) {
 	}
 	QSqlDatabase::removeDatabase(backend_location);
 }
-QString getAsteriskServer(QString backend_location) {
-	QString ip;
+void loadGeneralConfig(OIUCConfig *oiuc_config, QString backend_location) {
 	{
 		QSqlDatabase db;
 		if (QSqlDatabase::contains("ics-database")) {
@@ -305,16 +304,34 @@ QString getAsteriskServer(QString backend_location) {
 		}
 		QString command = "select * from ics_config";
 		QSqlQuery query = db.exec(command);
-		//QString hostname = query.value(0).toString();
+		QString asterisk_ip;
+		int port_connect_asterisk=0;
+		QString arbiter_ip;
+		int port_sendto_arbiter=0;
+		int port_oiuc_listen=0;
+		QString oiuc_description; 
+		double speaker_volume=0;
+		double microphone_volume=0;
 		while (query.next()) {
-			ip = query.value(1).toString();
+			asterisk_ip = query.value(0).toString();
+			port_connect_asterisk = query.value(1).toInt();
+			arbiter_ip = query.value(2).toString();
+			port_sendto_arbiter = query.value(3).toInt();
+			port_oiuc_listen = query.value(4).toInt();
+			oiuc_description = query.value(5).toString(); 
+			speaker_volume = query.value(6).toDouble();
+			microphone_volume = query.value(7).toDouble();
 		}
-		writeLog("Query Asterisk Server");
+		oiuc_config->setAsteriskIP (asterisk_ip);
+		oiuc_config->setPortAsterisk (port_connect_asterisk);
+		oiuc_config->setArbiterIP (arbiter_ip);
+		oiuc_config->setPortSendToArbiter (port_sendto_arbiter);
+		oiuc_config->setPortOIUCListen (port_oiuc_listen);
+		oiuc_config->setOIUCDescription (oiuc_description);
+		oiuc_config->setSpeakerVolume (speaker_volume);
+		oiuc_config->setMicrophoneVolume (microphone_volume);
+			//qDebug() << "run in load config---------------------" << asterisk_ip << "=" << port_connect_asterisk << arbiter_ip << port_sendto_arbiter << port_oiuc_listen << oiuc_description << speaker_volume << microphone_volume;
+		writeLog("Loading Config");
 	}
 	QSqlDatabase::removeDatabase(backend_location);
-	if (ip == "") {
-		return "127.0.0.1";
-	}
-	return ip;
-	
 }

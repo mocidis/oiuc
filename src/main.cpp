@@ -13,14 +13,22 @@
 #include "oiuc_manager.h"
 #include "radio_manager.h"
 #include "log.h"
+#include "oiuc-config.h"
 int main (int argc, char* argv[]) {
 	QApplication app(argc, argv);
 	QDeclarativeView view;
 
+	//load config file
+
+	OIUCConfig *oiuc_config = OIUCConfig::getOIUCConfig();
+	loadGeneralConfig(oiuc_config, "databases/radio.db");
+	
 	PSTN *pstn = PSTN::getPSTN();
 	pstn->pstnPrepare();
 	pstn->pstnStartAServer();
 	pstn->pstnStartOServer();
+	
+
 	pstn->pstnStart("ntt", "1234");
 
 	PTT *ptt = PTT::getPTT();

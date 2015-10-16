@@ -9,24 +9,20 @@ PSTN* PSTN:: getPSTN() {
 	}	
 }
 PSTN::PSTN() {
+	oiuc_config = OIUCConfig::getOIUCConfig();
 	current_dial_number="000"; 
 	username = "youhavenoname";
 	password = "youhavenopassword";
 	logged_in = false;
-	ip_addr = "127.0.0.1";
-	//strcpy(send_to, "udp:239.0.0.1:6789");
-	strcpy(send_to, "udp:192.168.2.30:6789");
-	strcpy(listen_on, "udp:0.0.0.0:9876");
+	memset(&app_data, 0, sizeof(app_data_t));
 }
 void PSTN::pstnStart(QString username, QString password) {
-	char user[20], passwd[20], ip[20];
+	char user[20], passwd[20];
 	this->username = username;
 	this->password = password;
 	strncpy(user, username.toLocal8Bit().constData(), 20);
 	strncpy(passwd, password.toLocal8Bit().constData(), 20);
-	ip_addr = getAsteriskServer("databases/radio.db");
-	strncpy(ip, ip_addr.toLocal8Bit().constData(), 20);
-	ics_add_account(&app_data.ics_data, ip, user, passwd);
+	ics_add_account(&app_data.ics_data, oiuc_config->getAsteriskIP().toLocal8Bit().data(), user, passwd); 
 }
 void PSTN::pstnPrepare() {
     ics_pool_init(&app_data.ics_data);
@@ -43,24 +39,28 @@ void PSTN::pstnPrepare() {
 	ics_set_call_media_state_callback(&on_call_media_state_impl); //cc
 
 	ics_start(&app_data.ics_data);
-	ics_connect(&app_data.ics_data, 1111);
+	//ics_connect(&app_data.ics_data, 1111);
+	oiuc_config->getPortAsterisk();
+	ics_connect(&app_data.ics_data, oiuc_config->getPortAsterisk());
 }
 void PSTN::pstnStartAServer() {
 	//SEND
-	arbiter_client_open(&app_data.aclient, send_to);
+	QByteArray send_to("udp:");
+ 	send_to.append(oiuc_config->getArbiterIP() + ":" + QString::number(oiuc_config->getPortSendToArbiter()));
+	arbiter_client_open(&app_data.aclient, strdup(send_to.data()));
 }
 void PSTN::pstnStartOServer() {
     // LISTEN
     app_data.oserver.on_request_f = &on_request;
     app_data.oserver.on_open_socket_f = &on_open_socket;
-
-    oiu_server_init(&app_data.oserver, listen_on);
+	QByteArray listen_on("udp:0.0.0.0:");
+	listen_on.append(QString::number(oiuc_config->getPortOIUCListen()));
+    oiu_server_init(&app_data.oserver, strdup(listen_on.data()));
     oiu_server_start(&app_data.oserver);
-
 }
 void PSTN::pstnCall (QString number) {
 	current_dial_number = number;
-	number="sip:" + number + "@" + ip_addr;
+	number="sip:" + number + "@" + oiuc_config->getAsteriskIP();
 	char *c_uri = number.toLatin1().data();
 	ics_make_call(&app_data.ics_data, c_uri);
 }
