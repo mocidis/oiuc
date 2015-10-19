@@ -5,6 +5,7 @@
 #include <QtSql>
 #include <QDateTime>
 #include <QFile>
+#include "oiuc-config.h"
 class Log;
 class LogModel;
 class LogModel : public QAbstractListModel {

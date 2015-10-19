@@ -9,15 +9,17 @@ Log* Log::getLog() {
 }
 Log::Log() {
 	file_count = 0;
-	max_file = 10;
-	max_line = 1000;
+	OIUCConfig *oiuc_config = OIUCConfig::getOIUCConfig();	
+	max_file = oiuc_config->getLogMaxFile();
+	max_line = oiuc_config->getLogMaxLinePerFile();
 	max_buffer_line = 3;
 	logModel = new LogModel();
 	logModel->roleNames();
 }
 void Log::logs(QString msg) {
+	OIUCConfig *oiuc_config = OIUCConfig::getOIUCConfig();
 	logModel->addLog(msg);
-	if (logModel->rowCount() >= 200) {
+	if (logModel->rowCount() >= oiuc_config->getLogMaxLineDisplay()) {
 		logModel->removeAt(logModel->rowCount() - 1);
 	}
 }
@@ -41,7 +43,7 @@ void Log::run() {
 	QString filenameS="";
 	while(1) {
 		if (!q_log.isEmpty()) {
-			out << "\n" << q_log.dequeue();
+			out << q_log.dequeue() << "\n";
 			_max_buffer_line++;
 			_max_line++;
 		}

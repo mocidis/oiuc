@@ -16,7 +16,7 @@ void send_cmd_to_arbiter(char *radio_list, char *cmd) {
     arbiter_request_t req;
     req.msg_id = ABT_PTT;
     strncpy(req.abt_ptt.list, radio_list, sizeof(req.abt_ptt.list));
-    strncpy(req.abt_ptt.cmd, cmd, sizeof(req.abt_ptt.cmd));
+    strncpy(req.abt_ptt.cmd_ptt, cmd, sizeof(req.abt_ptt.cmd_ptt));
     send_to_arbiter(&app_data->aclient, &req);
 }
 
