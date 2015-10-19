@@ -71,106 +71,6 @@ QList<OIUC*> getBackendOIUCList (QString backend_location) {
 	QSqlDatabase::removeDatabase(backend_location);
 	return list;
 }
-QList<Group*> getBackendGroupList (QString backend_location) {
-	QList<Group*> list;
-	{
-		QSqlDatabase db;
-		if (QSqlDatabase::contains("ics-database")) {
-			db = QSqlDatabase::database("ics-database");
-		} else {
-			db = QSqlDatabase::addDatabase("QSQLITE", "ics-database");
-			db.setDatabaseName(backend_location);
-			db.open();
-		}
-		if (db.isOpen()) {
-			qDebug() << "database is opened";
-		} else {
-			qDebug() << "database is not opened";
-		}
-		QSqlQuery query = db.exec("select * from ics_group;");
-		while (query.next()) {
-			QString name = query.value(0).toString(); 
-			QString radio_list = query.value(1).toString();
-			QString status = query.value(2).toString();
-			int avaiable = query.value(3).toInt();
-			QString desc = query.value(4).toString();
-			Group *group = new Group(name, radio_list, status, avaiable, desc);
-			list.append(group);
-		}
-	}
-	QSqlDatabase::removeDatabase(backend_location);
-	return list;
-}
-
-void determineRadioListForGroup (QList<Group*> group, QList<Radio*> radio) {
-	for (int i=0; i<group.count(); i++) {
-		QStringList list;
-		list = group[i]->getRadioListStr().split(", ");
-		if (list.count() >= 0) {
-			for (int j=0;j<list.count();j++) {
-				for (int k=0;k<radio.count();k++) {
-					if (list[j] == radio[k]->getName()) {
-						group[i]->addRadio(radio[k]);	
-					}
-				}
-			}
-
-		}
-	}
-}
-void determineRadioListLastGroup (QList<Group*> group, QList<Radio*> radio) {
-	QStringList list;
-	list = group.last()->getRadioListStr().split(", ");
-	for (int j=0;j<list.count();j++) {
-		for (int k=0;k<radio.count();k++) {
-			if (list[j] == radio[k]->getName()) {
-				group.last()->addRadio(radio[k]);	
-			}
-		}
-	}
-}
-void appendToDatabase (Group* group, QString backend_location, int dtype) {
-	{
-		QSqlDatabase db;
-		if (QSqlDatabase::contains("ics-database")) {
-			db = QSqlDatabase::database("ics-database");
-		} else {
-			db = QSqlDatabase::addDatabase("QSQLITE", "ics-database");
-			db.setDatabaseName(backend_location);
-			db.open();
-		}
-		if (db.isOpen()) {
-			qDebug() << "database is opened";
-		} else {
-			qDebug() << "database is not opened";
-		}
-		//append code go here
-		QString name = group->getName();
-		QString status = group->getStatus();
-		QString radio_list = group->getRadioListStr();
-		int avaiable = group->getAvaiable();
-		QString desc = group->getDesc();
-		QSqlQuery query(db);
-		if (dtype == 0) {
-			query.prepare("INSERT INTO ics_group (name, radio_list, status, avaiable, desc)" "VALUES (:name, :radio_list, :status, :avaiable, :desc)");
-			query.bindValue(":name", name);
-			query.bindValue(":radio_list", radio_list);
-			query.bindValue(":status", status);
-			query.bindValue(":avaiable", avaiable);
-			query.bindValue(":desc", desc);
-		} else if (dtype == 1) {
-			query.prepare("UPDATE ics_group SET name=?, radio_list=?, status=? , avaiable=?, desc=? WHERE name=?");
-			query.addBindValue(name);
-			query.addBindValue(radio_list);
-			query.addBindValue(status);
-			query.addBindValue(avaiable);
-			query.addBindValue(desc);
-			query.addBindValue(name);
-		}
-		query.exec();
-	}
-	QSqlDatabase::removeDatabase(backend_location);
-}
 void appendToDatabase (OIUC* oiuc, QString backend_location, int dtype) {
 	{
 		QSqlDatabase db;
@@ -266,27 +166,6 @@ void appendToDatabase (Radio *radio, QString backend_location, int dtype) { //ty
 			query.addBindValue(name);
 		}
 		query.exec();
-	}
-	QSqlDatabase::removeDatabase(backend_location);
-}
-void deleteFromDatabase (QString grp_name, QString backend_location) {
-	{
-		QSqlDatabase db;
-		if (QSqlDatabase::contains("ics-database")) {
-			db = QSqlDatabase::database("ics-database");
-		} else {
-			db = QSqlDatabase::addDatabase("QSQLITE", "ics-database");
-			db.setDatabaseName(backend_location);
-			db.open();
-		}
-		if (db.isOpen()) {
-			qDebug() << "database is opened";
-		} else {
-			qDebug() << "database is not opened";
-		}
-		QString command = "delete from ics_group where name=\'" + grp_name + "\'";
-		QSqlQuery query = db.exec(command);
-		writeLog(QString::number(query.numRowsAffected()) + " group was deleted");
 	}
 	QSqlDatabase::removeDatabase(backend_location);
 }

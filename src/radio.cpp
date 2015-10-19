@@ -16,6 +16,11 @@ Radio::Radio(QString name, QString status, double frequency, QString location, Q
 	_avaiable = avaiable;
 	_port = port;
 	_desc = desc;
+    _isOnline = false;
+    _isTx = false;
+    _isRx = false;
+    _isSQ = false;
+    _volume = 0.5;
 }
 
 /*Add and set function*/
@@ -31,8 +36,39 @@ void Radio::setAvaiable(int avaiable) {
 	_avaiable = avaiable;
 }
 
+bool Radio::isOnline() {
+    return _isOnline;
+}
+bool Radio::isTx() {
+    return _isTx;
+}
+bool Radio::isRx() {
+    return _isRx;
+}
+bool Radio::isSQ() {
+    return _isSQ;
+}
+double Radio::getVolume() {
+    return _volume;
+}
 
 /*Get function*/
+void Radio::setOnline(bool val) {
+    _isOnline = val;
+}
+void Radio::setTx(bool val) {
+    _isTx = val;
+}
+void Radio::setRx(bool val) {
+    _isRx = val;
+}
+void Radio::setSQ(bool val) {
+    _isSQ = val;
+}
+void Radio::setVolume(double val) {
+    _volume = val;
+}
+
 QString Radio::getName() {
 	return _name;
 }

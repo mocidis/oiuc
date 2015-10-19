@@ -84,7 +84,15 @@ void RadioManager::updateRadioManagerSignal(Radio* radio, int mIndex) {
 	int avaiable = radio->getAvaiable();
 	int port = radio->getPort();
 	QString desc = radio->getDesc();
-	emit updateRadioManager(name, status, frequency, location, port_mip, downtime, avaiable, port, desc, mIndex);
+	emit updateRadioManager(
+            name, status, frequency, location, port_mip, downtime, avaiable, port, desc, 
+            radio->isOnline(),
+            radio->isTx(),
+            radio->isRx(),
+            radio->isSQ(),
+            radio->getVolume(),
+            mIndex
+    );
 }
 bool RadioManager::isOk() {
 	return _flag;

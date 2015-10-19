@@ -23,7 +23,15 @@ public:
 	QList<Radio*> getRadioList();
 	bool isOk();
 signals: 
-	void updateRadioManager(QString name, QString status, double frequency, QString location, QString port_mip, double downtime, int avaiable, int port, QString desc, int mIndex);
+	void updateRadioManager(QString name, QString status, double frequency, QString location, 
+        QString port_mip, double downtime, int avaiable, int port, QString desc,
+        bool bOnline,
+        bool bTx,
+        bool bRx,
+        bool bSQ,
+        double rVolume,
+        int mIndex
+    );
 private:
 	/*****************Constructor*******************/
 	RadioManager (QList<Radio*> radio_list);

@@ -11,14 +11,13 @@ PTT::PTT() {
 		
 }
 /****************Add and Set functions***************/
-void PTT::setPTT (int index, int type, int is_pressed) { //0-Radio, 1-OIUC, 2-GROUP
+void PTT::setPTT (int index, int type, int is_pressed) { //0-Radio, 1-OIUC
 	if (type == 0) {
 		if (is_pressed == 1) {
 			RadioManager *radio_manager = RadioManager::getRadioManager();
 			QList<Radio*> radio_list = radio_manager->getRadioList();
 			_radio = radio_list[index];
 			_oiuc = NULL;
-			_grp = NULL;
 			QByteArray array_list_radio = _radio->getName().toLocal8Bit();
 			char* c_str = array_list_radio.data();
 			send_cmd_to_arbiter (c_str, "on");
@@ -27,7 +26,6 @@ void PTT::setPTT (int index, int type, int is_pressed) { //0-Radio, 1-OIUC, 2-GR
 			char* c_str = array_list_radio.data();
 			_radio = NULL;
 			_oiuc = NULL;
-			_grp = NULL;
 			send_cmd_to_arbiter(c_str,"off");
 		}
 	} else if (type == 1) {
@@ -36,47 +34,11 @@ void PTT::setPTT (int index, int type, int is_pressed) { //0-Radio, 1-OIUC, 2-GR
 			QList<OIUC*> oiuc_list = oiuc_manager->getOIUCList();
 			_oiuc = oiuc_list[index];
 			_radio = NULL;	
-			_grp = NULL;
 			//qDebug() << "++++++++++++++++++++++" << _oiuc->getName();
-		}
-	} else if (type == 2) {
-		if (is_pressed == 1) {
-			GroupManager *grp_manager = GroupManager::getGroupManager();
-			QList<Group*> grp_list = grp_manager->getGroupList();
-			_grp = grp_list[index];
-			_radio = NULL;	
-			_oiuc = NULL;
-			QList<Radio*> temp_radio_list = _grp->getRadioList();
-			QByteArray array_list_radio ;
-			int count_radio_list = temp_radio_list.count();
-			for (int i=0; i<count_radio_list; i++) {
-				array_list_radio.append(temp_radio_list[i]->getName().toLocal8Bit());
-				if (i!= count_radio_list-1) {
-					array_list_radio.append(":");
-				}
-			}
-			char* c_str = array_list_radio.data();
-			send_cmd_to_arbiter(c_str,"on");
-		} else {
-			QList<Radio*> temp_radio_list = _grp->getRadioList();
-			QByteArray array_list_radio ;
-			int count_radio_list = _grp->getRadioList().count();
-			for (int i=0; i<count_radio_list; i++) {
-				array_list_radio.append(temp_radio_list[i]->getName().toLocal8Bit());
-				if (i!= count_radio_list-1) {
-					array_list_radio.append(":");
-				}
-			}
-			char* c_str = array_list_radio.data();
-			_radio = NULL;
-			_oiuc = NULL;
-			_grp = NULL;
-			send_cmd_to_arbiter(c_str,"off");
 		}
 	} else {
 		_radio = NULL;	
 		_oiuc = NULL;
-		_grp = NULL;
 		//qDebug() << "Unknown type";
 	}
 	_type = type;

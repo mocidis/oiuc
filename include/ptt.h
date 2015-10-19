@@ -6,11 +6,9 @@
 #include <QDeclarativeContext>
 #include <QObject>
 #include "radio.h"
-#include "group.h"
 #include "oiuc.h"
 #include "radio_manager.h"
 #include "oiuc_manager.h"
-#include "group_manager.h"
 #include "ctocpp.h"
 class PTT;
 class PTT : public QDeclarativeItem{
@@ -24,7 +22,6 @@ public:
 private:
 	PTT();
 	OIUC *_oiuc;
-	Group *_grp;
 	Radio *_radio;
 	static PTT *_ptt;
 	int _is_pressed;  //0 - not pressed, 1 - pressed

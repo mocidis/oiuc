@@ -14,54 +14,26 @@ PanelCommon {
             //margins: 15
         }
         spacing: 5
-        PushButton {
+        PushTextButton {
             color: "transparent"
-            width: home.width + 60
+            onColor: "navy"
+            width: labelWidth + 60
             height: root.height
-            Text {
-                id: home
-                anchors.centerIn: parent
-                text: "Home"
-            }
+            label: "Home"
+            labelColor: isPressed?"white":"black"
             onClicked: {
-                if (_ROOT.leftPanel.current != null) {
-                    _ROOT.leftPanel.current.toggleControlled();
-                    _ROOT.leftPanel.current = null;
-                }
+                _LOGINABOUTDIALOG.visible = true;
             }
         }
-        PushButton {
+        PushTextButton {
             color: "transparent"
-            width: pstn.width + 60
+            onColor: "navy"
+            width: labelWidth + 60
             height: root.height
-            Text {
-                id: pstn
-                anchors.centerIn: parent
-                text: "Telephone"
-            }
+            label: "Telephone"
+            labelColor: isPressed?"white":"black"
             onClicked: { 
-                if (_ROOT.leftPanel.current != null) {
-                    _ROOT.leftPanel.current.toggleControlled();
-                    _ROOT.leftPanel.current = null;
-                }
                 _TELKB.visible = !_TELKB.visible;
-            }
-        }
-        PushButton {
-            color: "transparent"
-            width: manageGroups.width + 60
-            height: root.height
-            Text {
-                id: manageGroups
-                anchors.centerIn: parent
-                text: "Create groups"
-            }
-            onClicked: {
-                _GMDIALOG.visible = true;
-                if (_ROOT.leftPanel.current != null) {
-                    _ROOT.leftPanel.current.toggleControlled();
-                    _ROOT.leftPanel.current = null;
-                }
             }
         }
     }
@@ -84,6 +56,42 @@ PanelCommon {
             onTriggered: parent.text = Qt.formatDateTime(new Date(), "hh:mm:ss -- dd/MM/yyyy")
         }
     }
+    VolumeControl {
+        id: speaker
+        width: root.height
+        height: root.height
+        sourcePrefix: "../static/Speaker"
+        anchors {
+            top: parent.top
+            right: parent.right
+            rightMargin: root.height
+        }
+        onClicked: {
+            microphone.value = false;
+            _SLIDER.object = value?speaker:null
+        }
+        oItem: QtObject {
+            property double volume: 0.5
+        }
+    }
+    VolumeControl {
+        id: microphone
+        width: root.height
+        height: root.height
+        sourcePrefix: "../static/Mic"
+        anchors {
+            top: parent.top
+            right: parent.right
+        }
+        onClicked: {
+            speaker.value = false;
+            _SLIDER.object = value?microphone:null
+        }
+        oItem: QtObject {
+            property double volume: 0.5
+        }
+    }
+/*
     ToggleButton {
         property double rValue: 0.5
         id: speaker
@@ -133,6 +141,7 @@ PanelCommon {
             _SLIDER.object = value?microphone:null;
         }
     }
+*/
     Rectangle {
         height: 1
         color: "black"
@@ -146,12 +155,12 @@ PanelCommon {
         states: [
             State {
                 name: "logout"
-                when: !_ROOT.appState.login || _TELKB.visible || _GMDIALOG.visible
+                when: (!_ROOT.appState.login) || _TELKB.visible
                 PropertyChanges { target: menu; enabled: false }
             },
             State {
                 name: "login"
-                when: _ROOT.appState.login && !_TELKB.visible && !_GMDIALOG.visible
+                when: _ROOT.appState.login && !_TELKB.visible
                 PropertyChanges { target: menu; enabled: true }
             }
         ]

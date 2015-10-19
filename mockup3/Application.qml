@@ -5,7 +5,7 @@ Rectangle {
     height: 680
     color: "black"
     property list<ListModel> models: [ ModelRadios{}, ModelOIUs{}, ModelGroups{} ]
-    property variant appState: QtObject {
+    property QtObject appState: QtObject {
         property bool login: true
         //property bool login: pstn.isLoggedIn()
     }
@@ -15,9 +15,7 @@ Rectangle {
 			appState.login = pstn.isLoggedIn();
 		}
 	}*/
-    property alias main: panelMain
     property alias leftPanel: panelLeft
-    property alias rightPanel: panelRight
 	property variant radios : _ROOT.models[0]
 	property variant oius: _ROOT.models[1]
 	property variant groups: _ROOT.models[2]
@@ -133,7 +131,7 @@ Rectangle {
         anchors {
             top: parent.top
             left: parent.left
-            right: panelRight.right
+            right: parent.right
         }
     }
 	Rectangle {

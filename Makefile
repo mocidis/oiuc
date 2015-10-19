@@ -7,7 +7,6 @@ CPP_SRC:= ./src/ctocpp.cpp \
 		  ./src/group.cpp \
 		  ./src/backend.cpp \
 		  ./src/oiuc.cpp \
-		  ./src/group_manager.cpp \
 		  ./src/oiuc_manager.cpp \
 		  ./src/ptt.cpp \
 		  ./src/radio_manager.cpp \
