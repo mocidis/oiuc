@@ -6,7 +6,6 @@
 #include <QDeclarativeView>
 #include <QDeclarativeContext>
 #include <QtSql>
-#include "log.h"
 class OIUCConfig;
 class OIUCConfig : public QObject {
 	Q_OBJECT
@@ -22,6 +21,9 @@ public:
 	Q_INVOKABLE void setSpeakerVolume(double value);
 	Q_INVOKABLE void setMicrophoneVolume(double value);
 	Q_INVOKABLE void setLogDir(QString value);
+	Q_INVOKABLE void setLogMaxLinePerFile(int value);
+	Q_INVOKABLE void setLogMaxFile(int value);
+	Q_INVOKABLE void setLogMaxLineDisplay(int value);
 	/**************GET FUNCTIONS*************/
 	Q_INVOKABLE QString getAsteriskIP();
 	Q_INVOKABLE int getPortAsterisk();
@@ -32,6 +34,9 @@ public:
 	Q_INVOKABLE double getSpeakerVolume();
 	Q_INVOKABLE double getMicrophoneVolume();
 	Q_INVOKABLE QString getLogDir();
+	Q_INVOKABLE int getLogMaxLinePerFile();
+	Q_INVOKABLE int getLogMaxFile();
+	Q_INVOKABLE int getLogMaxLineDisplay();
 private:
 	/*****************Constructor*******************/
 	OIUCConfig ();
@@ -46,6 +51,9 @@ private:
 	double speaker_volume;
 	double microphone_volume;
 	QString log_dir;
+	int log_max_line_per_file;
+	int log_max_file;
+	int log_max_line_display;
 };
 
 #endif

@@ -195,6 +195,9 @@ void loadGeneralConfig(OIUCConfig *oiuc_config, QString backend_location) {
 		double speaker_volume=0;
 		double microphone_volume=0;
 		QString log_dir;
+		int log_max_line_per_file=0;
+		int log_max_file=0;
+		int log_max_line_display=0;
 		while (query.next()) {
 			asterisk_ip = query.value(0).toString();
 			port_connect_asterisk = query.value(1).toInt();
@@ -205,6 +208,9 @@ void loadGeneralConfig(OIUCConfig *oiuc_config, QString backend_location) {
 			speaker_volume = query.value(6).toDouble();
 			microphone_volume = query.value(7).toDouble();
 			log_dir = query.value(8).toString();
+			log_max_line_per_file = query.value(9).toInt();
+			log_max_file = query.value(10).toInt();
+			log_max_line_display = query.value(11).toInt();
 		}
 		oiuc_config->setAsteriskIP (asterisk_ip);
 		oiuc_config->setPortAsterisk (port_connect_asterisk);
@@ -215,7 +221,10 @@ void loadGeneralConfig(OIUCConfig *oiuc_config, QString backend_location) {
 		oiuc_config->setSpeakerVolume (speaker_volume);
 		oiuc_config->setMicrophoneVolume (microphone_volume);
 		oiuc_config->setLogDir(log_dir);
-			//qDebug() << "run in load config---------------------" << asterisk_ip << "=" << port_connect_asterisk << arbiter_ip << port_sendto_arbiter << port_oiuc_listen << oiuc_description << speaker_volume << microphone_volume;
+		oiuc_config->setLogMaxLinePerFile(log_max_line_per_file);
+		oiuc_config->setLogMaxFile(log_max_file);
+		oiuc_config->setLogMaxLineDisplay(log_max_line_display);
+			qDebug() << "run in load config---------------------" << asterisk_ip << "=" << port_connect_asterisk << arbiter_ip << port_sendto_arbiter << port_oiuc_listen << oiuc_description << speaker_volume << microphone_volume << log_max_line_per_file << log_max_file << log_max_line_display;
 		writeLog("Loading Config");
 	}
 	QSqlDatabase::removeDatabase(backend_location);

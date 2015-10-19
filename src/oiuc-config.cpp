@@ -47,6 +47,15 @@ void OIUCConfig::setLogDir(QString value) {
 QString OIUCConfig::getLogDir() {
 	return log_dir;
 }
+void OIUCConfig::setLogMaxLinePerFile(int value) {
+	log_max_line_per_file = value;
+}
+void OIUCConfig::setLogMaxFile(int value) {
+	log_max_file = value;
+}
+void OIUCConfig::setLogMaxLineDisplay(int value) {
+	log_max_line_display = value;
+}
 /**************GET FUNCTIONS*************/
 QString OIUCConfig::getAsteriskIP() {
 	return asterisk_ip;
@@ -71,4 +80,13 @@ double OIUCConfig::getSpeakerVolume() {
 }
 double OIUCConfig::getMicrophoneVolume() {
 	return microphone_volume;
+}
+int OIUCConfig::getLogMaxLinePerFile() {
+	return log_max_line_per_file;
+}
+int OIUCConfig::getLogMaxFile() {
+	return log_max_file;
+}
+int OIUCConfig::getLogMaxLineDisplay() {
+	return log_max_line_display;
 }
