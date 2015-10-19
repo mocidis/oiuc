@@ -36,3 +36,7 @@
 
 #db files
 *.db
+
+#log files
+*.log
+*.log[0-9]*
