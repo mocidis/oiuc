@@ -2,8 +2,38 @@ import QtQuick 1.1
 Item {
     Connections {
         target: pstn
+        onLoginStart: {
+            _LOGINABOUTDIALOG.reasonMsg = "Logging in ...";
+            _ROOT.appState.loginInProgress = true;
+        }
         onLoggedInChange: {
-            appState.login = pstn.isLoggedIn();
+            _LOGINABOUTDIALOG.reasonMsg = reason;
+            _ROOT.appState.loginInProgress = false;
+        }
+        onCallingState: {
+            _CALLDIALOG.text = msg;
+
+            /*****
+            0 PJSIP_INV_STATE_NULL     Before INVITE is sent or received 
+            1 PJSIP_INV_STATE_CALLING     After INVITE is sent
+            2 PJSIP_INV_STATE_INCOMING     After INVITE is received.
+            3 PJSIP_INV_STATE_EARLY     After response with To tag.
+            4 PJSIP_INV_STATE_CONNECTING     After 2xx is sent/received.
+            5 PJSIP_INV_STATE_CONFIRMED     After ACK is sent/received.
+            6 PJSIP_INV_STATE_DISCONNECTED     Session is terminated. 
+            *****/
+
+               if (st_code == 2) {
+                _CALLDIALOG.dialogState = 2; 
+            } else if ( st_code == 0) {
+                _CALLDIALOG.dialogState    = 0;
+            } else if (st_code == 1) {
+                _CALLDIALOG.dialogState    = 1;
+            } else if (st_code == 5) {
+                _CALLDIALOG.dialogState = 3;
+            } else if (st_code == 6) {
+                _CALLDIALOG.dialogState = 0;    
+            }
         }
     }
     Connections {
@@ -12,16 +42,14 @@ Item {
             if (mIndex == -1) {
                 radios.append({
                     "name": name, 
-                    "status": status, 
                     "frequency":frequency, 
                     "location": location, 
                     "port_mip": port_mip, 
                     "downtime": downtime,
-                    "avaiable": avaiable,
                     "port": port, 
                     "description": desc,
                     "isOnline": bOnline,
-                    "isPTT": bPTT,
+                    "isPTT": false,
                     "isTx": bTx,
                     "isRx": bRx,
                     "isRxBlocked": false,
@@ -29,17 +57,14 @@ Item {
                     "volume": 0.5
                 });
             } else {
-                radios.setProperty(mIndex,"name", name);
-                radios.setProperty(mIndex,"status", status);
-                radios.setProperty(mIndex,"frequency", frequency);
-                radios.setProperty(mIndex,"location", location);
-                radios.setProperty(mIndex,"port_mip", port_mip);
-                radios.setProperty(mIndex,"downtime", downtime);
-                radios.setProperty(mIndex,"avaiable", avaiable);
-                radios.setProperty(mIndex,"port", port);
-                radios.setProperty(mIndex,"description", desc);
+                radios.setProperty(mIndex, "name", name);
+                radios.setProperty(mIndex, "frequency", frequency);
+                radios.setProperty(mIndex, "location", location);
+                radios.setProperty(mIndex, "port_mip", port_mip);
+                radios.setProperty(mIndex, "downtime", downtime);
+                radios.setProperty(mIndex, "port", port);
+                radios.setProperty(mIndex, "description", desc);
                 radios.setProperty(mIndex, "isOnline", bOnline);
-                radios.setProperty(mIndex, "isPTT", bPTT);
                 radios.setProperty(mIndex, "isTx", bTx);
                 radios.setProperty(mIndex, "isRx", bRx);
                 radios.setProperty(mIndex, "isSQ", bSQ);
@@ -65,34 +90,6 @@ Item {
                 oius.setProperty(mIndex, "status", status);
                 oius.setProperty(mIndex, "downtime", downtime);
                 oius.setProperty(mIndex, "description", desc);
-            }
-        }
-    }
-    Connections {
-        target: pstn
-        onCallingState: {
-            _CALLDIALOG.text = msg;
-
-            /*****
-            0 PJSIP_INV_STATE_NULL     Before INVITE is sent or received 
-            1 PJSIP_INV_STATE_CALLING     After INVITE is sent
-            2 PJSIP_INV_STATE_INCOMING     After INVITE is received.
-            3 PJSIP_INV_STATE_EARLY     After response with To tag.
-            4 PJSIP_INV_STATE_CONNECTING     After 2xx is sent/received.
-            5 PJSIP_INV_STATE_CONFIRMED     After ACK is sent/received.
-            6 PJSIP_INV_STATE_DISCONNECTED     Session is terminated. 
-            *****/
-
-               if (st_code == 2) {
-                _CALLDIALOG.dialogState = 2; 
-            } else if ( st_code == 0) {
-                _CALLDIALOG.dialogState    = 0;
-            } else if (st_code == 1) {
-                _CALLDIALOG.dialogState    = 1;
-            } else if (st_code == 5) {
-                _CALLDIALOG.dialogState = 3;
-            } else if (st_code == 6) {
-                _CALLDIALOG.dialogState = 0;    
             }
         }
     }

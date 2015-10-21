@@ -30,7 +30,7 @@ public:
 	Q_INVOKABLE QString getArbiterIP();
 	Q_INVOKABLE int getPortSendToArbiter();
 	Q_INVOKABLE int getPortOIUCListen();
-	Q_INVOKABLE QString getOIUCDescription();
+	Q_INVOKABLE QString &getOIUCDescription();
 	Q_INVOKABLE double getSpeakerVolume();
 	Q_INVOKABLE double getMicrophoneVolume();
 	Q_INVOKABLE QString getLogDir();

@@ -4,12 +4,13 @@
 #include "radio.h"
 #include "radio_manager.h"
 #include "oiuc_manager.h"
+#include "ics-proto.h"
 #include <QtCore>
 #include <QString>
 #define MAX_URI_LENGTH 100
 
 void send_cmd_to_arbiter(char *radio_list, char *cmd) {
-	writeLog("send PTT command");
+	/*writeLog("send PTT command");
 	PSTN *pstn = PSTN::getPSTN();
 	app_data_t *app_data;
 	app_data = pstn->getAppData();
@@ -18,35 +19,54 @@ void send_cmd_to_arbiter(char *radio_list, char *cmd) {
     strncpy(req.abt_ptt.list, radio_list, sizeof(req.abt_ptt.list));
     strncpy(req.abt_ptt.cmd_ptt, cmd, sizeof(req.abt_ptt.cmd_ptt));
     send_to_arbiter(&app_data->aclient, &req);
+    */
 }
 
 void on_reg_start_impl(int account_id) {
-	printf("Acc id:: %d\n", account_id); 
+	printf("Acc id:: %d\n", account_id);
+    PSTN::getPSTN()->signalLoginStart();
+}
+void copy_pj_str(char *dest, pj_str_t *source) {
+    strncpy(dest, source->ptr, source->slen);
 }
 
+void copy_QString(char *dest, QString &source) {
+    QByteArray ba = source.toLocal8Bit();
+    strncpy(dest, ba.data(), ba.size());
+}
+
+void update_online_state( int online, pj_str_t *id, QString &description ) {
+    arbiter_request_t req;
+
+    app_data_t *app_data;    
+    app_data = PSTN::getPSTN()->getAppData();
+
+    req.msg_id = ABT_UP;
+
+    req.abt_up.type = DT_OIUC;
+
+    copy_pj_str(req.abt_up.id, id);
+    copy_QString(req.abt_up.desc, description);
+    strncpy(req.abt_up.conn_str, app_data->oserver.connect_str, strlen(app_data->oserver.connect_str));
+
+    req.abt_up.is_online = online;
+   
+    arbiter_client_send(&app_data->aclient, &req);
+}
 void on_reg_state_impl(int account_id, char* is_registration, int code, char *reason){
+	app_data_t *app_data;
 	ics_t *data;
 	data = (ics_t *)pjsua_acc_get_user_data(account_id);
-    arbiter_request_t req;
-    req.msg_id = ABT_UP;
-    strncpy(req.abt_up.username, data->acfg.cred_info[0].username.ptr, sizeof(req.abt_up.username));
-    strncpy(req.abt_up.type, "OIU", sizeof(req.abt_up.type));
-	OIUCConfig *oiuc_config = OIUCConfig::getOIUCConfig();
-    strncpy(req.abt_up.des, oiuc_config->getOIUCDescription().toLocal8Bit().data(), sizeof(req.abt_up.des));
-   
-	PSTN *pstn = PSTN::getPSTN();
-	app_data_t *app_data;
-	app_data = pstn->getAppData();
-	if( strcmp(is_registration, "No") == 0 ) {
-        req.abt_up.is_online = 0;
-		pstn->setLoggedIn(0);
-		qDebug() << "offline";
-	} else {
-        req.abt_up.is_online = 1;
-		pstn->setLoggedIn(1);
-		qDebug() << "online";
+
+    pj_str_t *id = &(data->acfg.cred_info[0].username);
+    QString &description = OIUCConfig::getOIUCConfig()->getOIUCDescription();
+    int online = 0;
+    if( code == 200 && strcmp(is_registration, "No") != 0 ) {
+        online = 1;
 	}
-    send_to_arbiter(&app_data->aclient, &req);
+    PSTN *pstn = PSTN::getPSTN();
+    pstn->setLoggedIn(online, reason);
+    update_online_state(online, id, description);
 }
 
 void on_incoming_call_impl(int account_id, int call_id, int st_code, char *remote_contact, char *local_contact) {
@@ -78,6 +98,8 @@ void on_open_socket(oiu_server_t *oserver) {
     oiu_server_join(oserver, "239.0.0.1");
 }
 void on_request(oiu_server_t *oserver, oiu_request_t *req) {
+    bool isOnline = false, isTx = false, isSQ = false;
+
     struct tm tm;
     time_t timer, timestamp;
     double downtime;
@@ -88,21 +110,22 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 	QString ports_status = "";
 	QString desc = "";
 	QStringList list_radio_str;
-	int port=0;
+	int radio_port=0;
 	OIUC *oiuc;
 	OIUCManager *oiuc_manager = OIUCManager::getOIUCManager();
 	RadioManager *radio_manager = RadioManager::getRadioManager();
     switch(req->msg_id) {
         case OIUC_GB:
 			msg_id = req->msg_id;
-			type = QString::fromLatin1(req->oiuc_gb.type);
-			if ( type == "OIUC" ) {
+			if ( req->oiuc_gb.type == DT_OIUC ) {
+			    type = "OIUC";
 				if (!oiuc_manager->isOk()) {
 					break;
 				}
-				name = QString::fromLatin1(req->oiuc_gb.id);
-				if (req->oiuc_gb.is_online == 1)
+				name = QString::fromLocal8Bit(req->oiuc_gb.id);
+				if (req->oiuc_gb.is_online == 1) {
 					status = "Online";
+                }
 				else {
 					time(&timer);
 					tm = *localtime(&timer);
@@ -111,48 +134,30 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 					downtime = difftime(timer, timestamp); //type of double
 					//need emit signal if downtime detected
 				}
-				desc = QString::fromLatin1(req->oiuc_gb.des);
+				desc = QString::fromLocal8Bit(req->oiuc_gb.desc);
 				oiuc = new OIUC(msg_id, type , name , status, desc);
 				oiuc_manager->addOIUC(oiuc);
-			} else if (type == "RIUC" ) {
+			} else if (req->oiuc_gb.type == DT_RIUC ) {
 				if (!radio_manager->isOk()) {
 					break;
-				}
-				ports_status = QString::fromLatin1(req->oiuc_gb.ports_status);
-				ports_status.remove("{");
-				ports_status.remove("}");
-				list_radio_str = ports_status.split(", ");
-				for (int i=0; i<list_radio_str.count(); i++) {
-					QStringList temp = list_radio_str[i].split("-");
-					if (temp[1] == "1") {
-						name = QString::fromLatin1(req->oiuc_gb.id);
-						name = name + "_" + QString::number(i+1);
-						port = i+1;
-						if (req->oiuc_gb.is_online == 1)
-							status = "Online";
-						else {
-							time(&timer);
-							tm = *localtime(&timer);
-							strptime(req->oiuc_gb.timestamp, "%H:%M:%S", &tm);
-							timestamp = mktime(&tm);
-							downtime = difftime(timer, timestamp); //type of double
-							//need emit signal if downtime detected
-						}
-						double freq = req->oiuc_gb.frequence;
-						QString loc = QString::fromLatin1(req->oiuc_gb.location);
-						QString port_mip = QString::fromLatin1(req->oiuc_gb.ip); // need to change port_mip 
-						int avaiable=0;
-						if (temp[2] == "1") {
-							avaiable = 1;
-						} else if (temp[2] == "2" ) {
-							avaiable = 2;	
-						}
-						desc = QString::fromLatin1(req->oiuc_gb.des);
-						Radio *radio = new Radio(name, status, freq, loc, port_mip, avaiable, port, desc);
-						radio_manager->addRadio(radio);
-					}
-					name = "";
-				}
+                }
+                double freq, volume;
+                QString loc, conn_str;
+
+                name = QString::fromLocal8Bit(req->oiuc_gb.id);
+                loc = QString::fromLocal8Bit(req->oiuc_gb.location);
+                desc = QString::fromLocal8Bit(req->oiuc_gb.desc);
+                conn_str = QString::fromLocal8Bit(req->oiuc_gb.conn_str);
+
+                isOnline = req->oiuc_gb.is_online;
+                isTx = req->oiuc_gb.is_tx;
+                isSQ = req->oiuc_gb.is_sq;
+                freq = req->oiuc_gb.frequence;
+                radio_port = req->oiuc_gb.radio_port;
+                volume = req->oiuc_gb.volume;
+
+                Radio *radio = new Radio(name, freq, loc, conn_str, radio_port, desc, isOnline, isTx, isSQ);
+                radio_manager->addRadio(radio);
 			}
             break;
         default:

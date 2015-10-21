@@ -72,7 +72,7 @@ int OIUCConfig::getPortSendToArbiter() {
 int OIUCConfig::getPortOIUCListen() {
 	return port_oiuc_listen;
 }
-QString OIUCConfig::getOIUCDescription() {
+QString &OIUCConfig::getOIUCDescription() {
 	return oiuc_description;
 }
 double OIUCConfig::getSpeakerVolume() {

@@ -86,6 +86,11 @@ void PSTN::pstnReleaseHoldCall () {
 	ics_release_hold(&app_data.ics_data);
 }
 
+void PSTN::signalLoginStart() {
+    qDebug() << "---- emit onLogInStart signal ----";
+    emit loginStart();
+}
+
 void PSTN::runCallingState(QString msg, int st_code) {
 	emit callingState(msg, st_code);
 }
@@ -95,19 +100,19 @@ app_data_t *PSTN::getAppData() {
 QString PSTN::getLastDialNumber() {
 	return current_dial_number;
 }
-void PSTN::setLoggedIn(int flag) {
+void PSTN::setLoggedIn(int flag, char *reason) {
 	if (flag == 1) {
 		logged_in = true;
 	} else {
 		logged_in = false;
 	}
-	emit loggedInChange(logged_in);
+	emit loggedInChange(QString::fromLocal8Bit(reason, -1));
 }
 bool PSTN::isLoggedIn() {
 	return logged_in;
 }
 void PSTN::pstnStop() {
-	setLoggedIn(0);
+	//setLoggedIn(0);
 	//destroy PSTN here
 	//
 }

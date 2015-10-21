@@ -1,6 +1,7 @@
 import QtQuick 1.1
 
 DialogCommon {
+    property alias reasonMsg: msgLabel.text
     id: root
     Item {
         anchors {
@@ -132,15 +133,14 @@ DialogCommon {
                     Text {
                         anchors.centerIn: parent
                         text: "Ok"
-                        font.bold: true
+                        font {
+                            bold: true
+                        }
+                        color: _ROOT.appState.loginInProgress?"lightgray":"black"
                     }
+                    clickable: _ROOT.appState.loginInProgress?false:true
                     onClicked: {
                         pstn.pstnStart(usrTextInput.text, pwdTextInput.text);
-                        //msgLabel.text = "Login failed !"
-                        //_ROOT.appState.login = true;
-                        //usrTextInput.text = "";	
-                        //pwdTextInput.text = "";
-                        //root.visible = false;
                     }
                 }
                 PushButton {
@@ -159,6 +159,7 @@ DialogCommon {
                     Text {
                         anchors.centerIn: parent
                         text: "Reset"
+                        color: _ROOT.appState.loginInProgress?"lightgray":"black"
                     }
                     onClicked: {
                         msgLabel.text = "";
@@ -232,7 +233,9 @@ DialogCommon {
                         font.bold: true
                     }
                     //onClicked: _ROOT.appState.login = false;
-                    onClicked: pstn.pstnStop();
+                    onClicked: {
+                        pstn.pstnStop();
+                    }
                 }
             }
         }

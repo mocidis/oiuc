@@ -7,19 +7,17 @@ Radio::Radio() {
 Radio::Radio(QString name) {
 	_name = name;	
 }
-Radio::Radio(QString name, QString status, double frequency, QString location, QString port_mip, int avaiable, int port, QString desc) {
+Radio::Radio(QString name, double frequency, QString location, QString port_mip, int port, QString desc, bool isOnline, bool isTx, bool isSQ) {
 	_name = name;
-	_status = status;
 	_frequency = frequency;
 	_location = location;
 	_port_mip = port_mip;
-	_avaiable = avaiable;
 	_port = port;
 	_desc = desc;
-    _isOnline = false;
-    _isTx = false;
+    _isOnline = isOnline;
+    _isTx = isTx;
     _isRx = false;
-    _isSQ = false;
+    _isSQ = isSQ;
     _volume = 0.5;
 }
 
@@ -28,12 +26,6 @@ Radio::Radio(QString name, QString status, double frequency, QString location, Q
 void Radio::setDowntime(double downtime) {
 	_downtime = downtime;
 	//emit signal if downtime occured
-}
-void Radio::setStatus(QString status) {
-	_status = status;
-}
-void Radio::setAvaiable(int avaiable) {
-	_avaiable = avaiable;
 }
 
 bool Radio::isOnline() {
@@ -73,13 +65,6 @@ QString Radio::getName() {
 	return _name;
 }
 
-QString Radio::getStatus() {
-	return _status;
-}
-
-int Radio::getAvaiable() {
-	return _avaiable;
-}
 double Radio::getFrequency() {
 	return _frequency;
 }

@@ -29,14 +29,19 @@ void RadioManager::addRadio(Radio *radio) {
 	for (int i=0; i < _radio_list.count(); i++) {
 		if (_radio_list[i]->getName() == radio->getName()) {
 			flags = 1;
-			if (_radio_list[i]->getStatus() != radio->getStatus()) {
-				_radio_list[i]->setStatus(radio->getStatus());
+			if (_radio_list[i]->isOnline() != radio->isOnline()) {
+				_radio_list[i]->setOnline(radio->isOnline());
 				flags = 2;
 				mIndex = i;
 				qDebug() << "---------------------------------------";
 			}
-			if (_radio_list[i]->getAvaiable() != radio->getAvaiable()) {
-				_radio_list[i]->setAvaiable(radio->getAvaiable());
+			if (_radio_list[i]->isTx() != radio->isTx()) {
+				_radio_list[i]->setTx(radio->isTx());
+				flags = 2;
+				mIndex = i;
+			}
+			if (_radio_list[i]->isSQ() != radio->isSQ()) {
+				_radio_list[i]->setSQ(radio->isSQ());
 				flags = 2;
 				mIndex = i;
 			}
@@ -76,16 +81,14 @@ QList<Radio*> RadioManager::getRadioList() {
 }
 void RadioManager::updateRadioManagerSignal(Radio* radio, int mIndex) {
 	QString name = radio->getName();
-	QString status = radio->getStatus();
 	double frequency = radio->getFrequency();
 	QString location = radio->getLocation();
 	QString port_mip = radio->getPortMIP();
 	double downtime = radio->getDowntime();
-	int avaiable = radio->getAvaiable();
 	int port = radio->getPort();
 	QString desc = radio->getDesc();
 	emit updateRadioManager(
-            name, status, frequency, location, port_mip, downtime, avaiable, port, desc, 
+            name, frequency, location, port_mip, downtime, port, desc, 
             radio->isOnline(),
             radio->isTx(),
             radio->isRx(),

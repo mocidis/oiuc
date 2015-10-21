@@ -33,7 +33,7 @@ PanelCommon {
             label: "Telephone"
             labelColor: isPressed?"white":"black"
             onClicked: { 
-                _TELKB.visible = !_TELKB.visible;
+                _TELKB.visible = _ROOT.appState.login?(!_TELKB.visible):false;
             }
         }
     }
@@ -91,57 +91,6 @@ PanelCommon {
             property double volume: 0.5
         }
     }
-/*
-    ToggleButton {
-        property double rValue: 0.5
-        id: speaker
-        onColor: "white"
-        color: "transparent"
-        anchors {
-            top: parent.top
-            right: parent.right
-            rightMargin: root.height
-        }
-        width: root.height
-        height: root.height
-        Image {
-            anchors { centerIn: parent }
-            smooth: true
-            width: 20
-            height: 20
-            fillMode: Image.PreserveAspectFit
-            source: (parent.rValue > 0)?"../static/Speaker-fill-black-small.svg":"../static/Speaker-mute-fill-black-small.svg"
-        }
-        onClicked: {
-            microphone.value = false;
-            _SLIDER.object = value?speaker:null
-        }
-    }
-    ToggleButton {
-        property double rValue: 0.5
-        id: microphone
-        onColor: "white"
-        color: "transparent"
-        anchors {
-            top: parent.top
-            right: parent.right
-        }
-        width: root.height
-        height: root.height
-        Image {
-            anchors { centerIn: parent }
-            smooth: true
-            width: 20
-            height: 20
-            fillMode: Image.PreserveAspectFit
-            source: (parent.rValue > 0)?"../static/Mic-fill-black-small.svg":"../static/Mic-mute-fill-black-small.svg"
-        }
-        onClicked: { 
-            speaker.value = false; 
-            _SLIDER.object = value?microphone:null;
-        }
-    }
-*/
     Rectangle {
         height: 1
         color: "black"
@@ -155,12 +104,12 @@ PanelCommon {
         states: [
             State {
                 name: "logout"
-                when: (!_ROOT.appState.login) || _TELKB.visible
+                when: _TELKB.visible || _LOGINABOUTDIALOG.visible
                 PropertyChanges { target: menu; enabled: false }
             },
             State {
                 name: "login"
-                when: _ROOT.appState.login && !_TELKB.visible
+                when: !_TELKB.visible && !_LOGINABOUTDIALOG.visible
                 PropertyChanges { target: menu; enabled: true }
             }
         ]

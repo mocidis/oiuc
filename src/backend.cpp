@@ -19,17 +19,13 @@ QList<Radio*> getBackendRadioList (QString backend_location) {
 		QSqlQuery query = db.exec("select * from ics_radio;");
 		while (query.next()) {
 			QString name = query.value(0).toString();
-			//QString status = query.value(1).toString();
-			QString status = "Offline";
-			double frequency = query.value(2).toDouble(); 
-			QString location = query.value(3).toString();
-			QString port_mip = query.value(4).toString();
-			double downtime = query.value(5).toDouble();
-			//int avaiable = query.value(6).toInt();	
-			int avaiable = 0;
-			int port = query.value(7).toInt();
-			QString desc = query.value(8).toString();
-			Radio *radio = new Radio(name,status,frequency,location,port_mip,avaiable,port,desc);
+			double frequency = query.value(1).toDouble(); 
+			QString location = query.value(2).toString();
+			QString port_mip = query.value(3).toString();
+			double downtime = query.value(4).toDouble();
+			int port = query.value(5).toInt();
+			QString desc = query.value(6).toString();
+			Radio *radio = new Radio(name,frequency,location,port_mip,port,desc, false, false, false);
 			radio->setDowntime(downtime);
 			list.append(radio);
 		}
@@ -59,7 +55,6 @@ QList<OIUC*> getBackendOIUCList (QString backend_location) {
 			int msg_id = query.value(0).toInt();
 			QString type = query.value(1).toString();
 			QString name = query.value(2).toString();
-			//QString status = query.value(3).toString();
 			QString status = "Offline";
 			double downtime = query.value(4).toDouble();
 			QString desc = query.value(5).toString();
@@ -132,35 +127,29 @@ void appendToDatabase (Radio *radio, QString backend_location, int dtype) { //ty
 			qDebug() << "database is not opened";
 		} 
 		QString name = radio->getName();
-		QString status = radio->getStatus();
 		double freq = radio->getFrequency();
 		QString localtion = radio->getLocation();
 		QString p_mip = radio->getPortMIP();
 		double downtime = radio->getDowntime();
 		QString desc = radio->getDesc();
 		int port = radio->getPort();
-		int avaiable = radio->getAvaiable(); 
 		QSqlQuery query(db);
 		if (dtype == 0) {
-			query.prepare("INSERT INTO ics_radio (name, status, frequency, localtion, port_mip, downtime, avaiable, port, desc)" "VALUES (:name, :status, :freq, :localtion, :p_mip, :downtime, :avaiable, :port, :desc)");
+			query.prepare("INSERT INTO ics_radio (name, frequency, localtion, port_mip, downtime, port, desc)" "VALUES (:name, :freq, :localtion, :p_mip, :downtime, :port, :desc)");
 			query.bindValue(":name", name);
-			query.bindValue(":status", status);
 			query.bindValue(":freq", freq);
 			query.bindValue(":localtion", localtion);
 			query.bindValue(":p_mip", p_mip);
 			query.bindValue(":downtime", downtime);
-			query.bindValue(":avaiable",avaiable);
 			query.bindValue(":port", port);
 			query.bindValue(":desc", desc);
 		} else if (dtype == 1) {
-			query.prepare("UPDATE ics_radio SET name=?, status=?, frequency=? , localtion=?, port_mip=?, downtime=?, avaiable=?, port=?, desc=? WHERE name=?");
+			query.prepare("UPDATE ics_radio SET name=?, frequency=? , localtion=?, port_mip=?, downtime=?, port=?, desc=? WHERE name=?");
 			query.addBindValue(name);
-			query.addBindValue(status);
 			query.addBindValue(freq);
 			query.addBindValue(localtion);
 			query.addBindValue(p_mip);
 			query.addBindValue(downtime);
-			query.addBindValue(avaiable);
 			query.addBindValue(port);
 			query.addBindValue(desc);
 			query.addBindValue(name);

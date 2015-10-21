@@ -32,11 +32,12 @@ SERIAL_SRCS := riuc4_uart.c serial_utils.c
 CFLAGS:=-std=c99 $(shell pkg-config --cflags libpjproject) -fms-extensions
 CFLAGS+=-I$(ICS_DIR)/include -I$(Q_DIR)/include -I$(O_DIR)/include
 CFLAGS+=-I$(C_DIR)/include
-CFLAGS+= -I../json-c/output/include/json-c
-CFLAGS+= -I../arbiter/include
-CFLAGS+= -I$(STREAM_DIR)/include
-CFLAGS+= -D_GNU_SOURCE
-CFLAGS += -I$(GEN_DIR) -I$(SERIAL_DIR)/include
+CFLAGS+=-I../json-c/output/include/json-c
+CFLAGS+=-I../arbiter/include
+CFLAGS+=-I$(STREAM_DIR)/include
+CFLAGS+=-D_GNU_SOURCE
+CFLAGS+=-I$(GEN_DIR) -I$(SERIAL_DIR)/include
+CFLAGS+=-I$(PROTOCOLS_DIR)/include
 
 LIBS:=$(shell pkg-config --libs libpjproject) ../json-c/output/lib/libjson-c.a -lpthread
 

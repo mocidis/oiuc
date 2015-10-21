@@ -1,5 +1,7 @@
 .PHONY:build clean test clean-test
 
+PROTOCOLS_DIR:=../protocols
+
 CPP_SRC:= ./src/ctocpp.cpp \
           ./src/main.cpp \
           ./src/pstn.cpp \
@@ -27,7 +29,7 @@ CORE_SRC:= ../concurrent_queue/src/queue.c \
 
 all: gen-a gen-o build
 
-MY_CFLAGS:=-g $(shell pkg-config --cflags libpjproject) 
+MY_CFLAGS:=-g $(shell pkg-config --cflags libpjproject) -I$(PROTOCOLS_DIR)/include
 MY_LIBS:=-g $(shell pkg-config --libs libpjproject)
 
 APP:=app.app

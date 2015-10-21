@@ -4,6 +4,7 @@
 #include "arbiter-client.h"
 #include "oiu-server.h"
 #include "riu-client.h"
+#include "ics-proto.h"
 
 struct {
     ics_t ics_data;
@@ -80,14 +81,6 @@ int main(int argc, char *argv[]) {
 
     //End Arbiter path
 
-
-    //For test make cmd to RIUC only
-    arbiter_request_t req;
-    req.msg_id = ABT_PTT;
-    strncpy(req.abt_ptt.list, "R1_1:R1_4:R1_2:R2_1:R2_2", sizeof(req.abt_ptt.list));
-    strncpy(req.abt_ptt.cmd_ptt, "on", sizeof(req.abt_ptt.cmd_ptt));
-    //End of test cmd path
-
 	ics_add_account(&app_data.ics_data, "192.168.2.50", "quy", "1234");
 
 	is_running = 1;
@@ -96,9 +89,6 @@ int main(int argc, char *argv[]) {
 			puts("NULL command\n");
 		}
 		switch(option[0]) {
-            case 'p':
-                send_to_arbiter(&app_data.aclient, &req);
-                break;
             case 'j':
                 oiu_server_join(&app_data.oserver, "239.0.0.1");
                 break;
@@ -210,9 +200,9 @@ static void on_reg_state_impl(int account_id, char* is_registration, int code, c
     
     arbiter_request_t req;
     req.msg_id = ABT_UP;
-    strncpy(req.abt_up.username, data->acfg.cred_info[0].username.ptr, sizeof(req.abt_up.username));
-    strncpy(req.abt_up.type, "OIU", sizeof(req.abt_up.type));
-    strncpy(req.abt_up.des, "AK-47", sizeof(req.abt_up.des));
+    strncpy(req.abt_up.id, data->acfg.cred_info[0].username.ptr, data->acfg.cred_info[0].username.slen);
+    req.abt_up.type = DT_OIUC;
+    strncpy(req.abt_up.desc, "AK-47", strlen("AK-47"));
    
 	if( strcmp(is_registration, "No") == 0 )
         req.abt_up.is_online = 0;
@@ -252,10 +242,10 @@ static void on_request(oiu_server_t *oserver, oiu_request_t *req) {
    switch(req->msg_id) {
         case OIUC_GB:
     
-            printf("OIUC_GB(%d):  Node id: %s(%s) - Alive: %d ", req->msg_id, req->oiuc_gb.id, req->oiuc_gb.type, req->oiuc_gb.is_online);
+            printf("OIUC_GB(%d):  Node id: %s(%d) - Alive: %d ", req->msg_id, req->oiuc_gb.id, req->oiuc_gb.type, req->oiuc_gb.is_online);
             
-            if (0 == strcmp(req->oiuc_gb.type, "RIUC")) {
-                printf("- Frequence: %.f - Location: %s - Port status: %s", req->oiuc_gb.frequence, req->oiuc_gb.location, req->oiuc_gb.ports_status);
+            if (req->oiuc_gb.type == DT_RIUC) {
+                printf("- Frequence: %.f - Location: %s", req->oiuc_gb.frequence, req->oiuc_gb.location);
             }
     
             if (req->oiuc_gb.is_online == 1)
@@ -268,9 +258,6 @@ static void on_request(oiu_server_t *oserver, oiu_request_t *req) {
                 downtime = difftime(timer, timestamp);
                 printf("- Downtime: %.f second%s\n", downtime, (downtime > 1 ? "s":""));
             }
-            break;
-        case OIUC_SQ:
-            printf("OIUC_SQ(%d):  Riuc-id: %s - Port:%d - Multicast Addr: %s \n", req->msg_id, req->oiuc_sq._id, req->oiuc_sq.port, req->oiuc_sq.multicast_addr);
             break;
         default:
             fprintf(stderr, "Unknown message type. Protocol failure\n");
