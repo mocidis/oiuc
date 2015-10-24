@@ -6,6 +6,8 @@
 #include "riu-client.h"
 #include "ics-proto.h"
 
+#include "ansi-utils.h"
+
 struct {
     ics_t ics_data;
     arbiter_client_t aclient;
@@ -36,7 +38,7 @@ static void on_open_socket(oiu_server_t *oserver) {
 //End
 
 static void usage(char *app) {
-	printf("usage: %s <request connect string> <listen connection string> <command connection string>\n", app);
+	SHOW_LOG(1, fprintf(stdout,"usage: %s <request connect string> <listen connection string> <command connection string>\n", app));
 	exit(-1);
 }
 
@@ -96,11 +98,11 @@ int main(int argc, char *argv[]) {
                 oiu_server_leave(&app_data.oserver, "239.0.0.1");
                 break;
 			case 'm':
-				printf("Chose a call:\n");
-				printf("1.ntt@192.168.2.30\n");
-				printf("4.111@192.168.2.30\n");
+				SHOW_LOG(3, fprintf(stdout,"Chose a call:\n"));
+				SHOW_LOG(3, fprintf(stdout,"1.ntt@192.168.2.30\n"));
+				SHOW_LOG(3, fprintf(stdout,"4.111@192.168.2.30\n"));
 				if (scanf("%d",&chose) != 1){
-					printf("Invalid input value\n");
+					SHOW_LOG(3, fprintf(stdout,"Invalid input value\n"));
 				}
 				switch(chose) {
 					case 1:
@@ -112,7 +114,7 @@ int main(int argc, char *argv[]) {
 						ics_make_call(&app_data.ics_data, sip_add);
 						break;	
                     default:
-                        printf("Press 'm' to make another call\n");
+                        SHOW_LOG(3, fprintf(stdout,"Press 'm' to make another call\n"));
                         break;
 				}
 				break;
@@ -143,12 +145,15 @@ int main(int argc, char *argv[]) {
 				break;
 			case 'u':
 				ics_set_registration(&app_data.ics_data, 0);
+                app_data.oserver.is_online = 0;
 				break;
 			case 'r':
 				if (option[1] == 'x')
 					ics_adjust_audio_volume(&app_data.ics_data, "r", atof(&option[3])); // Adjust speaker levela (Recevicer)
-				else
+				else {
 					ics_set_registration(&app_data.ics_data, 1);
+                    app_data.oserver.is_online = 1;
+                }
 				break;
 			case 'q':
 				is_running = 0;
@@ -187,16 +192,16 @@ static void print_menu() {
 }
 
 static void on_reg_start_impl(int account_id) {
-	printf("Acc id:: %d\n", account_id); 
+	SHOW_LOG(4, fprintf(stdout,"Acc id:: %d\n", account_id)); 
 }
 
 static void on_reg_state_impl(int account_id, char* is_registration, int code, char *reason){
 	ics_t *data;
 	data = (ics_t *)pjsua_acc_get_user_data(account_id);
 
-	printf("Acc id: %d\n", account_id);
-	printf("Registed: %s \n", is_registration);
-	printf("Status: %d(%s)\n", code, reason);
+	SHOW_LOG(4, fprintf(stdout,"Acc id: %d\n", account_id));
+	SHOW_LOG(4, fprintf(stdout,"Registed: %s \n", is_registration));
+	SHOW_LOG(4, fprintf(stdout,"Status: %d(%s)\n", code, reason));
     
     arbiter_request_t req;
     req.msg_id = ABT_UP;
@@ -213,25 +218,25 @@ static void on_reg_state_impl(int account_id, char* is_registration, int code, c
 }
 
 static void on_incoming_call_impl(int account_id, int call_id, int st_code, char *remote_contact, char *local_contact) {
-	printf("Acc id: %d\n", account_id);
-	printf("Call id: %d\n", call_id);
-	printf("From: %s\n", remote_contact);	
-	printf("To: %s\n", local_contact);
-    printf("Call state: %d\n", st_code);
+	SHOW_LOG(4, fprintf(stdout,"Acc id: %d\n", account_id));
+	SHOW_LOG(4, fprintf(stdout,"Call id: %d\n", call_id));
+	SHOW_LOG(4, fprintf(stdout,"From: %s\n", remote_contact));	
+	SHOW_LOG(4, fprintf(stdout,"To: %s\n", local_contact));
+    SHOW_LOG(4, fprintf(stdout,"Call state: %d\n", st_code));
 }
 
 static void on_call_state_impl(int call_id, int st_code, char *st_text) {
-	printf("Call %d state= %s(%d)\n", call_id, st_text, st_code);
+	SHOW_LOG(4, fprintf(stdout,"Call %d state= %s(%d)\n", call_id, st_text, st_code));
 }
 
 static void on_call_transfer_impl(int call_id, int st_code, char *st_text) {
-	printf("Call id: %d\n", call_id);
-	printf("Status: %d(%s)\n", st_code, st_text);
+	SHOW_LOG(4, fprintf(stdout,"Call id: %d\n", call_id));
+	SHOW_LOG(4, fprintf(stdout,"Status: %d(%s)\n", st_code, st_text));
 }
 
 static void on_call_media_state_impl(int call_id, int st_code) {
-	printf("Call id: %d\n", call_id);
-	printf("Status: %d\n", st_code);
+	SHOW_LOG(4, fprintf(stdout,"Call id: %d\n", call_id));
+	SHOW_LOG(4, fprintf(stdout,"Status: %d\n", st_code));
 }
 
 static void on_request(oiu_server_t *oserver, oiu_request_t *req) {
@@ -242,25 +247,24 @@ static void on_request(oiu_server_t *oserver, oiu_request_t *req) {
    switch(req->msg_id) {
         case OIUC_GB:
     
-            printf("OIUC_GB(%d):  Node id: %s(%d) - Alive: %d ", req->msg_id, req->oiuc_gb.id, req->oiuc_gb.type, req->oiuc_gb.is_online);
+            SHOW_LOG(3, fprintf(stdout,"OIUC_GB(%d):  Node id: %s(%d) - Alive: %d ", req->msg_id, req->oiuc_gb.id, req->oiuc_gb.type, req->oiuc_gb.is_online));
             
-            if (req->oiuc_gb.type == DT_RIUC) {
-                printf("- Frequence: %.f - Location: %s", req->oiuc_gb.frequence, req->oiuc_gb.location);
-            }
-    
+            if (req->oiuc_gb.type == DT_RIUC)
+                SHOW_LOG(3, fprintf(stdout,"- Frequence: %.f - Location: %s", req->oiuc_gb.frequence, req->oiuc_gb.location));
+
             if (req->oiuc_gb.is_online == 1)
-                printf("- Online\n");
+                fprintf(stdout,"- Online\n");
             else {
                 time(&timer);
                 tm = *localtime(&timer);
                 strptime(req->oiuc_gb.timestamp, "%H:%M:%S", &tm);
                 timestamp = mktime(&tm);
                 downtime = difftime(timer, timestamp);
-                printf("- Downtime: %.f second%s\n", downtime, (downtime > 1 ? "s":""));
+                SHOW_LOG(3, fprintf(stdout,"- Downtime: %.f second%s\n", downtime, (downtime > 1 ? "s":"")));
             }
             break;
         default:
-            fprintf(stderr, "Unknown message type. Protocol failure\n");
+            SHOW_LOG(3, fprintf(stdout, "Unknown message type. Protocol failure\n"));
             exit(-1);
     }
 }

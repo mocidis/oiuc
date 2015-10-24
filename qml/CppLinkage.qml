@@ -3,12 +3,20 @@ Item {
     Connections {
         target: pstn
         onLoginStart: {
-            _LOGINABOUTDIALOG.reasonMsg = "Logging in ...";
+            _LOGINDIALOG.reasonMsg = "Logging in ...";
             _ROOT.appState.loginInProgress = true;
         }
         onLoggedInChange: {
-            _LOGINABOUTDIALOG.reasonMsg = reason;
+            console.log("on_reg_state");
             _ROOT.appState.loginInProgress = false;
+            _ROOT.appState.login = pstn.isLoggedIn();
+            if(_ROOT.appState.login) {
+                _LOGINDIALOG.visible = false;
+            }
+            else {
+                _LOGINDIALOG.visible = true;
+            }
+            _LOGINDIALOG.reasonMsg = reason;
         }
         onCallingState: {
             _CALLDIALOG.text = msg;

@@ -19,10 +19,10 @@ PanelCommon {
             onColor: "navy"
             width: labelWidth + 60
             height: root.height
-            label: "Home"
+            label: "About"
             labelColor: isPressed?"white":"black"
             onClicked: {
-                _LOGINABOUTDIALOG.visible = true;
+                _ABOUTDIALOG.visible = true;
             }
         }
         PushTextButton {
@@ -36,7 +36,25 @@ PanelCommon {
                 _TELKB.visible = _ROOT.appState.login?(!_TELKB.visible):false;
             }
         }
+        PushTextButton {
+            id: logoutBtn
+            color: "transparent"
+            onColor: "navy"
+            width: labelWidth + 60
+            height: root.height
+            label: _ROOT.appState.login?"Logout":"Login"
+            labelColor: isPressed?"white":"black"
+            onClicked: {
+                if(_ROOT.appState.login) {
+                    pstn.pstnStop();
+                }
+                else {
+                    _LOGINDIALOG.visible = true;
+                }
+            }
+        }
     }
+    
     Text {
         id: time
         anchors {
@@ -104,12 +122,12 @@ PanelCommon {
         states: [
             State {
                 name: "logout"
-                when: _TELKB.visible || _LOGINABOUTDIALOG.visible
+                when: _TELKB.visible || _LOGINDIALOG.visible
                 PropertyChanges { target: menu; enabled: false }
             },
             State {
                 name: "login"
-                when: !_TELKB.visible && !_LOGINABOUTDIALOG.visible
+                when: !_TELKB.visible && !_LOGINDIALOG.visible
                 PropertyChanges { target: menu; enabled: true }
             }
         ]

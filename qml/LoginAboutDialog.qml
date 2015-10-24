@@ -149,6 +149,7 @@ DialogCommon {
                         color: "gray"
                     }
                     width: parent.width/6
+                    clickable:_ROOT.appState.loginInProgress?false:true
                     anchors {
                         top: parent.top
                         bottom: parent.bottom

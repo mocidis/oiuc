@@ -18,9 +18,8 @@ Rectangle {
 
     CppLinkage { }
     property QtObject appState: QtObject {
-        property bool login: true
         property bool loginInProgress: false
-        //property bool login: pstn.isLoggedIn()
+        property bool login: pstn.isLoggedIn()
     }
 	FontLoader {id: lcdFont; source: "../static/fonts/digital-7 (mono).ttf"}
     PanelTop {
@@ -126,7 +125,18 @@ Rectangle {
         visible: true
     }
     LoginAboutDialog {
-        id: _LOGINABOUTDIALOG
+        id: _LOGINDIALOG
+        width: 500
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: parent.top
+            topMargin: 120
+        }
+        onClose: visible=false
+        visible: false
+    }
+    AboutDialog {
+        id: _ABOUTDIALOG
         width: 500
         anchors {
             horizontalCenter: parent.horizontalCenter
@@ -164,7 +174,7 @@ Rectangle {
                 when: !appState.login
                 PropertyChanges { target: _RIGHT; visible: false }
                 PropertyChanges { target: _MAIN; visible: false }
-                PropertyChanges { target: _LOGINABOUTDIALOG; visible: true }
+                PropertyChanges { target: _LOGINDIALOG; visible: true }
             },
             State {
                 name: "login"

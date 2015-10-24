@@ -54,18 +54,27 @@ void update_online_state( int online, pj_str_t *id, QString &description ) {
     arbiter_client_send(&app_data->aclient, &req);
 }
 void on_reg_state_impl(int account_id, char* is_registration, int code, char *reason){
+    SHOW_LOG(3, (qDebug()<< "ON_REG_STATE_IMPL"));
 	app_data_t *app_data;
 	ics_t *data;
 	data = (ics_t *)pjsua_acc_get_user_data(account_id);
-
+    PSTN *pstn = PSTN::getPSTN();
+    
     pj_str_t *id = &(data->acfg.cred_info[0].username);
     QString &description = OIUCConfig::getOIUCConfig()->getOIUCDescription();
+
     int online = 0;
     if( code == 200 && strcmp(is_registration, "No") != 0 ) {
         online = 1;
+        pstn->setLoggedIn(online, reason);
 	}
-    PSTN *pstn = PSTN::getPSTN();
-    pstn->setLoggedIn(online, reason);
+    if( code == 200 && strcmp(is_registration, "No") == 0 ) {
+        pstn->setLoggedIn(online, "");
+    }
+    else {
+        pstn->setLoggedIn(online, reason);
+    }
+    app_data->oserver.is_online = online;
     update_online_state(online, id, description);
 }
 

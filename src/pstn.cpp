@@ -29,6 +29,7 @@ void PSTN::pstnPrepare() {
     ics_pjsua_init(&app_data.ics_data); 
 	ics_init(&app_data.ics_data);
 
+    SET_LOG_LEVEL(4);
 	ics_set_default_callback(&on_reg_start_default);
 
 	ics_set_reg_start_callback(&on_reg_start_impl); //cc
@@ -40,7 +41,7 @@ void PSTN::pstnPrepare() {
 
 	ics_start(&app_data.ics_data);
 	//ics_connect(&app_data.ics_data, 1111);
-	oiuc_config->getPortAsterisk();
+	oiuc_config->getPortAsterisk(); // Don't need anymorea, now set default bind to any port
 	ics_connect(&app_data.ics_data, oiuc_config->getPortAsterisk());
 }
 void PSTN::pstnStartAServer() {
@@ -85,7 +86,6 @@ void PSTN::pstnHoldCall () {
 void PSTN::pstnReleaseHoldCall () {
 	ics_release_hold(&app_data.ics_data);
 }
-
 void PSTN::signalLoginStart() {
     qDebug() << "---- emit onLogInStart signal ----";
     emit loginStart();
@@ -101,17 +101,15 @@ QString PSTN::getLastDialNumber() {
 	return current_dial_number;
 }
 void PSTN::setLoggedIn(int flag, char *reason) {
-	if (flag == 1) {
-		logged_in = true;
-	} else {
-		logged_in = false;
-	}
+	logged_in = (flag == 1);
 	emit loggedInChange(QString::fromLocal8Bit(reason, -1));
 }
 bool PSTN::isLoggedIn() {
 	return logged_in;
 }
 void PSTN::pstnStop() {
+    ics_set_registration(&app_data.ics_data, 0);
+    app_data.oserver.is_online = 0;
 	//setLoggedIn(0);
 	//destroy PSTN here
 	//
