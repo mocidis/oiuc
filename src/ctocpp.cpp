@@ -55,7 +55,10 @@ void update_online_state( int online, pj_str_t *id, QString &description ) {
 }
 void on_reg_state_impl(int account_id, char* is_registration, int code, char *reason){
     SHOW_LOG(3, (qDebug()<< "ON_REG_STATE_IMPL"));
+
 	app_data_t *app_data;
+    app_data = PSTN::getPSTN()->getAppData();
+
 	ics_t *data;
 	data = (ics_t *)pjsua_acc_get_user_data(account_id);
     PSTN *pstn = PSTN::getPSTN();

@@ -18,18 +18,21 @@ PSTN::PSTN() {
 }
 void PSTN::pstnStart(QString username, QString password) {
 	char user[20], passwd[20];
-	this->username = username;
-	this->password = password;
-	strncpy(user, username.toLocal8Bit().constData(), 20);
-	strncpy(passwd, password.toLocal8Bit().constData(), 20);
-	ics_add_account(&app_data.ics_data, oiuc_config->getAsteriskIP().toLocal8Bit().data(), user, passwd); 
+    if (username != NULL) {
+        this->username = username;
+        this->password = password;
+
+        strncpy(user, username.toLocal8Bit().constData(), 20);
+        strncpy(passwd, password.toLocal8Bit().constData(), 20);
+        ics_add_account(&app_data.ics_data, oiuc_config->getAsteriskIP().toLocal8Bit().data(), user, passwd); 
+    }
 }
 void PSTN::pstnPrepare() {
     ics_pool_init(&app_data.ics_data);
     ics_pjsua_init(&app_data.ics_data); 
-	ics_init(&app_data.ics_data);
+    ics_init(&app_data.ics_data);
 
-    SET_LOG_LEVEL(4);
+    SET_LOG_LEVEL(5);
 	ics_set_default_callback(&on_reg_start_default);
 
 	ics_set_reg_start_callback(&on_reg_start_impl); //cc
