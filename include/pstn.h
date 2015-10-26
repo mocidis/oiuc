@@ -28,9 +28,9 @@ public:
 	Q_INVOKABLE void pstnCall (QString number);
 	Q_INVOKABLE void pstnHangupCall ();
 	Q_INVOKABLE void pstnHangupAllCall ();
-	Q_INVOKABLE void pstnConferenceCall (QString number);
+	Q_INVOKABLE void pstnConferenceCall ();
 	Q_INVOKABLE void pstnAnswerCall ();
-	Q_INVOKABLE void pstnTransferCall (QString number);
+	Q_INVOKABLE void pstnTransferCall ();
 	Q_INVOKABLE void pstnHoldCall ();
 	Q_INVOKABLE void pstnReleaseHoldCall ();
 	void pstnPrepare();

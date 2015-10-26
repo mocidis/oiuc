@@ -20,13 +20,13 @@ void PTT::setPTT (int index, int type, int is_pressed) { //0-Radio, 1-OIUC
 			_oiuc = NULL;
 			QByteArray array_list_radio = _radio->getName().toLocal8Bit();
 			char* c_str = array_list_radio.data();
-			send_cmd_to_arbiter (c_str, "on");
+			//send_cmd_to_arbiter (c_str, "on");
 		} else {
 			QByteArray array_list_radio = _radio->getName().toLocal8Bit();
 			char* c_str = array_list_radio.data();
 			_radio = NULL;
 			_oiuc = NULL;
-			send_cmd_to_arbiter(c_str,"off");
+			//send_cmd_to_arbiter(c_str,"off");
 		}
 	} else if (type == 1) {
 		if (is_pressed == 1) {

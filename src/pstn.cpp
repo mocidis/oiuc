@@ -74,13 +74,13 @@ void PSTN::pstnHangupCall () {
 void PSTN::pstnHangupAllCall () {
 	ics_hangup_call(&app_data.ics_data, 1);
 }
-void PSTN::pstnConferenceCall (QString number) {
+void PSTN::pstnConferenceCall () {
     // TODO
 }
 void PSTN::pstnAnswerCall () { 
 	ics_answer_call(&app_data.ics_data);
 }
-void PSTN::pstnTransferCall (QString number) {
+void PSTN::pstnTransferCall () {
 	ics_transfer_call(&app_data.ics_data, 1, 2);
 }
 void PSTN::pstnHoldCall () {

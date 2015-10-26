@@ -9,19 +9,6 @@
 #include <QString>
 #define MAX_URI_LENGTH 100
 
-void send_cmd_to_arbiter(char *radio_list, char *cmd) {
-	/*writeLog("send PTT command");
-	PSTN *pstn = PSTN::getPSTN();
-	app_data_t *app_data;
-	app_data = pstn->getAppData();
-    arbiter_request_t req;
-    req.msg_id = ABT_PTT;
-    strncpy(req.abt_ptt.list, radio_list, sizeof(req.abt_ptt.list));
-    strncpy(req.abt_ptt.cmd_ptt, cmd, sizeof(req.abt_ptt.cmd_ptt));
-    send_to_arbiter(&app_data->aclient, &req);
-    */
-}
-
 void on_reg_start_impl(int account_id) {
 	printf("Acc id:: %d\n", account_id);
     PSTN::getPSTN()->signalLoginStart();
@@ -54,7 +41,7 @@ void update_online_state( int online, pj_str_t *id, QString &description ) {
     arbiter_client_send(&app_data->aclient, &req);
 }
 void on_reg_state_impl(int account_id, char* is_registration, int code, char *reason){
-    SHOW_LOG(3, (qDebug()<< "ON_REG_STATE_IMPL"));
+    SHOW_LOG(5, (qDebug()<< "ON_REG_STATE_IMPL"));
 
 	app_data_t *app_data;
     app_data = PSTN::getPSTN()->getAppData();
@@ -72,7 +59,7 @@ void on_reg_state_impl(int account_id, char* is_registration, int code, char *re
         pstn->setLoggedIn(online, reason);
 	}
     if( code == 200 && strcmp(is_registration, "No") == 0 ) {
-        pstn->setLoggedIn(online, "");
+        pstn->setLoggedIn(online, (char *)"");
     }
     else {
         pstn->setLoggedIn(online, reason);
@@ -82,18 +69,23 @@ void on_reg_state_impl(int account_id, char* is_registration, int code, char *re
 }
 
 void on_incoming_call_impl(int account_id, int call_id, int st_code, char *remote_contact, char *local_contact) {
+    UNUSED(account_id);
+    UNUSED(call_id);
+    UNUSED(local_contact);
 	QString msg = QString::fromUtf8(remote_contact);
 	PSTN *dial = PSTN::getPSTN();
 	dial->runCallingState(msg, st_code);
 }
 
 void on_call_state_impl(int call_id, int st_code, char *st_text) {
+    UNUSED(call_id);
 	QString msg = QString::fromUtf8(st_text);
 	PSTN *dial = PSTN::getPSTN();
 	dial->runCallingState(msg, st_code);
 }
 
 void on_call_transfer_impl(int call_id, int st_code, char *st_text) {
+    UNUSED(call_id);  
 	QString msg = QString::fromUtf8(st_text);
 	PSTN *dial = PSTN::getPSTN();
 	dial->runCallingState(msg, st_code);
@@ -107,14 +99,17 @@ int send_to_arbiter(arbiter_client_t *uclient, arbiter_request_t *req) {
 	return arbiter_client_send(uclient, req);
 }
 void on_open_socket(oiu_server_t *oserver) {
-    oiu_server_join(oserver, "239.0.0.1");
+    oiu_server_join(oserver, (char *)"239.0.0.1");
 }
 void on_request(oiu_server_t *oserver, oiu_request_t *req) {
     bool isOnline = false, isTx = false, isSQ = false;
-
     struct tm tm;
     time_t timer, timestamp;
     double downtime;
+
+    UNUSED(oserver);
+    UNUSED(downtime);
+
 	int msg_id = req->msg_id;
 	QString type = "unknown"; //default initial
 	QString name = "unknown";
@@ -154,6 +149,7 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 					break;
                 }
                 double freq, volume;
+                UNUSED(volume);
                 QString loc, conn_str;
 
                 name = QString::fromLocal8Bit(req->oiuc_gb.id);
