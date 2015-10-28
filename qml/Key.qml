@@ -1,9 +1,9 @@
-import QtQuick 1.1
+import QtQuick 1.0
 PushButton {
     property alias text: label.text
     property alias textColor: label.color
     property string value: ""
-    property alias textSize: label.font.pixelSize
+//    property alias textSize: label.font.pixelSize
     property bool isCap: false
     height: width
     id: root

@@ -27,15 +27,17 @@ CORE_SRC:= ../concurrent_queue/src/queue.c \
            ../object-pool/src/object-pool.c \
 		   ../common/src/ansi-utils.c
 
-all: gen-a gen-o build
+include custom.mk
 
-MY_CFLAGS:=-g $(shell pkg-config --cflags libpjproject) -I$(PROTOCOLS_DIR)/include
-MY_LIBS:=-g $(shell pkg-config --libs libpjproject)
+MY_CFLAGS+=-g $(shell pkg-config --cflags libpjproject json-c) -I$(PROTOCOLS_DIR)/include
+MY_LIBS:=-g $(shell pkg-config --libs libpjproject json-c)
 
 APP:=app.app
 
 USERVER_DIR:=../userver
 PROTOCOLS_DIR:=../protocols
+
+all: gen-a gen-o build
 
 gen-a: $(PROTOCOLS_DIR)/$(A_PROTOCOL)
 	mkdir -p gen
@@ -77,16 +79,16 @@ oiuc.pro:
 	echo "               ../common/include" >> oiuc.pro
 	echo "" >> oiuc.pro
 	echo "QT += declarative sql" >> oiuc.pro
-	echo "QMAKE_CFLAGS += $(MY_CFLAGS) -I../json-c/output/include/json-c" >> oiuc.pro
-	echo "QMAKE_CXXFLAGS += $(MY_CFLAGS) -I../json-c/output/include/json-c" >> oiuc.pro
-	echo "QMAKE_LIBS += $(MY_LIBS) ../json-c/output/lib/libjson-c.a" >> oiuc.pro
+	echo "QMAKE_CFLAGS += $(MY_CFLAGS)" >> oiuc.pro
+	echo "QMAKE_CXXFLAGS += $(MY_CFLAGS)" >> oiuc.pro
+	echo "QMAKE_LIBS += $(MY_LIBS)" >> oiuc.pro
 	echo "" >> oiuc.pro
 	echo "HEADERS += $(subst /src/,/include/,$(CPP_SRC:.cpp=.h)) $(GEN_SRC:.c=.h) $(subst /src/,/include/,$(CORE_SRC:.c=.h))" >> oiuc.pro
 	echo "" >> oiuc.pro
 	echo "SOURCES += $(CPP_SRC) $(GEN_SRC) $(CORE_SRC)" >> oiuc.pro
 
 Makefile.qt.mk: oiuc.pro
-	qmake -makefile $< -o $@
+	qmake -makefile $(QMAKE_OPT) $< -o $@
 
 build: Makefile.qt.mk
 	make -f Makefile.qt.mk 

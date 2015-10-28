@@ -69,23 +69,23 @@ void on_reg_state_impl(int account_id, char* is_registration, int code, char *re
 }
 
 void on_incoming_call_impl(int account_id, int call_id, int st_code, char *remote_contact, char *local_contact) {
-    UNUSED(account_id);
-    UNUSED(call_id);
-    UNUSED(local_contact);
+    Q_UNUSED(account_id);
+    Q_UNUSED(call_id);
+    Q_UNUSED(local_contact);
 	QString msg = QString::fromUtf8(remote_contact);
 	PSTN *dial = PSTN::getPSTN();
 	dial->runCallingState(msg, st_code);
 }
 
 void on_call_state_impl(int call_id, int st_code, char *st_text) {
-    UNUSED(call_id);
+    Q_UNUSED(call_id);
 	QString msg = QString::fromUtf8(st_text);
 	PSTN *dial = PSTN::getPSTN();
 	dial->runCallingState(msg, st_code);
 }
 
 void on_call_transfer_impl(int call_id, int st_code, char *st_text) {
-    UNUSED(call_id);  
+    Q_UNUSED(call_id);  
 	QString msg = QString::fromUtf8(st_text);
 	PSTN *dial = PSTN::getPSTN();
 	dial->runCallingState(msg, st_code);
@@ -107,8 +107,8 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
     time_t timer, timestamp;
     double downtime;
 
-    UNUSED(oserver);
-    UNUSED(downtime);
+    Q_UNUSED(oserver);
+    Q_UNUSED(downtime);
 
 	int msg_id = req->msg_id;
 	QString type = "unknown"; //default initial
@@ -149,7 +149,7 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 					break;
                 }
                 double freq, volume;
-                UNUSED(volume);
+                Q_UNUSED(volume);
                 QString loc, conn_str;
 
                 name = QString::fromLocal8Bit(req->oiuc_gb.id);

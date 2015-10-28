@@ -1,4 +1,4 @@
-import QtQuick 1.1
+import QtQuick 1.0
 ToggleButton {
     property variant oItem: null
     property string sourcePrefix: "../static/Speaker"

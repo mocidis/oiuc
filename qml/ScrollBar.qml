@@ -1,4 +1,4 @@
-import QtQuick 1.1
+import QtQuick 1.0
 Item {
     property variant scrollArea
     property variant orientation: Qt.Vertical

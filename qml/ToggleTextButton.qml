@@ -1,4 +1,4 @@
-import QtQuick 1.1
+import QtQuick 1.0
 
 ToggleButton {
     property alias label: txtLabel.text

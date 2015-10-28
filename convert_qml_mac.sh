@@ -9,21 +9,21 @@ fi
 if [ $2 == "21" ]; then
 	for f in `ls -1 $1/*.qml`;
 	do
-		sed -i 's/QtQuick 2.0/QtQuick 1.1/g' $f
+		sed -i '' 's/QtQuick 2.0/QtQuick 1.1/g' $f
 	done;
 elif [ $2 == "12" ]; then
 	for f in `ls -1 $1/*.qml`;
 	do
-		sed -i 's/QtQuick 1.1/QtQuick 2.0/g' $f
+		sed -i '' 's/QtQuick 1.1/QtQuick 2.0/g' $f
 	done;
 elif [ $2 == "10" ]; then
 	for f in `ls -1 $1/*.qml`;
 	do
-		sed -i 's/QtQuick 1.1/QtQuick 1.0/g' $f
+		sed -i '' 's/QtQuick 1.1/QtQuick 1.0/g' $f
 	done;
 elif [ $2 == "01" ]; then
 	for f in `ls -1 $1/*.qml`;
 	do
-		sed -i 's/QtQuick 1.0/QtQuick 1.1/g' $f
+		sed -i '' 's/QtQuick 1.0/QtQuick 1.1/g' $f
 	done;
 fi
