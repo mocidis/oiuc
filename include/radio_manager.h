@@ -19,9 +19,7 @@ public:
 	void loadRadioFromDatabase();
 	void updateRadioManagerSignal(Radio* radio, int mIndex);
 	/*****************Get functions**************************/
-	QList<QObject*> getModelRadio(); //return radio_list in QList<QObject*>
 	QList<Radio*> getRadioList();
-	bool isOk();
 signals: 
 	void updateRadioManager(QString name, double frequency, QString location, 
         QString port_mip, double downtime, int port, QString desc,
@@ -40,7 +38,6 @@ private:
 	/*****************Attribute********************/
 	QList<Radio*> _radio_list;
 	static RadioManager* _radio_manager;
-	bool _flag;
 };
 
 #endif

@@ -17,12 +17,9 @@ public:
 	/*****************Add and Set functions******************/
 	void addOIUC (OIUC *oiuc);
 	void deleteOIUC (OIUC *oiuc);
-	void loadOIUCFromDatabase();
 	/*****************Get functions******************/
-	QList<QObject*> getModelOIUC(); //return oiuc_list in QList<QObject*>
 	QList<OIUC*> getOIUCList();
 	void updateOIUCManagerSignal (OIUC *oiuc, int mIndex);
-	bool isOk();
 signals: 
 	void updateOIUCManager (QString type, QString name, QString status, double downtime, QString desc, int mIndex);
 private:
@@ -32,7 +29,6 @@ private:
 
 	/*****************Attribute********************/
 	QList<OIUC*> _oiuc_list;
-	bool _flag;
 	static OIUCManager* _oiuc_manager;
 };
 

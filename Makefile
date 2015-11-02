@@ -6,7 +6,6 @@ CPP_SRC:= ./src/ctocpp.cpp \
           ./src/main.cpp \
           ./src/pstn.cpp \
 		  ./src/radio.cpp \
-		  ./src/group.cpp \
 		  ./src/backend.cpp \
 		  ./src/oiuc.cpp \
 		  ./src/oiuc_manager.cpp \

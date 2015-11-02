@@ -8,21 +8,9 @@ RadioManager* RadioManager::getRadioManager() {
 	}
 	return _radio_manager;
 }
-RadioManager::RadioManager(QList<Radio*> radio_list) {
-	_flag = false;	
-}
-RadioManager::RadioManager() {
-	_flag = false;
-}
+RadioManager::RadioManager(QList<Radio*> radio_list) { }
+RadioManager::RadioManager() { }
 /*****************Add and Set functions******************/
-void RadioManager::loadRadioFromDatabase() {
-	writeLog("Loading Radio from databases");
-	_radio_list = getBackendRadioList("databases/radio.db");
-	for (int i=0;i<_radio_list.count();i++) {
-		updateRadioManagerSignal(_radio_list[i], -1);
-	}
-	_flag = true;
-}
 void RadioManager::addRadio(Radio *radio) {
 	int flags = 0;
 	int mIndex = -1;
@@ -33,7 +21,6 @@ void RadioManager::addRadio(Radio *radio) {
 				_radio_list[i]->setOnline(radio->isOnline());
 				flags = 2;
 				mIndex = i;
-				qDebug() << "---------------------------------------";
 			}
 			if (_radio_list[i]->isTx() != radio->isTx()) {
 				_radio_list[i]->setTx(radio->isTx());
@@ -51,13 +38,11 @@ void RadioManager::addRadio(Radio *radio) {
 	if (flags == 0 || flags == 2) {
 		if (flags == 0) {
 			_radio_list.append(radio);
-			appendToDatabase(radio, "databases/radio.db", 0);
 			updateRadioManagerSignal(radio, mIndex);
-			writeLog("new radio " + radio->getName() + " detected");
+			writeLog(radio->getName() + " detected");
 		} else {
-			appendToDatabase(radio, "databases/radio.db", 1);
 			updateRadioManagerSignal(radio, mIndex);
-			writeLog(radio->getName() + " changed state");
+			writeLog(radio->getName() + "'s state changed");
 		}
 	}
 }
@@ -69,13 +54,6 @@ void RadioManager::deleteRadio(Radio *radio) {
 	}
 }
 /*****************Get functions******************/
-QList<QObject*> RadioManager::getModelRadio() { //return radio_list in QList<QObject*>
-	QList<QObject*> radio_list_obj;
-	for (int i=0; i < _radio_list.count(); i++) {
-		radio_list_obj.append(_radio_list[i]);
-	}
-	return radio_list_obj;
-}
 QList<Radio*> RadioManager::getRadioList() {
 	return _radio_list;
 }
@@ -96,7 +74,4 @@ void RadioManager::updateRadioManagerSignal(Radio* radio, int mIndex) {
             radio->getVolume(),
             mIndex
     );
-}
-bool RadioManager::isOk() {
-	return _flag;
 }

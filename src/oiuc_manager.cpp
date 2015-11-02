@@ -8,21 +8,9 @@ OIUCManager* OIUCManager::getOIUCManager() {
 	}
 	return _oiuc_manager;
 }
-OIUCManager::OIUCManager(QList<OIUC*> oiuc_list) {
-	_flag = false;
-}
-OIUCManager::OIUCManager() {
-	_flag = false;
-}
+OIUCManager::OIUCManager(QList<OIUC*> oiuc_list) { }
+OIUCManager::OIUCManager() { }
 /*****************Add and Set functions******************/
-void OIUCManager::loadOIUCFromDatabase() {
-	writeLog("Loading OIUC from databases");
-	_oiuc_list = getBackendOIUCList("databases/radio.db");
-	for (int i=0;i<_oiuc_list.count();i++) {
-		updateOIUCManagerSignal(_oiuc_list[i], -1);
-	}
-	_flag = true;
-}
 void OIUCManager::addOIUC(OIUC *oiuc) {
 	int flags = 0;
 	int mIndex = -1;
@@ -40,10 +28,8 @@ void OIUCManager::addOIUC(OIUC *oiuc) {
 	if (flags == 0 || flags == 2) {
 		if (flags == 0) {
 			_oiuc_list.append(oiuc);
-			appendToDatabase(oiuc, "databases/radio.db", 0);
 			updateOIUCManagerSignal(oiuc, mIndex);
 		} else {
-			appendToDatabase(oiuc, "databases/radio.db", 1);
 			updateOIUCManagerSignal(oiuc, mIndex);
 		}
 	}
@@ -56,13 +42,6 @@ void OIUCManager::deleteOIUC(OIUC *oiuc) {
 	}
 }
 /*****************Get functions******************/
-QList<QObject*> OIUCManager::getModelOIUC() { //return oiuc_list in QList<QObject*>
-	QList<QObject*> oiuc_list_obj;
-	for (int i=0; i < _oiuc_list.count(); i++) {
-		oiuc_list_obj.append(_oiuc_list[i]);
-	}
-	return oiuc_list_obj;
-}
 QList<OIUC*> OIUCManager::getOIUCList() {
 	return _oiuc_list;
 }
@@ -73,7 +52,4 @@ void OIUCManager::updateOIUCManagerSignal (OIUC *oiuc, int mIndex) {
 	double downtime = oiuc->getDowntime();
 	QString desc = oiuc->getDesc();
 	emit updateOIUCManager (type, name, status, downtime, desc, mIndex);
-}
-bool OIUCManager::isOk()  {
-	return _flag;
 }

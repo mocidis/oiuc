@@ -47,8 +47,6 @@ int main (int argc, char* argv[]) {
 	view.setSource(QUrl::fromLocalFile("qml/Application.qml"));
 
 	writeLog("Start OIUC"); //any log should declare after this line
-	radio_manager->loadRadioFromDatabase();
-	oiuc_manager->loadOIUCFromDatabase();
 
 	view.show();
 	return app.exec();

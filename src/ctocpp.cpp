@@ -126,9 +126,6 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 			msg_id = req->msg_id;
 			if ( req->oiuc_gb.type == DT_OIUC ) {
 			    type = "OIUC";
-				if (!oiuc_manager->isOk()) {
-					break;
-				}
 				name = QString::fromLocal8Bit(req->oiuc_gb.id);
 				if (req->oiuc_gb.is_online == 1) {
 					status = "Online";
@@ -145,9 +142,6 @@ void on_request(oiu_server_t *oserver, oiu_request_t *req) {
 				oiuc = new OIUC(msg_id, type , name , status, desc);
 				oiuc_manager->addOIUC(oiuc);
 			} else if (req->oiuc_gb.type == DT_RIUC ) {
-				if (!radio_manager->isOk()) {
-					break;
-                }
                 double freq, volume;
                 Q_UNUSED(volume);
                 QString loc, conn_str;
